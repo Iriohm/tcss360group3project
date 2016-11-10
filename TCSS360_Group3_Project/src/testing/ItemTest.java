@@ -1,8 +1,18 @@
+/**
+ * JUnit Tests for Bid.java
+ *
+ * @author Iriohm
+ * @version November 2016
+ */
+
 package testing;
 
-import junit.framework.*;
+import static org.junit.Assert.*;
+import org.junit.Test;
 
-public class ItemTest extends TestCase {
-	
+import model.Bid;
+
+public class ItemTest {
+
 
 }
