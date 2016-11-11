@@ -59,7 +59,7 @@ public class Auction implements Serializable {
 	 * 
 	 */
 	public boolean addItem(Item theItem) {
-		return false
+		return false;
 	}
 	
 	
