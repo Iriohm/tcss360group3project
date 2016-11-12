@@ -1,4 +1,7 @@
 package model;
+
+import ui.UI;
+
 /**
 * This class is used to begin the AuctionCentral environment.
 *
@@ -17,6 +20,7 @@ public class Main {
 		//readsInASerializedCalendarFromFile
 		//authenticate();
 		//starts specific UI Controller.
+		UI.begainUI();
 	}
 
 	/**
