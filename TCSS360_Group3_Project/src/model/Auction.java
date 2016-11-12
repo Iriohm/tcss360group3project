@@ -1,7 +1,7 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class Auction implements Serializable {
 	/**
 	 * The Date the Auction is being held on
 	 */
-	private Date myDate;
+	private GregorianCalendar myDate;
 	
 	/**
 	 * The name of the auction
@@ -40,7 +40,7 @@ public class Auction implements Serializable {
 	 * 
 	 * @param 
 	 */
-	public Auction(Date theDate, String theAuctionName) {
+	public Auction(GregorianCalendar theDate, String theAuctionName) {
 		myDate = theDate;
 		myAuctionName = theAuctionName;
 		myItems = new LinkedList<Item>();
@@ -62,5 +62,18 @@ public class Auction implements Serializable {
 		return false;
 	}
 	
+	/**
+	 * 
+	 */
+	public GregorianCalendar getDate() {
+		return myDate;
+	}
+	
+	/**
+	 * 
+	 */
+	public String getAuctionName() {
+		return myAuctionName;
+	}
 	
 }
