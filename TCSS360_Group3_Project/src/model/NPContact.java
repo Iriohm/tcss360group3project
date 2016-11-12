@@ -22,4 +22,19 @@ public class NPContact extends User {
 	public NPContact(String theUsername, Calendar theCalendar) {
 		super(theUsername, theCalendar, 2);
 	}
+	
+	public void addItem(Auction theAuctionToAddTo, Item theItemToAdd) {
+		//checkIfItemExists in Auction Yet.
+		theAuctionToAddTo.addItem(theItemToAdd);
+	}
+	
+	public void addAuction() {
+		//myCalendar.addAuction(new Auction());
+	}
+	
+	public void submitAuctionRequest() {
+		//Somehow have Auction item.
+		//Auction.verifyAuction();
+		//myCalendar.addAuction(Auction);
+	}
 }
