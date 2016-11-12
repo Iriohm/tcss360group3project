@@ -1,12 +1,12 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * The Calendar class takes care of keeping track of Auction requests and holds all of the Aucitons.
+ * The Calendar class takes care of keeping track of Auction requests and holds all of the Auctions.
  * 
  * @author Justin Washburn
  * @version 11/10/2016
@@ -47,8 +47,8 @@ public class Calendar implements Serializable {
 	 * @param theDate The desired date for an auction request
 	 * @return True if the Auction was added
 	 */
-	public boolean validateAuctionRequest(Date theDate) {
-		return false;
+	public boolean validateAuctionRequest(GregorianCalendar theDate) {
+		return true;
 	}
 	
 	/**
@@ -58,17 +58,45 @@ public class Calendar implements Serializable {
 	 * @return True if the Auction was added
 	 */
 	public boolean addAuction(Auction theAuction) {
-		myAuctions.add(theAuction);
+		if (validateAuctionRequest(theAuction.getDate())) {
+			myAuctions.add(theAuction);
+			return true;
+		}
 		return false;
+		
 	}
 	
 	/**
-	 * Gets the auctions from a period starting at the Date given and ending one month after
+	 * Gets the auctions from a period starting at the Date given and ending one month (31 days) after
 	 * 
 	 * @param theDate The date to start the list of Auctions
 	 * @return The list of Auctions starting at the Date given and ending one month after
 	 */
-	public List<Auction> getAuctions(Date theDate) {
-		return null;
+	public List<Auction> getAuctions(GregorianCalendar theDate) {
+		//sets the start date to look at the day you give it
+		GregorianCalendar startDate = (GregorianCalendar)theDate.clone();
+		startDate.add(GregorianCalendar.DAY_OF_YEAR, -1);
+		//sets the end date to 31 days after the day you give it
+		GregorianCalendar endDate = (GregorianCalendar)theDate.clone();
+		endDate.add(GregorianCalendar.DAY_OF_YEAR, 31);
+		LinkedList<Auction> desiredMonth = new LinkedList<Auction>();
+		for (int i = 0; i < myAuctions.size(); i++) {
+			System.out.println(i);
+			Auction tempAuction = myAuctions.get(i);
+			System.out.println(tempAuction.getDate().after(startDate));
+			System.out.println(tempAuction.getDate().before(endDate));
+			if (tempAuction.getDate().after(startDate) &&
+				tempAuction.getDate().before(endDate)) {
+				
+				System.out.println("added");
+				desiredMonth.add(tempAuction);
+			}
+		}
+		
+		return desiredMonth;
+	}
+	
+	public List<Auction> getAllAuctions() {
+		return myAuctions;
 	}
 }
