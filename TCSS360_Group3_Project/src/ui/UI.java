@@ -17,14 +17,14 @@ public class UI {
 	}
 	
 	/*
-	 * this choose if it a previous user to login or crate a user
+	 * login on a previously created user account or create a new user account
 	 */
 	private static void choosePreviousOrMakeUser() {
 		int choose = 0;
 		do {
 			System.out.println("Welcome to Auction Center\n"
 					+ "1) Login\n"
-					+ "2) crate acount\n"
+					+ "2) create acount\n"
 					+ "Enter your Selection from 1 to 2");
 		} while (choose != 1 || choose != 2);
 		if(choose == 1){
