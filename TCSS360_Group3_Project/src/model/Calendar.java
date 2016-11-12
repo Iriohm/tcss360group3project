@@ -68,7 +68,7 @@ public class Calendar implements Serializable {
 	 * @param theDate The date to start the list of Auctions
 	 * @return The list of Auctions starting at the Date given and ending one month after
 	 */
-	public List<Auction> getAuctions(Date theDate) {
+	public static List<Auction> getAuctions(Date theDate) {
 		return null;
 	}
 }
