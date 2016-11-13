@@ -14,31 +14,53 @@ import java.util.List;
  */
 public class Calendar implements Serializable {
 
+	
+	
 	/**
 	 * Default global needed by Serializable
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 970230924874743054L;
+
+	/**
+	 * The list of ALL of the Auctions
+	 */
+	private List<Auction> myAuctions;
 	
 	/**
-	 * The list of ALL of the aucitons
+	 * The value that will be assigned to the next item.
 	 */
-	List<Auction> myAuctions;
+	private int myNextItemID;
+	
+	/**
+	 * The number of upcoming Auctions
+	 */
+	private int myCurrentAuctions;
 	
 	/**
 	 * Creates a Calendar with an empty list of Auctions
 	 */
 	public Calendar() {
 		myAuctions = new LinkedList<Auction>();
+		myNextItemID = 0;
+		myCurrentAuctions = 0;
 	}
 	
 	/**
-	 * Creates a Calendar with the given list of Auctions
+	 * Gives the number of Auctions coming after the current time
 	 * 
-	 * @param theAuctions The list of auctions to be added to the Calendar
+	 * @return The number of upcoming Auctions
 	 */
-	public Calendar(List<Auction> theAuctions) {
-		myAuctions = theAuctions;
+	public int getUpcomingAuctionsNumber() {
+		GregorianCalendar currentDate = (GregorianCalendar)GregorianCalendar.getInstance();
+		myCurrentAuctions = 0;
+		for (int i = 0; i < myAuctions.size(); i++) {
+			if (myAuctions.get(i).getDate().after(currentDate)) {
+				myCurrentAuctions++;
+			}
+		}
+		return myCurrentAuctions;
 	}
+	
 	
 	/**
 	 * Returns true if the given date does not conflict with any of Auction Central's 
@@ -83,8 +105,6 @@ public class Calendar implements Serializable {
 		for (int i = 0; i < myAuctions.size(); i++) {
 			System.out.println(i);
 			Auction tempAuction = myAuctions.get(i);
-			System.out.println(tempAuction.getDate().after(startDate));
-			System.out.println(tempAuction.getDate().before(endDate));
 			if (tempAuction.getDate().after(startDate) &&
 				tempAuction.getDate().before(endDate)) {
 				
@@ -95,8 +115,21 @@ public class Calendar implements Serializable {
 		
 		return desiredMonth;
 	}
-	
+	/**
+	 * Returns a list of all of the Auctions ever added to the Calendar
+	 * 
+	 * @return The list of all Auctions in the Calendar
+	 */
 	public List<Auction> getAllAuctions() {
 		return myAuctions;
+	}
+	/**
+	 * Gets the next unique ItemID to be used when creating an Item
+	 * 
+	 * @return The next unique ItemID
+	 */
+	public int getNextItemID() {
+		myNextItemID++;
+		return myNextItemID;
 	}
 }
