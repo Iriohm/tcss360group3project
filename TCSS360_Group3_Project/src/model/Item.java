@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 public class Item implements Serializable {
 	/** A generated serial ID. */
-	private static final long serialVersionUID = -4341600429974806250L;
+	private static final long serialVersionUID = -7510712678086711711L;
 
 	/** The ID of this Item. */
 	private String myID;
@@ -21,6 +21,9 @@ public class Item implements Serializable {
 
 	/** The description of this Item. */
 	private String myDescription;
+
+	/** The description of this Item. */
+	private String mySize;
 
 	/** The minimum bid that can be placed on this Item. */
 	private double myMinimumBid;
@@ -41,15 +44,17 @@ public class Item implements Serializable {
 	 * @param theID The Item ID.
 	 * @param theName The name of the Item.
 	 * @param theDescription A description of the Item.
+	 * @param theSize The size of the Item. Should be either small, medium, or large.
 	 * @param theMinimumBid The minimum bid that can be made on the Item. Must be > 0
 	 * @param theQuantity The quantity of the Item. Must be > 0
-	 * @param theCondition The condition of the Item.
+	 * @param theCondition The condition of the Item. Should be either acceptable, good, very good, like new, or new.
 	 */
-	public Item(String theID, String theName, String theDescription, double theMinimumBid,
+	public Item(String theID, String theName, String theDescription, String theSize, double theMinimumBid,
 					int theQuantity, String theCondition) {
 		myID = theID;
 		myName = theName;
 		myDescription = theDescription;
+		mySize = theSize;
 		myCondition = theCondition;
 
 		setMinBid(theMinimumBid);
@@ -63,6 +68,7 @@ public class Item implements Serializable {
 	public String getID() { return myID; }
 	public String getName() { return myName; }
 	public String getDescription() { return myDescription; }
+	public String getSize() { return mySize; }
 	public double getMinBid() { return myMinimumBid; }
 	public int getQuantity() { return myQuantity; }
 	public String getCondition() { return myCondition; }
@@ -79,6 +85,7 @@ public class Item implements Serializable {
 	public void setID(String theNewID) { myID = theNewID; }
 	public void setName(String theNewName) { myName = theNewName; }
 	public void setDescription(String theNewDescription) { myDescription = theNewDescription; }
+	public void setSize(String theNewSize) { mySize = theNewSize; }
 	public void setCondition(String theNewCondition) { myCondition = theNewCondition; }
 
 
