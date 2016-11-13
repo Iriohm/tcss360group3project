@@ -22,8 +22,8 @@ public class AuctionTest extends TestCase {
 		testCalendar = new Calendar();
 		GregorianCalendar aDate = (GregorianCalendar)GregorianCalendar.getInstance();
 		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", 10.51, 1, "good");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", " ", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", " " , 10.51, 1, "good");
 	}
 	
 	/**

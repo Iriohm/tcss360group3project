@@ -35,6 +35,14 @@ public class User implements Serializable {
 	}
 	
 	/**
+	 * @return The Master Calendar
+	 */
+	public Calendar getCalendar() {
+		return myCalendar;
+	}
+	
+	
+	/**
 	 * This method returns an int so the type of User can be determined.
 	 * Key: 
 	 *	1 = Staff

@@ -1,5 +1,8 @@
 package ui;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 import model.Calendar;
@@ -16,6 +19,12 @@ public class UI {
 	private static Scanner myScanner = new Scanner(System.in);
 	private static Calendar myCalender	= new Calendar();
 	private static User myUser = null;
+//	
+//	static Format myFormatter = new SimpleDateFormat("MMMM dd, yyyy"); 
+//	static Date myTodayDate = new Date();
+//	static String myCurrentDay = myFormatter.format(myTodayDate);
+
+	
 	
 	public static void begainUI() {
 		choosePreviousOrMakeUser();
@@ -30,15 +39,18 @@ public class UI {
 			System.out.print("Welcome to Auction Center\n"
 					+ "1) Login\n"
 					+ "2) crate acount\n"
-					+ "Enter your Selection from 1 to 2: ");
+					+ "3) Exit."
+					+ "Enter your Selection from 1 to 3: ");
 			choose = myScanner.nextInt();
-		} while (choose != 1 && choose != 2);
+		} while (choose < 1 && choose > 3);
 		if(choose == 1){
 			System.out.println("went in to login");
 			//TODO Login a user need to figure out
-		} else {
+		} else if (choose ==2){
 			System.out.println("went in to create User");
 			myUser = createUser();
+		} else {
+			return;
 		}
 	}
 
