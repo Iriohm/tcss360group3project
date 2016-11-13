@@ -8,7 +8,6 @@ package model;
 *
 **/
 public class Staff extends User{
-	private Calendar myCalendar;
 
 	private static final long serialVersionUID = 7526472274122776147L;
 	

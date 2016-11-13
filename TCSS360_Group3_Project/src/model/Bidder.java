@@ -8,7 +8,7 @@ package model;
 *
 */
 public class Bidder extends User {
-	private Calendar myCalendar;
+	private String myUsername;
 	
 	private static final long serialVersionUID = 7526496795622776147L;
 
@@ -20,16 +20,17 @@ public class Bidder extends User {
     */
 	public Bidder(String theUsername, Calendar theCalendar) {
 		super(theUsername, theCalendar, 3);
+		myUsername = theUsername;
 	}
 
 	/**
 	* This method allows the user to place a bid on an Item object.
     */
-	public void placeBid(Item theItemToBidOn, double thePrice) {
+	public boolean placeBid(Item theItemToBidOn, double thePrice) {
 		if (theItemToBidOn.getBidOf(this.myUsername) == null) {
 			theItemToBidOn.makeBid(this.myUsername, thePrice);
-		} else {
-			//return String that says failed to placeBid?
-		}
+			return true;
+		}	
+		return false;
 	}
 }
