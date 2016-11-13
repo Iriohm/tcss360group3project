@@ -34,6 +34,16 @@ public class Auction implements Serializable {
 	 */
 	private String myAuctionName;
 	
+	/**
+	 * Estimated number of items in the auction
+	 */
+	private int myEstimatedItems;
+	
+	/**
+	 * Comments about the auction
+	 */
+	private String myComments;
+	
 	
 	/**
 	 * Creates the Auction and leaves the list of items empty.
@@ -44,6 +54,44 @@ public class Auction implements Serializable {
 		myDate = theDate;
 		myAuctionName = theAuctionName;
 		myItems = new LinkedList<Item>();
+		myEstimatedItems = -1;
+		myComments = "";
+	}
+	/**
+	 * Sets the estimated items to the given value if it is greater than 0, otherwise returns false
+	 * @param theEstimate The estimated number of items to be in the Auction
+	 * @return Whether on not the Estimated Items was updated
+	 */
+	
+	public boolean setEstimatedItems(int theEstimate) {
+		if (theEstimate <= 0) {
+			return false;
+		}
+		myEstimatedItems = theEstimate;
+		return true;
+	}
+	
+	/**
+	 * Gets the estimated number of items in the Auction or -1 if not given
+	 * @return The estimated number of items in the Auction or -1 if not given
+	 */
+	public int getEstimatedItems() {
+		return myEstimatedItems;
+	}
+	/**
+	 * Sets the Comments for the Auction
+	 * @param theComments The desired Comments to be added to the Auction
+	 */
+	
+	public void setComments(String theComments) {
+		myComments = theComments;
+	}
+	/**
+	 * Gets the Comments for the Auction
+	 * @return The Comments
+	 */
+	public String getComments() {
+		return myComments;
 	}
 	
 	

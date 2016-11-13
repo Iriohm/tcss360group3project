@@ -70,6 +70,7 @@ public class Calendar implements Serializable {
 	 * @return True if the Auction was added
 	 */
 	public boolean validateAuctionRequest(GregorianCalendar theDate) {
+		//ToDO: everything
 		return true;
 	}
 	

@@ -43,4 +43,29 @@ public class AuctionTest extends TestCase {
 		assertTrue(testAuction.addItem(testItem1));
 		assertFalse(testAuction.addItem(testItem1));
 	}
+	
+	/**
+	 * Tests to make sure you cannot set a negative number of estimated items
+	 */
+	@Test
+	public void testsetEstimatedItemsNegative() {
+		assertFalse(testAuction.setEstimatedItems(-1));
+	}
+	
+	/**
+	 * Tests to make sure you cannot set a zero number of estimated items
+	 */
+	@Test
+	public void testsetEstimatedItemsZero() {
+		assertFalse(testAuction.setEstimatedItems(0));
+	}
+	
+	/**
+	 * Tests to make sure you can set a positive number of estimated items
+	 */
+	@Test
+	public void testsetEstimatedItemsPoistive() {
+		assertTrue(testAuction.setEstimatedItems(1));
+		assertTrue(testAuction.setEstimatedItems(100));
+	}
 }
