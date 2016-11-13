@@ -10,8 +10,7 @@ import java.io.Serializable;
 *
 */
 public class User implements Serializable {
-	String myUsername;
-	//String myPassword;
+	private String myUsername;
 	private Calendar myCalendar;
 	private int myType;
 	

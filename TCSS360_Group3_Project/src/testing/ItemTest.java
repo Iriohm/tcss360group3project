@@ -22,7 +22,7 @@ public class ItemTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetMinimumBidToZero() {
-		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", 2.0, 1, "Very Fine");
+		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", "Small", 2.0, 1, "Very Fine");
 
 		item1.setMinBid(0.0);
 
@@ -34,7 +34,7 @@ public class ItemTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetMinimumBidToNegative() {
-		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", 2.0, 1, "Very Fine");
+		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", "Small", 2.0, 1, "Very Fine");
 
 		item1.setMinBid(-1.0);
 
@@ -46,7 +46,7 @@ public class ItemTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetQuantityToZero() {
-		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", 2.0, 1, "Very Fine");
+		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", "Small", 2.0, 1, "Very Fine");
 
 		item1.setQuantity(0);
 
@@ -58,7 +58,7 @@ public class ItemTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetQuantityToNegative() {
-		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", 2.0, 1, "Very Fine");
+		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", "Small", 2.0, 1, "Very Fine");
 
 		item1.setQuantity(-1);
 
@@ -70,7 +70,7 @@ public class ItemTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testMakeBidBelowMinBid() {
-		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", 2.0, 1, "Very Fine");
+		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", "Small", 2.0, 1, "Very Fine");
 
 		item1.makeBid("Sir Britty von Brittington", 1.0);
 
@@ -82,7 +82,7 @@ public class ItemTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testMakeBidZero() {
-		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", 2.0, 1, "Very Fine");
+		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", "Small", 2.0, 1, "Very Fine");
 
 		item1.makeBid("Sir Britty von Brittington", 0.0);
 
@@ -94,7 +94,7 @@ public class ItemTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testMakeBidNegative() {
-		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", 2.0, 1, "Very Fine");
+		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", "Small", 2.0, 1, "Very Fine");
 
 		item1.makeBid("Sir Britty von Brittington", -1.0);
 
@@ -106,7 +106,7 @@ public class ItemTest {
 	 */
 	@Test
 	public void testMakeBidSuccessfulNotNull() {
-		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", 2.0, 1, "Very Fine");
+		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", "Small", 2.0, 1, "Very Fine");
 
 		item1.makeBid("Sir Britty von Brittington", 5.0);
 
@@ -120,33 +120,11 @@ public class ItemTest {
 	 */
 	@Test
 	public void testMakeBidSuccessfulCorrectBidder() {
-		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", 2.0, 1, "Very Fine");
+		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", "Small", 2.0, 1, "Very Fine");
 
 		item1.makeBid("Sir Britty von Brittington", 5.0);
 
 		assertTrue(item1.getHighestBid().getBidder().equals("Sir Britty von Brittington"));
-
-	}
-
-
-	/**
-	 * Tests to ensure successfully made Bids return true.
-	 */
-	@Test
-	public void testMakeBidReturnsTrueIfSuccess() {
-		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", 2.0, 1, "Very Fine");
-
-		item1.makeBid("Sir Britty von Brittington", 5.0);
-
-	}
-
-
-	/**
-	 * Tests to ensure unsuccessfully made Bids return false.
-	 */
-	@Test
-	public void testMakeBidReturnsFalseIfFailed() {
-		item1 = new Item("123", "Fancy Hat", "An extremely fancy hat.", 2.0, 1, "Very Fine");
 
 	}
 

@@ -9,7 +9,6 @@ package model;
 *
 **/
 public class NPContact extends User {
-	private Calendar myCalendar;
 	
 	private static final long serialVersionUID = 7526433795622776147L;
 
@@ -28,13 +27,8 @@ public class NPContact extends User {
 		theAuctionToAddTo.addItem(theItemToAdd);
 	}
 	
-	public void addAuction() {
-		//myCalendar.addAuction(new Auction());
-	}
-	
 	public void submitAuctionRequest() {
 		//Somehow have Auction item.
-		//Auction.verifyAuction();
-		//myCalendar.addAuction(Auction);
+		//return myCalendar.addAuction(Auction)
 	}
 }
