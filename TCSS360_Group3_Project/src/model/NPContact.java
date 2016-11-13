@@ -1,4 +1,8 @@
 package model;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
 * This class is used to handle/hold methods and
 * fields specifically for AuctionCentral non-profit
@@ -9,6 +13,9 @@ package model;
 *
 **/
 public class NPContact extends User {
+	private Calendar myCalendar;
+	
+	private List<Auction> myAuctions;
 	
 	private static final long serialVersionUID = 7526433795622776147L;
 
@@ -20,6 +27,8 @@ public class NPContact extends User {
     */
 	public NPContact(String theUsername, Calendar theCalendar) {
 		super(theUsername, theCalendar, 2);
+		myCalendar = theCalendar;
+		myAuctions = new ArrayList<Auction>();
 	}
 	
 	public void addItem(Auction theAuctionToAddTo, Item theItemToAdd) {
@@ -29,6 +38,14 @@ public class NPContact extends User {
 	
 	public void submitAuctionRequest() {
 		//Somehow have Auction item.
-		//return myCalendar.addAuction(Auction)
+		//myCalendar.addAuction(Auction)
+		//myAuctions.add(Auction);
+	}
+	
+	public boolean isAllowedToCreateNewAuction() {
+		for (int i = 0; i < myAuctions.size(); i++) {
+			//check if had an auction less than a year ago or have an upcoming auction already.
+		}
+		return false;
 	}
 }
