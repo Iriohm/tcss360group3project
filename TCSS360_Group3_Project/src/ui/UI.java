@@ -31,7 +31,7 @@ public class UI {
 	}
 	
 	/*
-	 * this choose if it a previous user to login or crate a user
+	 * login on a previously created user account or create a new user account
 	 */
 	private static void choosePreviousOrMakeUser() {
 		int choose = 0;
