@@ -16,16 +16,16 @@ public class AuctionTest extends TestCase {
 	Auction testAuction;
 	Item testItem1;
 	Item testItem2;
-	
+
 	@Before
 	public void setUp() {
 		testCalendar = new Calendar();
 		GregorianCalendar aDate = (GregorianCalendar)GregorianCalendar.getInstance();
 		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", 10.51, 1, "good");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
 	}
-	
+
 	/**
 	 * Tests to make sure multiple different items can be added to an Auction
 	 */
@@ -34,7 +34,7 @@ public class AuctionTest extends TestCase {
 		assertTrue(testAuction.addItem(testItem1));
 		assertTrue(testAuction.addItem(testItem2));
 	}
-	
+
 	/**
 	 * Tests to make sure multiple of the same item cannot be added to an Auction
 	 */
@@ -43,7 +43,7 @@ public class AuctionTest extends TestCase {
 		assertTrue(testAuction.addItem(testItem1));
 		assertFalse(testAuction.addItem(testItem1));
 	}
-	
+
 	/**
 	 * Tests to make sure you cannot set a negative number of estimated items
 	 */
@@ -51,7 +51,7 @@ public class AuctionTest extends TestCase {
 	public void testsetEstimatedItemsNegative() {
 		assertFalse(testAuction.setEstimatedItems(-1));
 	}
-	
+
 	/**
 	 * Tests to make sure you cannot set a zero number of estimated items
 	 */
@@ -59,7 +59,7 @@ public class AuctionTest extends TestCase {
 	public void testsetEstimatedItemsZero() {
 		assertFalse(testAuction.setEstimatedItems(0));
 	}
-	
+
 	/**
 	 * Tests to make sure you can set a positive number of estimated items
 	 */
