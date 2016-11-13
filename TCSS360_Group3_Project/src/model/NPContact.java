@@ -42,6 +42,9 @@ public class NPContact extends User {
 		//myAuctions.add(Auction);
 	}
 	
+	/**
+	 * Checks if the non-profit had an auction less than a year ago and if they have an upcoming auction.
+	 */
 	public boolean isAllowedToCreateNewAuction() {
 		for (int i = 0; i < myAuctions.size(); i++) {
 			//check if had an auction less than a year ago or have an upcoming auction already.
