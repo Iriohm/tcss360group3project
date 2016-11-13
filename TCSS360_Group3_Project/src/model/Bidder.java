@@ -25,7 +25,11 @@ public class Bidder extends User {
 	/**
 	* This method allows the user to place a bid on an Item object.
     */
-	public void placeBid() {
-		
+	public void placeBid(Item theItemToBidOn, double thePrice) {
+		if (theItemToBidOn.getBidOf(this.myUsername) == null) {
+			theItemToBidOn.makeBid(this.myUsername, thePrice);
+		} else {
+			//return String that says failed to placeBid?
+		}
 	}
 }

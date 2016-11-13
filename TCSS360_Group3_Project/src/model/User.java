@@ -46,4 +46,11 @@ public class User implements Serializable {
 	public int getType() {
 		return myType;
 	}
+	
+	/**
+	 * This method returns the username of this User.
+     */
+	public String getUsername() {
+		return myUsername;
+	}
 }
