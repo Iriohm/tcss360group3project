@@ -36,7 +36,7 @@ public class Main {
 //		Calendar testCalendar = new Calendar();
 //		testCalendar.addAuction(testAuction);
 //		UIBidder.beginBidderUI(new Bidder("davidTest", testCalendar), testCalendar);
-		UIStaff.beginStaffUI(new Staff("Robert",  testCalendar),testCalendar);
+//		UIStaff.beginStaffUI(new Staff("Robert",  testCalendar),testCalendar);
 	}
 
 	/**
