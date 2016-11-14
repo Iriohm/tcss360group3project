@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -45,10 +46,15 @@ public class NPContact extends User {
 	/**
 	 * Checks if the non-profit had an auction less than a year ago and if they have an upcoming auction.
 	 */
-	public boolean isAllowedToCreateNewAuction() {
+	public boolean hasAuctionUpcomingOrLastYear() {
+		GregorianCalendar oneYearAgo = (GregorianCalendar)GregorianCalendar.getInstance();
+		oneYearAgo.add(GregorianCalendar.DAY_OF_YEAR, -366);
 		for (int i = 0; i < myAuctions.size(); i++) {
 			//check if had an auction less than a year ago or have an upcoming auction already.
+			if (myAuctions.get(i).getDate().after(oneYearAgo)) {
+				return false;
+			}
 		}
-		return false;
+		return true;
 	}
 }
