@@ -80,22 +80,21 @@ public class Calendar implements Serializable {
 	 * @param theDate The desired date for an auction request
 	 * @return True if the Auction can be added
 	 */
-	public boolean validateAuctionRequest(GregorianCalendar theDate) {
-		boolean returnValue = true;
+	public int validateAuctionRequest(GregorianCalendar theDate) {
 		if (!validateAuctionRequestTwoPerDay(theDate)) {
-			returnValue = false;
+			return -1;
 		}
 		if (!validateAuctionRequestMax25Auctions()) {
-			returnValue = false;
+			return -2;
 		}
 		if (!validateAuctionRequestAtMostOneMonthInFuture(theDate)) {
-			returnValue = false;
+			return -3;
 		}
 		if (!validateAuctionRequestOneWeekAhead(theDate)) {
-			returnValue = false;
+			return -4;
 		}
 		
-		return returnValue;
+		return 0;
 	}
 	
 	/**
@@ -171,7 +170,7 @@ public class Calendar implements Serializable {
 	 * @return True if the Auction was added
 	 */
 	public boolean addAuction(Auction theAuction) {
-		if (validateAuctionRequest(theAuction.getDate())) {
+		if (validateAuctionRequest(theAuction.getDate()) == 0) {
 			myAuctions.add(theAuction);
 			return true;
 		}

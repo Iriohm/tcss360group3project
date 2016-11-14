@@ -37,10 +37,8 @@ public class NPContact extends User {
 		theAuctionToAddTo.addItem(theItemToAdd);
 	}
 	
-	public void submitAuctionRequest() {
-		//Somehow have Auction item.
-		//myCalendar.addAuction(Auction)
-		//myAuctions.add(Auction);
+	public void addAuction(Auction theAuction) {
+		myAuctions.add(theAuction);
 	}
 	
 	/**
