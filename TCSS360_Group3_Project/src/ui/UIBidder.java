@@ -28,7 +28,7 @@ public class UIBidder {
 	 * @param theCalendar of auction center.
 	 * @return
 	 */
-	public static Bidder beginBidderUI(Bidder theBidder, Calendar theCalendar) {
+	public static Calendar beginBidderUI(Bidder theBidder, Calendar theCalendar) {
 		int choose = 0;
 		myHeadline = "AuctionCentral: the auctioneer for non-profit organization.\n" + theBidder.getUsername()
 				+ " logged in as Bidder.\n";
@@ -40,7 +40,7 @@ public class UIBidder {
 		if (choose == 1) {
 			pickAuction(theBidder, theCalendar);
 		}
-		return theBidder;
+		return theCalendar;
 	}
 
 	/*
@@ -85,7 +85,7 @@ public class UIBidder {
 			do {
 				System.out.println("Items Offered For Sale:\n" + "ID\tItem Name\t\t\tCondition\tMin Bid\tMy Bid");
 				for (int i = 0; i < itemlist.size(); i++) {
-					System.out.print(itemlist.get(i).getID() + "\t" + itemlist.get(i).getName() + "\t"
+					System.out.print(itemlist.get(i).getID() + "\t" + itemlist.get(i).getName() + "\t\t\t"
 							+ itemlist.get(i).getCondition() + "\t" + itemlist.get(i).getMinBid() + "\t");//TODO: fix the format of the string.
 				if(itemlist.get(i).getBidOf(theBidder.getUsername()) != null) {
 					System.out.print(itemlist.get(i).getBidOf(theBidder.getUsername()).getBidAmount());
@@ -120,9 +120,12 @@ public class UIBidder {
 		do {
 			System.out.println("Items Offered For Sale:\n" + "ID\tItem Name\t\t\tCondition\tMin Bid\tMy Bid");
 			for (int i = 0; i < itemlist.size(); i++) {
-				System.out.println(itemlist.get(i).getID() + "\t" + itemlist.get(i).getName() + "\t"
-						+ itemlist.get(i).getCondition() + "\t" + itemlist.get(i).getMinBid() + "\t"
-						+ itemlist.get(i).getBidOf(theBidder.getUsername()));
+				System.out.print(itemlist.get(i).getID() + "\t" + itemlist.get(i).getName() + "\t\t\t"
+						+ itemlist.get(i).getCondition() + "\t" + itemlist.get(i).getMinBid() + "\t");
+				if(itemlist.get(i).getBidOf(theBidder.getUsername()) != null) {
+					System.out.print(itemlist.get(i).getBidOf(theBidder.getUsername()).getBidAmount());
+				}
+				System.out.print("\n");
 			}
 			System.out.print("\nType Item ID to get more information and bid on the item :");
 			choose = myScanner.nextInt();
