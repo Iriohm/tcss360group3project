@@ -17,7 +17,7 @@ import model.Staff;
 import model.User;
 
 /**
- * this start the ui.
+ * this start the UI for the user of the program.
  * 
  * @author David Nowlin
  * @version 11/11/2016
@@ -35,8 +35,11 @@ public class UI {
 	private static ArrayList<User> myListUser = null;
 
 
-	
+	/**
+	 * this is the start of the UI.
+	 */
 	public static void begainUI() {
+
 		readInData();
 		User chooseUser = choosePreviousOrMakeUser();
 		if(chooseUser != null) {
@@ -47,7 +50,8 @@ public class UI {
 	
 	
 	/*
-	 * login on a previously created user account or create a new user account
+	 * login on a previously created user account or create a new user account.
+	 * @return the select user.
 	 */
 	private static User choosePreviousOrMakeUser() {
 		User myUser = null;
@@ -71,10 +75,14 @@ public class UI {
 		return myUser;
 	}
 	
+	/*
+	 * Determine which user type is login and goes to the right UI on type. 
+	 * @param the login user
+	 * @return the update calendar.
+	 */
 	private static Calendar whichUserUI(User theUser) {
 		Calendar aCalendar = null;
-		if(theUser.getType() == 1) {
-			// the Staff
+		if(theUser.getType() == 1) {// the Staff
 						//TODO: the Staff
 			aCalendar = UIStaff.beginStaffUI((Staff)theUser, myCalender);
 		} else if (theUser.getType() == 2) { // the NPContact
@@ -85,6 +93,10 @@ public class UI {
 		return aCalendar;
 	}
 	
+	/*
+	 * how you choose the user you are.
+	 * @return the login user
+	 */
 	private static User chooseLogin() {
 		int choose = 0;
 		do {
@@ -100,9 +112,11 @@ public class UI {
 		return myListUser.get((choose - 1));
 	}
 	
-	
+	/*
+	 * this make a new user that is enter in to the systems.
+	 * @return the new user as login.
+	 */
 	private static User createUser() {
-		//TODO create the the new user new to test some how.
 		int typeUser = 0;
 		String userName = "";
 		User aUser = null;
@@ -127,6 +141,10 @@ public class UI {
 		return aUser;
 	}
 	
+	/*
+	 * this is used to read in the user list and the calendar for the as
+	 * serialization object.
+	 */
 	private static void readInData() {
 		myCalender = null;
 		myListUser = null;
@@ -134,6 +152,9 @@ public class UI {
 	    readUser();
 	}
 	
+	/*
+	 * this read in the calendar object serialization.
+	 */
 	private static void readCaledar() {
 		try
 	      {
@@ -154,6 +175,9 @@ public class UI {
 	      }
 	}
 	
+	/*
+	 * this read in the list of user object serialization.
+	 */
 	private static void readUser() {
 		try
 	      {
@@ -174,15 +198,21 @@ public class UI {
 	      }
 	}
 	
+	/*
+	 * this will write out the update calendar and list of user object as serialization object.
+	 */
 	private static void writeOutData() {
 		writeOutCalendar();
 		writeOutUserList();
 	}
 	
+	/*
+	 * how we write out the calendar as a serialization object.
+	 */
 	private static void writeOutCalendar() {
-//		Item football = new Item("1", "football", "the best football", "Small", 20.0, 1, "Very Fine");
-//		Item baseball = new Item("2", "baseball", "the best baseball", "Small", 20.0, 1, "Very Fine");
-//		Auction testAuction = new Auction(new GregorianCalendar(2016, 10, 29), "testAcution2");
+//		Item football = new Item("1", "computer", "ASUS", "Small", 20.0, 1, "great");
+//		Item baseball = new Item("2", "pie", "the nothing much", "mid", 20.0, 1, "Very Fine");
+//		Auction testAuction = new Auction(new GregorianCalendar(2016, 10, 23), "testAcution3");
 //		testAuction.addItem(football);
 //		testAuction.addItem(baseball);
 ////		myCalender = new Calendar();
@@ -192,9 +222,6 @@ public class UI {
 	         FileOutputStream fileOut = new FileOutputStream("testCalendar.ser");
 	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
 	         out.writeObject(myCalender);
-	         fileOut = new FileOutputStream("testUserList.ser");
-	         out = new ObjectOutputStream(fileOut);
-	         out.writeObject(myListUser);
 	         out.close();
 	         fileOut.close();
 	         System.out.printf("Serialized data is saved in testCalendar.ser\n");
@@ -204,6 +231,9 @@ public class UI {
 	      }
 	}
 	
+	/*
+	 * this is how we write out the user list as a serialization object.
+	 */
 	private static void writeOutUserList() {
 //		myListUser = new ArrayList<User>();
 //		myListUser.add(new Bidder("davidTest", myCalender));

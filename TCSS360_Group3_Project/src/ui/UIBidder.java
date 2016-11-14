@@ -33,12 +33,12 @@ public class UIBidder {
 	 * dose all the bidder need to do.
 	 * @param theBidder the user that is in the UI.
 	 * @param theCalendar of auction center.
-	 * @return
+	 * @return the changes to the calendar.
 	 */
 	public static Calendar beginBidderUI(Bidder theBidder, Calendar theCalendar) {
 		int choose = 0;
-		myHeadline = "AuctionCentral: the auctioneer for non-profit organization.\n" + theBidder.getUsername()
-				+ " logged in as Bidder.\n";
+		myHeadline = "\n\n\nAuctionCentral: the auctioneer for non-profit organization.\n" + theBidder.getUsername()
+				+ " logged in as Bidder.\nToday date: " + myCurrentDate + "\n";
 		System.out.println(myHeadline);
 		do {
 			System.out.print("1) View List Of Acutions.\n" + "2) Exit.\n" + "Enter your Selection from 1 to 2: ");
@@ -58,7 +58,7 @@ public class UIBidder {
 		boolean exit = false;
 		while (!exit) {
 			System.out.println(myHeadline);
-			List<Auction> desiredAcctions = theCalendar.getAuctions((GregorianCalendar) GregorianCalendar.getInstance()); 
+			List<Auction> desiredAcctions = theCalendar.getAuctions((GregorianCalendar) GregorianCalendar.getInstance());//TODO: shows yesterday auction 
 			for (int i = 0; i < (theCalendar.getUpcomingAuctionsNumber() + 1); i++) {
 				System.out.println((i+1) + ") " + desiredAcctions.get((i)).getAuctionName() + "\t"
 						+ myFormatter.format(desiredAcctions.get(i).getDate().getTime()) + "   ");
@@ -115,9 +115,10 @@ public class UIBidder {
 	}
 	
 	/*
-	 * this will allow you to select which item to bid on.
+	 * this will allow you to select which item to get more information on.
 	 */
 	private static void selectItem(Bidder theBidder, Auction theAuction) {
+		System.out.println(myHeadline);
 		int choose = 0;
 		String AuctionInfo = theAuction.getAuctionName() + ", \t"
 				+ myFormatter.format(theAuction.getDate().getTime());
@@ -141,11 +142,12 @@ public class UIBidder {
 	}
 	
 	/*
-	 * this is will you place your bid.
+	 * this is will you place your bid on the select item or to go back.
 	 */
 	private static void placeBid(Bidder theBidder, Item theItem) {
 		double bid = 0;
 		int choose = 0;
+		System.out.println(myHeadline);
 		do {
 			System.out.println(theItem.getName() + "\t" + theItem.getCondition() + " condition " + theItem.getMinBid());
 			System.out.println(theItem.getDescription() + "\n\n"
