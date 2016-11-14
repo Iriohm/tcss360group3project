@@ -12,6 +12,8 @@ import model.Auction;
 import model.Bidder;
 import model.Calendar;
 import model.Item;
+import model.NPContact;
+import model.Staff;
 import model.User;
 
 /**
@@ -93,10 +95,13 @@ public class UI {
 		} while (choose < 1 || choose > myListUser.size());		
 		return myListUser.get((choose - 1));
 	}
+	
+	
 	private static User createUser() {
 		//TODO create the the new user new to test some how.
 		int typeUser = 0;
 		String userName = "";
+		User aUser = null;
 		do {
 			System.out.print("Create a New User.\n"
 					+ "What Type Of User You Are.\n"
@@ -107,8 +112,15 @@ public class UI {
 			typeUser = myScanner.nextInt();
 		} while (typeUser < 1 && typeUser > 3);
 		System.out.println("Your User Name With No Space Please.");
-		userName = myScanner.next();		
-		return new User(userName, myCalender, typeUser);
+		userName = myScanner.next();
+		if(typeUser == 1) {
+			aUser = new Staff(userName, myCalender);
+		} else if (typeUser == 2) {
+			aUser = new NPContact(userName, myCalender);
+		} else {
+			aUser = new Bidder(userName, myCalender);
+		}
+		return aUser;
 	}
 	
 	private static void readInData() {
