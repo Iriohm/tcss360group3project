@@ -1,8 +1,6 @@
 package testing;
 
 import java.util.GregorianCalendar;
-import java.util.List;
-
 import org.junit.*;
 import org.junit.Test;
 
@@ -21,73 +19,30 @@ public class AuctionTest extends TestCase {
 	public void setUp() {
 		testCalendar = new Calendar();
 		GregorianCalendar aDate = (GregorianCalendar)GregorianCalendar.getInstance();
+		aDate.add(GregorianCalendar.DAY_OF_YEAR, 1);
 		testAuction = new Auction(aDate, "test");
 		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Small", 10.01, 2, "good");
 		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "small", 10.51, 1, "good");
-		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
-
-		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
-
-		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
-
-		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
-
-		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
-
-		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
-
-		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
-
-		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
-
-		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
-
-		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
-
-		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
-
-		testAuction = new Auction(aDate, "test");
-		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
-		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
+		
 	}
 	
 	/**
 	 * Tests to make sure multiple different items can be added to an Auction
 	 */
 	@Test
-	public void testaddItemDifferentItem() {
-		assertTrue(testAuction.addItem(testItem1));
-		assertTrue(testAuction.addItem(testItem2));
+	public void testvalidateItemAddDifferentItem() {
+		assertTrue(testAuction.validateItemAdd(testItem1));
+		assertTrue(testAuction.validateItemAdd(testItem2));
 	}
 	
 	/**
 	 * Tests to make sure multiple of the same item cannot be added to an Auction
 	 */
 	@Test
-	public void testaddItemSameItem() {
+	public void testvalidateItemAddSameItem() {
+		assertTrue(testAuction.validateItemAdd(testItem1));
 		assertTrue(testAuction.addItem(testItem1));
+		assertFalse(testAuction.validateItemAdd(testItem1));
 		assertFalse(testAuction.addItem(testItem1));
 	}
 	
@@ -111,8 +66,35 @@ public class AuctionTest extends TestCase {
 	 * Tests to make sure you can set a positive number of estimated items
 	 */
 	@Test
-	public void testsetEstimatedItemsPoistive() {
+	public void testsetEstimatedItemsPositive() {
 		assertTrue(testAuction.setEstimatedItems(1));
 		assertTrue(testAuction.setEstimatedItems(100));
+	}
+	/**
+	 * Tests to make sure you cannot add an item to an auction that is in the past
+	 */
+	@Test
+	public void testvalidateItemAddAuctionDateAuctionInPast() {
+		GregorianCalendar aDate = (GregorianCalendar)GregorianCalendar.getInstance();
+		aDate.add(GregorianCalendar.DAY_OF_YEAR, -1);
+		Auction testAuction = new Auction(aDate, "test");
+		assertFalse(testAuction.validateItemAddAuctionDate());
+		
+		aDate.add(GregorianCalendar.DAY_OF_YEAR, -10);
+		assertFalse(testAuction.validateItemAddAuctionDate());
+	}
+	
+	/**
+	 * Tests to make sure you can add an item to an auction that is in the future
+	 */
+	@Test
+	public void testvalidateItemAddAuctionDateAuctionInFuture() {
+		GregorianCalendar aDate = (GregorianCalendar)GregorianCalendar.getInstance();
+		aDate.add(GregorianCalendar.DAY_OF_YEAR, 1);
+		Auction testAuction = new Auction(aDate, "test");
+		assertTrue(testAuction.validateItemAddAuctionDate());
+		
+		aDate.add(GregorianCalendar.DAY_OF_YEAR, 10);
+		assertTrue(testAuction.validateItemAddAuctionDate());
 	}
 }

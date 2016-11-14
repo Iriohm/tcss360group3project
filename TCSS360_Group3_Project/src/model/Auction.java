@@ -51,7 +51,7 @@ public class Auction implements Serializable {
 	 * @param 
 	 */
 	public Auction(GregorianCalendar theDate, String theAuctionName) {
-		myDate = theDate;
+		myDate = (GregorianCalendar)theDate.clone();
 		myAuctionName = theAuctionName;
 		myItems = new LinkedList<Item>();
 		myEstimatedItems = -1;
@@ -112,7 +112,7 @@ public class Auction implements Serializable {
 	 * @return True if successfully added
 	 */
 	public boolean addItem(Item theItem) {
-		if (validateItemAdd(theItem)) {
+		if (validateItemAdd(theItem) && validateItemAddAuctionDate()) {
 			myItems.add(theItem);
 			return true;
 		}
@@ -129,6 +129,13 @@ public class Auction implements Serializable {
 			if (theItem.getID().equals(myItems.get(i).getID())) {
 				return false;
 			}
+		}
+		return true;
+	}
+	
+	public boolean validateItemAddAuctionDate() {
+		if (((GregorianCalendar)GregorianCalendar.getInstance()).after(myDate)) {
+			return false;
 		}
 		return true;
 	}

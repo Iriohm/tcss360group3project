@@ -44,6 +44,16 @@ public class Calendar implements Serializable {
 		myNextItemID = 0;
 		myCurrentAuctions = 0;
 	}
+	/**
+	 * Creates a Calendar with the given list of auctions for testing purposes
+	 * @param theAuctions The desired list of auctions to test with
+	 */
+	public Calendar(List<Auction> theAuctions) {
+		myAuctions = theAuctions;
+		myNextItemID = 0;
+		myCurrentAuctions = 0;
+		
+	}
 	
 	/**
 	 * Gives the number of Auctions coming after the current time
@@ -64,15 +74,95 @@ public class Calendar implements Serializable {
 	
 	/**
 	 * Returns true if the given date does not conflict with any of Auction Central's 
-	 * rules about auction scheduling
+	 * rules about auction scheduling. Automatically runs every test related to the actual
+	 * date of the Auction. Does not run tests related to the NPContact information.
 	 * 
 	 * @param theDate The desired date for an auction request
-	 * @return True if the Auction was added
+	 * @return True if the Auction can be added
 	 */
 	public boolean validateAuctionRequest(GregorianCalendar theDate) {
-		//ToDO: everything
+		boolean returnValue = true;
+		if (!validateAuctionRequestTwoPerDay(theDate)) {
+			returnValue = false;
+		}
+		if (!validateAuctionRequestMax25Auctions()) {
+			returnValue = false;
+		}
+		if (!validateAuctionRequestAtMostOneMonthInFuture(theDate)) {
+			returnValue = false;
+		}
+		if (!validateAuctionRequestOneWeekAhead(theDate)) {
+			returnValue = false;
+		}
+		
+		return returnValue;
+	}
+	
+	/**
+	 * Checks whether there are already 2 Auctions on the desired date and returns false if so.
+	 * 
+	 * @param theDate The desired date for an auction request
+	 * @return True if there are less than 2 Auctions
+	 */
+	public boolean validateAuctionRequestTwoPerDay(GregorianCalendar theDate) {
+		int auctionsOnDay = 0;
+		int year = theDate.get(GregorianCalendar.YEAR);
+		int day = theDate.get(GregorianCalendar.DAY_OF_YEAR);
+		for (int i = 0; i < myAuctions.size(); i++) {
+
+			if ((year == myAuctions.get(i).getDate().get(GregorianCalendar.YEAR))
+				&& (day == myAuctions.get(i).getDate().get(GregorianCalendar.DAY_OF_YEAR))) {
+				auctionsOnDay++;	
+			}
+		}
+		
+		if (auctionsOnDay >= 2) {
+			return false;
+		}
 		return true;
 	}
+	
+	/**
+	 * Returns true if there are currently less than 25 auctions scheduled for the future
+	 * 
+	 * @return True if there are less than 25 Auctions
+	 */
+	public boolean validateAuctionRequestMax25Auctions() {
+		if (getUpcomingAuctionsNumber() >= 25) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Validates that the date is equal to or less than one month in the future
+	 * @param aDate The Desired date of the Auction
+	 * @return True if if the date is equal to or less than one month in the future
+	 */
+	public boolean validateAuctionRequestAtMostOneMonthInFuture(GregorianCalendar aDate) {
+		GregorianCalendar oneMonthInFuture = (GregorianCalendar)GregorianCalendar.getInstance();
+		oneMonthInFuture.add(GregorianCalendar.MONTH, 1);
+		if (aDate.after(oneMonthInFuture)) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Validates that the date is equal to or greater than one week in the future
+	 * @param aDate The Desired date of the Auction
+	 * @return True if if the date is equal to or greater than one week in the future
+	 */
+	public boolean validateAuctionRequestOneWeekAhead(GregorianCalendar aDate) {
+		GregorianCalendar oneWeekInFuture = (GregorianCalendar)GregorianCalendar.getInstance();
+		oneWeekInFuture.add(GregorianCalendar.WEEK_OF_YEAR, 1);
+		if (aDate.before(oneWeekInFuture)) {
+			return false;
+		}
+		return true;
+	}
+	
+	
 	
 	/**
 	 * Adds an Auction to the Calendar. Request must be validated before being added
@@ -104,12 +194,12 @@ public class Calendar implements Serializable {
 		endDate.add(GregorianCalendar.DAY_OF_YEAR, 31);
 		LinkedList<Auction> desiredMonth = new LinkedList<Auction>();
 		for (int i = 0; i < myAuctions.size(); i++) {
-			System.out.println(i);
+			
 			Auction tempAuction = myAuctions.get(i);
 			if (tempAuction.getDate().after(startDate) &&
 				tempAuction.getDate().before(endDate)) {
 				
-				System.out.println("added");
+				
 				desiredMonth.add(tempAuction);
 			}
 		}

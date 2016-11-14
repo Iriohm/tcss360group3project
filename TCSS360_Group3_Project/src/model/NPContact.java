@@ -48,7 +48,7 @@ public class NPContact extends User {
 	 */
 	public boolean hasAuctionUpcomingOrLastYear() {
 		GregorianCalendar oneYearAgo = (GregorianCalendar)GregorianCalendar.getInstance();
-		oneYearAgo.add(GregorianCalendar.DAY_OF_YEAR, -366);
+		oneYearAgo.add(GregorianCalendar.YEAR, -1);
 		for (int i = 0; i < myAuctions.size(); i++) {
 			//check if had an auction less than a year ago or have an upcoming auction already.
 			if (myAuctions.get(i).getDate().after(oneYearAgo)) {
