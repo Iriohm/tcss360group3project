@@ -61,10 +61,10 @@ public class UI {
 			choose = myScanner.nextInt();
 		} while (choose < 1 && choose > 3);
 		if(choose == 1){
-			System.out.println("went in to login");
+//			System.out.println("went in to login");
 			myUser = chooseLogin();
 		} else if (choose ==2){
-			System.out.println("went in to create User");
+//			System.out.println("\n\nwent in to create User");
 			myUser = createUser();
 			myListUser.add(myUser);
 		}
@@ -76,7 +76,7 @@ public class UI {
 		if(theUser.getType() == 1) {
 			// the Staff
 						//TODO: the Staff
-			//aCalendar = UIStaff.beginStaffUI((Staff)theUser, myCalender);
+			aCalendar = UIStaff.beginStaffUI((Staff)theUser, myCalender);
 		} else if (theUser.getType() == 2) { // the NPContact
 			//TODO: the NPContact UI
 		} else { // the Bidder type
@@ -88,11 +88,13 @@ public class UI {
 	private static User chooseLogin() {
 		int choose = 0;
 		do {
-			System.out.println("Pick the user you are.\n");
+			System.out.println("\n\nPick the user you are.\n"
+					+ "type of user\n1 is Staff user\n2 is None Profit user\n3 is a bidder user\n\n"
+					+ "index\t\tuserName\t\t typeuser");
 			for (int i = 0; i < myListUser.size(); i++) {
-				System.out.println((i+1) + ") " + myListUser.get(i).getUsername());
+				System.out.println((i+1) + ") \t\t" + myListUser.get(i).getUsername() + "\t\t  " + myListUser.get(i).getType());
 			}
-			System.out.print("Enter your Selection from 1 to " + myListUser.size() + ": ");
+			System.out.print("\nEnter your Selection from 1 to " + myListUser.size() + ": ");
 			choose = myScanner.nextInt();
 		} while (choose < 1 || choose > myListUser.size());		
 		return myListUser.get((choose - 1));
@@ -105,7 +107,7 @@ public class UI {
 		String userName = "";
 		User aUser = null;
 		do {
-			System.out.print("Create a New User.\n"
+			System.out.print("\n\nCreate a New User.\n"
 					+ "What Type Of User Are You.\n"
 					+ "1) For Staff User.\n"
 					+ "2) For Non For Profit Contact User.\n"
@@ -113,7 +115,7 @@ public class UI {
 					+ "Enter your Selection from 1 to 3: ");
 			typeUser = myScanner.nextInt();
 		} while (typeUser < 1 && typeUser > 3);
-		System.out.println("Your User Name With No Space Please.");
+		System.out.println("\nYour User Name With No Space Please.");
 		userName = myScanner.next();
 		if(typeUser == 1) {
 			aUser = new Staff(userName, myCalender);
@@ -174,16 +176,16 @@ public class UI {
 	
 	private static void writeOutData() {
 		writeOutCalendar();
-		writeOutCalendar();
+		writeOutUserList();
 	}
 	
 	private static void writeOutCalendar() {
 //		Item football = new Item("1", "football", "the best football", "Small", 20.0, 1, "Very Fine");
 //		Item baseball = new Item("2", "baseball", "the best baseball", "Small", 20.0, 1, "Very Fine");
-//		Auction testAuction = new Auction(new GregorianCalendar(), "testAcution");
+//		Auction testAuction = new Auction(new GregorianCalendar(2016, 10, 29), "testAcution2");
 //		testAuction.addItem(football);
 //		testAuction.addItem(baseball);
-//		myCalender = new Calendar();
+////		myCalender = new Calendar();
 //		myCalender.addAuction(testAuction);
 		try
 	      {
