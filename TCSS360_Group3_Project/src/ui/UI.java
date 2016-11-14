@@ -3,6 +3,7 @@ package ui;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 import model.Calendar;
@@ -18,13 +19,12 @@ import model.User;
 public class UI {
 	private static Scanner myScanner = new Scanner(System.in);
 	private static Calendar myCalender	= new Calendar();
-	private static User myUser = null;
-//	
-//	static Format myFormatter = new SimpleDateFormat("MMMM dd, yyyy"); 
-//	static Date myTodayDate = new Date();
-//	static String myCurrentDay = myFormatter.format(myTodayDate);
+	private static User myUser = null;	
+	//used to generate the current Date.
+	private static Format myFormatter = new SimpleDateFormat("MMMM dd, yyyy"); 
+	protected static Date   myTodayDate = GregorianCalendar.getInstance().getTime();
+	protected static String myCurrentDate = myFormatter.format(myTodayDate);
 
-	
 	
 	public static void begainUI() {
 		choosePreviousOrMakeUser();
@@ -36,7 +36,7 @@ public class UI {
 	private static void choosePreviousOrMakeUser() {
 		int choose = 0;
 		do {
-			System.out.print("Welcome to Auction Center\n"
+			System.out.print("AuctionCentral: the auctioneer for non-profit organizations.\n"
 					+ "1) Login\n"
 					+ "2) crate acount\n"
 					+ "3) Exit."
@@ -59,7 +59,7 @@ public class UI {
 		int typeUser = 0;
 		String userName = "";
 		do {
-			System.out.print("Creat a New User.\n"
+			System.out.print("Create a New User.\n"
 					+ "What Type Of User You Are.\n"
 					+ "1) For Staff User.\n"
 					+ "2) For None For Profit Contact User.\n"

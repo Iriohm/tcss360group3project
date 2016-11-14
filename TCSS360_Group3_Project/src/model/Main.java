@@ -4,6 +4,7 @@ import java.util.GregorianCalendar;
 
 import ui.UI;
 import ui.UIBidder;
+import ui.UIStaff;
 
 /**
 * This class is used to begin the AuctionCentral environment.
@@ -35,6 +36,7 @@ public class Main {
 		Calendar testCalendar = new Calendar();
 		testCalendar.addAuction(testAuction);
 		UIBidder.beginBidderUI(new Bidder("davidTest", testCalendar), testCalendar);
+		UIStaff.beginStaffUI(new Staff("Robert",  testCalendar),testCalendar);
 	}
 
 	/**
