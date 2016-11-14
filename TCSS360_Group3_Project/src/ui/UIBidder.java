@@ -1,5 +1,8 @@
 package ui;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Scanner;
@@ -20,7 +23,11 @@ import model.Item;
 public class UIBidder {
 	private static Scanner myScanner = new Scanner(System.in);
 	private static String myHeadline = null;
-
+	
+	private static Format myFormatter = new SimpleDateFormat("MMMM dd, yyyy"); 
+	protected static Date   myTodayDate = GregorianCalendar.getInstance().getTime();
+	protected static String myCurrentDate = myFormatter.format(myTodayDate);
+	
 	/**
 	 * this is what start all the Bidder UI classes.
 	 * dose all the bidder need to do.
@@ -51,10 +58,10 @@ public class UIBidder {
 		boolean exit = false;
 		while (!exit) {
 			System.out.println(myHeadline);
-			List<Auction> desiredAcctions = theCalendar.getAuctions((GregorianCalendar) GregorianCalendar.getInstance()); //TODO: getting a zero and added need to talk to Justin
+			List<Auction> desiredAcctions = theCalendar.getAuctions((GregorianCalendar) GregorianCalendar.getInstance()); 
 			for (int i = 0; i < (theCalendar.getUpcomingAuctionsNumber() + 1); i++) {
-				System.out.println((i+1) + ") " + desiredAcctions.get((i)).getAuctionName());
-//						+ desiredAcctions.get(i).getDate().DATE + "   ");
+				System.out.println((i+1) + ") " + desiredAcctions.get((i)).getAuctionName() + "\t"
+						+ myFormatter.format(desiredAcctions.get(i).getDate().getTime()) + "   ");
 			}
 			System.out.println((theCalendar.getUpcomingAuctionsNumber() + 2) + ") Exit");
 			do {
@@ -78,8 +85,8 @@ public class UIBidder {
 		boolean goBack = false;
 		while (!exit && !goBack) {
 			System.out.println(myHeadline);
-			String AuctionInfo = theAuction.getAuctionName() + ", " + theAuction.getDate().DAY_OF_MONTH + ", "
-					+ theAuction.getDate().DATE + ", " + theAuction.getDate().YEAR; // TODO:need to fix to display the date and with date.
+			String AuctionInfo = theAuction.getAuctionName() + ", \t"
+						+ myFormatter.format(theAuction.getDate().getTime());
 			System.out.println(AuctionInfo);
 			List<Item> itemlist = theAuction.getItems();
 			do {
@@ -92,7 +99,7 @@ public class UIBidder {
 				}
 				System.out.print("\n");
 				}
-				System.out.println("1) Bid On An Item.\n2) Go Back.\n3) Exit AuctionCentral.");// TODO: add a way to exit
+				System.out.println("1) Bid On An Item.\n2) Go Back.\n3) Exit AuctionCentral.");
 				choose = myScanner.nextInt();
 			} while (choose < 1 || choose > 3);
 			if (choose == 1) {
@@ -101,7 +108,7 @@ public class UIBidder {
 				goBack = true;
 				System.out.println(goBack);
 			} else if (choose == 3){
-				exit = true;//TODO: find a way to exit program with out throwing error.
+				exit = true;
 			}
 		}
 		return exit;
@@ -112,8 +119,8 @@ public class UIBidder {
 	 */
 	private static void selectItem(Bidder theBidder, Auction theAuction) {
 		int choose = 0;
-		String AuctionInfo = theAuction.getAuctionName() + ", " + theAuction.getDate().DAY_OF_MONTH + ", "
-				+ theAuction.getDate().DATE + ", " + theAuction.getDate().YEAR; // TODO:need to fix to display the date and with date.
+		String AuctionInfo = theAuction.getAuctionName() + ", \t"
+				+ myFormatter.format(theAuction.getDate().getTime());
 		System.out.println(AuctionInfo);
 		List<Item> itemlist = theAuction.getItems();
 		
