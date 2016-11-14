@@ -19,7 +19,7 @@ public class UIStaff extends UI {
 
 	// Declarations
 
-	public static Staff beginStaffUI(Staff theStaff, Calendar theCalendar) {
+	public static Calendar beginStaffUI(Staff theStaff, Calendar theCalendar) {
 		int optSel = 0;
 		ArrayList<String> options = new ArrayList<>();
 		options.add("View calendar of upcoming auctions");
@@ -72,7 +72,7 @@ public class UIStaff extends UI {
 
 		}
 		userInput.close();
-		return theStaff;
+		return theCalendar;
 	}
 
 	private static void getAuction(Calendar theCalendar) {

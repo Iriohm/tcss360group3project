@@ -12,6 +12,7 @@ import model.Auction;
 import model.Bidder;
 import model.Calendar;
 import model.Item;
+import model.Staff;
 import model.User;
 
 /**
@@ -53,7 +54,7 @@ public class UI {
 		do {
 			System.out.print("AuctionCentral: the auctioneer for non-profit organizations.\n"
 					+ "1) Login\n"
-					+ "2) crate acount\n"
+					+ "2) Create acount\n"
 					+ "3) Exit.\n"
 					+ "Enter your Selection from 1 to 3: ");
 			choose = myScanner.nextInt();
@@ -71,8 +72,10 @@ public class UI {
 	
 	private static Calendar whichUserUI(User theUser) {
 		Calendar aCalendar = null;
-		if(theUser.getType() == 1) {// the Staff
-			//TODO: the Stuff UI
+		if(theUser.getType() == 1) {
+			// the Staff
+						//TODO: the Staff
+			//aCalendar = UIStaff.beginStaffUI((Staff)theUser, myCalender);
 		} else if (theUser.getType() == 2) { // the NPContact
 			//TODO: the NPContact UI
 		} else { // the Bidder type
@@ -99,9 +102,9 @@ public class UI {
 		String userName = "";
 		do {
 			System.out.print("Create a New User.\n"
-					+ "What Type Of User You Are.\n"
+					+ "What Type Of User Are You.\n"
 					+ "1) For Staff User.\n"
-					+ "2) For None For Profit Contact User.\n"
+					+ "2) For Non For Profit Contact User.\n"
 					+ "3) For Bidder User.\n"
 					+ "Enter your Selection from 1 to 3: ");
 			typeUser = myScanner.nextInt();
