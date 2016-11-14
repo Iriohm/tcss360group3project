@@ -24,6 +24,53 @@ public class AuctionTest extends TestCase {
 		testAuction = new Auction(aDate, "test");
 		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Small", 10.01, 2, "good");
 		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "small", 10.51, 1, "good");
+		testAuction = new Auction(aDate, "test");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
+
+		testAuction = new Auction(aDate, "test");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
+
+		testAuction = new Auction(aDate, "test");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
+
+		testAuction = new Auction(aDate, "test");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
+
+		testAuction = new Auction(aDate, "test");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
+
+		testAuction = new Auction(aDate, "test");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
+
+		testAuction = new Auction(aDate, "test");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
+
+		testAuction = new Auction(aDate, "test");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
+
+		testAuction = new Auction(aDate, "test");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
+
+		testAuction = new Auction(aDate, "test");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
+
+		testAuction = new Auction(aDate, "test");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
+
+		testAuction = new Auction(aDate, "test");
+		testItem1 = new Item(testCalendar.getNextItemID() + "", "Football", "A football, wow!", "Good", 10.01, 2, "good");
+		testItem2 = new Item(testCalendar.getNextItemID() + "", "Handball", "A handball, wow!", "Good", 10.51, 1, "good");
 	}
 	
 	/**
