@@ -38,7 +38,7 @@ public class UI {
 	/**
 	 * this is the start of the UI.
 	 */
-	public static void begainUI() {
+	public static void beginUI() {
 
 		readInData();
 		User chooseUser = choosePreviousOrMakeUser();

@@ -26,7 +26,9 @@ public class Main {
 		//authenticate();
 		//starts specific UI Controller.
 		
-		UI.begainUI();
+		NPContact x = new NPContact("jsmith", new Calendar());
+		UINPContact.beginNPContactUI(x, x.getCalendar());
+		//UI.beginUI();
 		
 		//doing a test on the UIBidder.
 //		Item football = new Item("1", "football", "the best football", "Small", 20.0, 1, "Very Fine");
