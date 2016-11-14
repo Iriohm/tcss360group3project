@@ -34,7 +34,7 @@ public class UIBidder {
 				+ " logged in as Bidder.\n";
 		System.out.println(myHeadline);
 		do {
-			System.out.print("1) Views List Of Acution.\n" + "2) Exit.\n" + "Enter your Selection from 1 to 2: ");
+			System.out.print("1) View List Of Acutions.\n" + "2) Exit.\n" + "Enter your Selection from 1 to 2: ");
 			choose = myScanner.nextInt();
 		} while (choose != 1 && choose != 2);
 		if (choose == 1) {
@@ -150,12 +150,12 @@ public class UIBidder {
 		if(choose == 1){
 			bid = 0;
 			do {
-				System.out.println("Enter bid of least $" + theItem.getMinBid() + "(no sollar sign or period after dollar amount");
+				System.out.println("Enter a bid of least $" + theItem.getMinBid() + "(no dollar sign or period after dollar amount");
 				bid = myScanner.nextDouble();
 			} while (bid < theItem.getMinBid());
 			System.out.println("You have placed a bid of $" + bid + " on " + theItem.getName() + ",\n"
-					+ "AuctionCentral will notify you after auction to let you know if\n"
-					+ "yours is the winning bid.\n");
+					+ "AuctionCentral will notify you after the auction ends to let you know if\n"
+					+ "your are the winning bid. Good Luck!\n");
 		}
 		theBidder.placeBid(theItem, bid);
 	}
