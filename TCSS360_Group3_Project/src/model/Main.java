@@ -27,7 +27,10 @@ public class Main {
 		//starts specific UI Controller.
 //		UI.beginUI(); // this start the UI then gose to the right UI depend on user type
 		
-		NPContact x = new NPContact("jsmith", new Calendar());
+		Calendar exampleCalendar = new Calendar();
+		Auction koolAuction = new Auction(new GregorianCalendar(2016, 11, 22, 13, 0), "PizzaPalace");
+		NPContact x = new NPContact("jsmith", exampleCalendar);
+		x.addAuction(koolAuction);
 		UINPContact.beginNPContactUI(x, x.getCalendar());
 
 		
