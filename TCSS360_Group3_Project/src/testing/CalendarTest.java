@@ -267,23 +267,23 @@ public class CalendarTest extends TestCase {
 	 * Tests to make sure that a Date less than one week ahead will not work for an auction
 	 */
 	@Test
-	public void testValidateAuctionRequestOneWeekAheadExactlyOneWeekAndOneDayOrLess() {
+	public void testdateAtLeastOneWeekInFutureExactlyOneWeekAndOneDayOrLess() {
 		GregorianCalendar aDate = (GregorianCalendar)GregorianCalendar.getInstance();
 		aDate.add(GregorianCalendar.WEEK_OF_YEAR, 1);
 		aDate.add(GregorianCalendar.DAY_OF_MONTH, -1);
 		//Exactly six days
-		assertFalse(calendarTest.validateAuctionRequestOneWeekAhead(aDate));
+		assertFalse(calendarTest.dateAtLeastOneWeekInFuture(aDate));
 		aDate.add(GregorianCalendar.DAY_OF_MONTH, -3);
-		assertFalse(calendarTest.validateAuctionRequestOneWeekAhead(aDate));
+		assertFalse(calendarTest.dateAtLeastOneWeekInFuture(aDate));
 		aDate.add(GregorianCalendar.DAY_OF_MONTH, -1000);
-		assertFalse(calendarTest.validateAuctionRequestOneWeekAhead(aDate));
+		assertFalse(calendarTest.dateAtLeastOneWeekInFuture(aDate));
 	}
 	
 	/**
 	 * Tests to make sure that a Date one week ahead or more will work for an auction
 	 */
 	@Test
-	public void testValidateAuctionRequestOneWeekAheadExactlyOneWeekOrMore() {
+	public void testdateAtLeastOneWeekInFutureExactlyOneWeekOrMore() {
 		GregorianCalendar aDate = (GregorianCalendar)GregorianCalendar.getInstance();
 		aDate.add(GregorianCalendar.WEEK_OF_YEAR, 1);
 		//Exactly one week

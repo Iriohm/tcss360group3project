@@ -194,7 +194,7 @@ public class Calendar implements Serializable {
 		//sets the end date to 31 days after the day you give it
 		GregorianCalendar endDate = (GregorianCalendar)theDate.clone();
 		endDate.add(GregorianCalendar.DAY_OF_YEAR, 31);
-		endDate.add(GregorianCalendar.MILLISECOND, -1);
+		endDate.add(GregorianCalendar.MILLISECOND, 1);
 		LinkedList<Auction> desiredMonth = new LinkedList<Auction>();
 		for (int i = 0; i < myAuctions.size(); i++) {
 			

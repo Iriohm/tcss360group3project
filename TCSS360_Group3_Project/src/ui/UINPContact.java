@@ -215,8 +215,8 @@ public class UINPContact extends UI {
 		}
 
 		System.out.println(theGregCalendar);
-		theGregCalendar.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), hour, 0);
-		System.out.println(theGregCalendar);
+		theGregCalendar = new GregorianCalendar(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), hour, 0);
+		
 		//GregorianCalendar(int year, int month, int dayOfMonth, int hourOfDay, int minute) 
 		return 0;
 	}
