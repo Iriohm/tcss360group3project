@@ -15,12 +15,12 @@ public class BidderTest extends TestCase {
     private Bidder myTestBidder;
 
     /**
-     * Initializes the myTestTruck object before every test.
+     * Initializes the myTestBidder object before every test.
      */
     @Before
     public void setUp() {
     	//(String theID, String theName, String theDescription, double theMinimumBid,
-		//		int theQuantity, String theCondition) {
+		//	int theQuantity, String theCondition) {
     	myTestItem = new Item("theID", "Beanie Baby", "Brand-new Beanie Baby", "Small", 5.00, 1, "New in box");
     	myTestBidder = new Bidder("bid4lyfe", null);
     }
