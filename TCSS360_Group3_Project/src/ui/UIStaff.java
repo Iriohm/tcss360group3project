@@ -3,8 +3,10 @@ package ui;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Scanner;
 
+import model.Auction;
 import model.Calendar;
 import model.Staff;
 
@@ -76,9 +78,25 @@ public class UIStaff extends UI {
 	}
 
 	private static void getAuction(Calendar theCalendar) {
-		GregorianCalendar aDate = (GregorianCalendar) GregorianCalendar.getInstance();
-		theCalendar.getAuctions(aDate);
-
+		int monthSize = 32;
+		java.util.Calendar aDate =  GregorianCalendar.getInstance();
+//		aDate.add(java.util.Calendar.MONTH, +1);
+		List<Auction> auctionList = theCalendar.getAuctions((GregorianCalendar)aDate); 
+		ArrayList<Integer> displayCalendar = new ArrayList<>(monthSize);
+		displayCalendar.add(0);
+		for(int i = 1; i < monthSize; i++){
+			displayCalendar.add(0);
+		}
+				
+		for(int i = 0; i < auctionList.size(); i++){
+			int temp = auctionList.get(i).getDate().get(java.util.Calendar.DATE);
+			
+	displayCalendar.set(temp,displayCalendar.get(temp)+1);
+		}
+		for(int i = 1; i < monthSize; i++){
+			System.out.print("|" + i + ":" + displayCalendar.get(i) + "|");
+			if(i%5 == 0) System.out.println("");
+				}
 	} 
 	
 	private static void clearScreen(){

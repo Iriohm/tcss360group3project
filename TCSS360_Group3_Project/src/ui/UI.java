@@ -87,7 +87,7 @@ public class UI {
 			aCalendar = UIStaff.beginStaffUI((Staff)theUser, myCalender);
 		} else if (theUser.getType() == 2) { // the NPContact
 			//TODO: the NPContact UI
-//			aCalendar = UINPContact.beginNPContactUI((NPContact)theUser, myCalender);
+			aCalendar = UINPContact.beginNPContactUI((NPContact)theUser, myCalender);
 		} else { // the Bidder type
 			aCalendar = UIBidder.beginBidderUI((Bidder)theUser, myCalender);
 		}
