@@ -20,7 +20,13 @@ import model.Staff;
 public class UIStaff extends UI {
 
 	// Declarations
-
+	/**
+	 * this is the start and handle UI for the staff
+	 * 
+	 * @param theStaff the user that is login.
+	 * @param theCalendar the calendar that hold the auctions
+	 * @return update calendar if there was changes.
+	 */
 	public static Calendar beginStaffUI(Staff theStaff, Calendar theCalendar) {
 		int optSel = 0;
 		ArrayList<String> options = new ArrayList<>();
@@ -57,7 +63,7 @@ public class UIStaff extends UI {
 				clearScreen();
 			}
 			if (optSel == 1) {
-				getAuction(theCalendar);
+				printCalendar(theCalendar);
 				System.out.println();
 				System.out.println("Hit any key to continue: ");
 				userInput.nextLine();
@@ -77,7 +83,11 @@ public class UIStaff extends UI {
 		return theCalendar;
 	}
 
-	private static void getAuction(Calendar theCalendar) {
+	/*
+	 * this print out the calendar for the staff member.
+	 * @param theCalendar take the calendar you want to print.
+	 */
+	private static void printCalendar(Calendar theCalendar) {
 		int monthSize = 64;
 		int i = 0, j = 0;
 		java.util.Calendar aDate = GregorianCalendar.getInstance();

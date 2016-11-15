@@ -10,13 +10,16 @@ import org.junit.runners.Suite;
   BidTest.class,
   CalendarTest.class,
   ItemTest.class,
-  MainTest.class,
-  NPContactTest.class,
-  StaffTest.class
+  NPContactTest.class
 
   
 })
 
+/**
+ * this will run all test
+ * @author David Nowlin
+ *
+ */
 public class FeatureTestSuite {
   // the class remains empty,
   // used only as a holder for the above annotations
