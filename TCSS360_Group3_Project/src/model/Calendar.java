@@ -90,7 +90,7 @@ public class Calendar implements Serializable {
 		if (!validateAuctionRequestAtMostOneMonthInFuture((GregorianCalendar)theDate.clone())) {
 			return -3;
 		}
-		if (dateAtLeastOneWeekInFuture((GregorianCalendar)theDate.clone())) {
+		if (!dateAtLeastOneWeekInFuture((GregorianCalendar)theDate.clone())) {
 			return -4;
 		}
 		
@@ -140,7 +140,9 @@ public class Calendar implements Serializable {
 	 */
 	public boolean validateAuctionRequestAtMostOneMonthInFuture(GregorianCalendar aDate) {
 		GregorianCalendar oneMonthInFuture = (GregorianCalendar)GregorianCalendar.getInstance();
+		System.out.println(aDate.getTime());
 		oneMonthInFuture.add(GregorianCalendar.MONTH, 1);
+		System.out.println(oneMonthInFuture.getTime());
 		if (aDate.after(oneMonthInFuture)) {
 			return false;
 		}
@@ -154,7 +156,9 @@ public class Calendar implements Serializable {
 	 */
 	public boolean dateAtLeastOneWeekInFuture(GregorianCalendar aDate) {
 		GregorianCalendar oneWeekInFuture = (GregorianCalendar)GregorianCalendar.getInstance();
+		System.out.println(aDate.getTime());
 		oneWeekInFuture.add(GregorianCalendar.WEEK_OF_YEAR, 1);
+		System.out.println(oneWeekInFuture.getTime());
 		if (aDate.before(oneWeekInFuture)) {
 			return false;
 		}
@@ -187,8 +191,8 @@ public class Calendar implements Serializable {
 	public List<Auction> getAuctions(GregorianCalendar theDate) {
 		//sets the start date to look at the day you give it
 		GregorianCalendar startDate = (GregorianCalendar)theDate.clone();
-		//Adds one millisecond since we are includign the time they give us
 		startDate.add(GregorianCalendar.MILLISECOND, -1);
+
 		//sets the end date to 31 days after the day you give it
 		GregorianCalendar endDate = (GregorianCalendar)theDate.clone();
 		endDate.add(GregorianCalendar.DAY_OF_YEAR, 31);
@@ -207,7 +211,6 @@ public class Calendar implements Serializable {
 		
 		return desiredMonth;
 	}
-	
 	/**
 	 * Returns a list of all of the Auctions ever added to the Calendar
 	 * 
@@ -216,7 +219,6 @@ public class Calendar implements Serializable {
 	public List<Auction> getAllAuctions() {
 		return myAuctions;
 	}
-	
 	/**
 	 * Gets the next unique ItemID to be used when creating an Item
 	 * 

@@ -9,6 +9,15 @@ import model.Auction;
 import model.Calendar;
 import model.Item;
 
+/**
+ * The Auction Class handles adding Items to Auctions and stores the list of Items
+ * This class tests its logic
+ * 
+ * @author Justin Washburn
+ * @version 11/10/2016
+ *
+ */
+
 public class AuctionTest extends TestCase {
 	Calendar testCalendar;
 	Auction testAuction;

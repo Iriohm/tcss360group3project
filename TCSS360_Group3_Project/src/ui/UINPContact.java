@@ -12,14 +12,14 @@ public class UINPContact extends UI {
 
 	private static String myCurrentUsername;
 	private static Calendar myCalender;
-	private static boolean myCancel;
+	private static GregorianCalendar myDate;
 	// Declaration
 
 	public static NPContact beginNPContactUI(NPContact theNPContact, Calendar theCalendar) {
 		int optSel = 0;
 		myCurrentUsername = theNPContact.getUsername();
 		myCalender = theCalendar;
-		myCancel = false;
+		myDate = new GregorianCalendar();
 		ArrayList<String> options = new ArrayList<>();
 		options.add("Submit an auction request");
 		options.add("Add an item to your upcoming auction.");
@@ -54,7 +54,7 @@ public class UINPContact extends UI {
 				clearScreen();
 				System.out.println("We encountered an error with your input, please try again.");
 				System.out.println();
-			}//sdf
+			}
 			if (optSel == 1) {
 				clearScreen();
 				if (theNPContact.hasAuctionUpcomingOrLastYear()) {
@@ -66,7 +66,7 @@ public class UINPContact extends UI {
 					System.out.println("Sorry, but it appears that we have reached our 25 upcoming auctions limit. Please try again at a later date.\n");
 				} else {
 					Auction auctionRequest = getAuctionDetailsFromUser(inputScanner);
-					while (auctionRequest != null && !myCancel) {
+					if (auctionRequest != null) {
 						theCalendar.addAuction(auctionRequest);
 						theNPContact.addAuction(auctionRequest);
 						System.out.println("AuctionCentral: the auctioneer for non-profit organizations.");
@@ -84,16 +84,16 @@ public class UINPContact extends UI {
 				GregorianCalendar testDate = null;
 				if (temp != null) {
 					testDate = temp.getDate();
+
 				}
 				GregorianCalendar todaysDate = (GregorianCalendar)GregorianCalendar.getInstance();
-				// || todaysDate.after(testDate)
-				if (temp == null) {
-					System.out.println(todaysDate +"\n" + testDate);
+				if (temp == null || todaysDate.after(testDate.clone())) {
+			
 					System.out.println("================================================");
 					System.out.println("Sorry, but you don't have any upcoming auctions.");
 					System.out.println("================================================\n");
 				} else {
-					//getItemInfo();
+					
 					System.out.println("Added " + " to the auction.");
 					System.out.println();
 					System.out.println("Hit any key to continue: ");
@@ -110,8 +110,6 @@ public class UINPContact extends UI {
 		return theNPContact;
 	}
 
-	//private static void getItemInfo();
-	
 	private static void getAuction(Calendar theCalendar) {
 		GregorianCalendar aDate = (GregorianCalendar) GregorianCalendar.getInstance();
 		theCalendar.getAuctions(aDate);
@@ -125,7 +123,7 @@ public class UINPContact extends UI {
 	
 	private static Auction getAuctionDetailsFromUser(Scanner input) {
 		String auctionName;
-		GregorianCalendar auctionDate;
+		GregorianCalendar auctionDate = new GregorianCalendar();
 		int status = 0;
 		int responseCode = 0;
 		
@@ -141,10 +139,10 @@ public class UINPContact extends UI {
 		if (auctionName.equals("c")) {
 			return null;
 		} else {
-			auctionDate = getAuctionDateInput(input);
-			System.out.println("Before check: " + auctionDate);
-			responseCode = myCalender.validateAuctionRequest((GregorianCalendar)auctionDate.clone());
-			while (!myCancel || responseCode != 0) {
+			status = getAuctionDateInput(input, myDate);
+			responseCode = myCalender.validateAuctionRequest(myDate);
+			while ((status != -1 && status != 0 && status != -2) || responseCode != 0) {
+				if (status != -2) {
 					switch(responseCode) {
 						case -1:
 							System.out.println("There are already two auctions scheduled on this day, please choose another.\n");
@@ -157,10 +155,11 @@ public class UINPContact extends UI {
 							System.out.println("Please choose a date that is AT LEAST one week into the future.");
 							System.out.println("====================================================================\n");
 							break;
+					}
 				}
 				
-				auctionDate = getAuctionDateInput(input);
-				responseCode = myCalender.validateAuctionRequest(auctionDate);
+				status = getAuctionDateInput(input, auctionDate);
+				responseCode = myCalender.validateAuctionRequest((GregorianCalendar)auctionDate.clone());
 			}
 		}
 		
@@ -168,11 +167,11 @@ public class UINPContact extends UI {
 			return null;
 		}
 		
-		//System.out.println("Date in auction: " + returnAuction.getDate());
-		return new Auction(auctionDate, auctionName);
+
+		return new Auction(myDate, auctionName);
 	}
 	
-	public static GregorianCalendar getAuctionDateInput(Scanner input) {
+	public static int getAuctionDateInput(Scanner input, GregorianCalendar theGregCalendar) {
 		System.out.println("Please enter your proposed auction date in the following format: DD/MM/YYYY");
 		String auctionDay = input.nextLine();
 		int indexes = auctionDay.lastIndexOf("/") - auctionDay.indexOf("/");
@@ -182,8 +181,7 @@ public class UINPContact extends UI {
 			indexes = auctionDay.lastIndexOf("/") - auctionDay.indexOf("/");
 		}
 		if (auctionDay.equals("c")) {
-			myCancel = true;
-			return null;
+			return -1;
 		}
 		
 		System.out.println("Please enter the time you would like your auction to start in the following format: HH [AM/PM] - Ex. 02 PM");
@@ -195,8 +193,7 @@ public class UINPContact extends UI {
 		}
 		
 		if (auctionTime.equals("c")) {
-			myCancel = true;
-			return null;
+			return -1;
 		}
 		
 		String[] date = auctionDay.split("/");
@@ -207,20 +204,28 @@ public class UINPContact extends UI {
 		} catch (NumberFormatException e) {
 			clearScreen();
 			System.out.println("We encountered an error with your time input, and must restart auction date input.\n");
-			return null;
+			return -2;
 		}
 		
 		if (hour > 12 || hour < 1) {
 			System.out.println("We encountered an error with your time input, and must restart auction date input.\n");
-			return null;
+			return -2;
 		}
 		
 		if (time[1].equals("PM")) {
 			hour += 12;
 		}
+		int year = Integer.parseInt(date[2]);
+		int month = Integer.parseInt(date[1]);
+		int day = Integer.parseInt(date[0]);
+		System.out.println(year + " " + month + " " + day);
+		myDate.set(year, month, day, hour, 0, 0);
+		//I have no idea why
+		myDate.add(GregorianCalendar.MONTH, -1);
+		System.out.println(myDate.getTime());
+		//theGregCalendar = new GregorianCalendar();
+		//theGregCalendar.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), hour, 0, 0);
 
-		return new GregorianCalendar(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), hour, 0);
-		
-		//GregorianCalendar(int year, int month, int dayOfMonth, int hourOfDay, int minute) 
+		return 0;
 	}
 }
