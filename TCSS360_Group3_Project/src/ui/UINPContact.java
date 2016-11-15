@@ -139,8 +139,8 @@ public class UINPContact extends UI {
 		if (auctionName.equals("c")) {
 			return null;
 		} else {
-			status = getAuctionDateInput(input, auctionDate);
-			responseCode = myCalender.validateAuctionRequest(auctionDate);
+			status = getAuctionDateInput(input, myDate);
+			responseCode = myCalender.validateAuctionRequest(myDate);
 			while ((status != -1 && status != 0 && status != -2) || responseCode != 0) {
 				if (status != -2) {
 					switch(responseCode) {
@@ -215,9 +215,16 @@ public class UINPContact extends UI {
 		if (time[1].equals("PM")) {
 			hour += 12;
 		}
-		myDate.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), hour, 0, 0);
-		theGregCalendar = new GregorianCalendar();
-		theGregCalendar.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), hour, 0, 0);
+		int year = Integer.parseInt(date[2]);
+		int month = Integer.parseInt(date[1]);
+		int day = Integer.parseInt(date[0]);
+		System.out.println(year + " " + month + " " + day);
+		myDate.set(year, month, day, hour, 0, 0);
+		//I have no idea why
+		myDate.add(GregorianCalendar.MONTH, -1);
+		System.out.println(myDate.getTime());
+		//theGregCalendar = new GregorianCalendar();
+		//theGregCalendar.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), hour, 0, 0);
 
 		return 0;
 	}

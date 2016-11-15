@@ -90,7 +90,7 @@ public class Calendar implements Serializable {
 		if (!validateAuctionRequestAtMostOneMonthInFuture((GregorianCalendar)theDate.clone())) {
 			return -3;
 		}
-		if (dateAtLeastOneWeekInFuture((GregorianCalendar)theDate.clone())) {
+		if (!dateAtLeastOneWeekInFuture((GregorianCalendar)theDate.clone())) {
 			return -4;
 		}
 		
@@ -140,7 +140,9 @@ public class Calendar implements Serializable {
 	 */
 	public boolean validateAuctionRequestAtMostOneMonthInFuture(GregorianCalendar aDate) {
 		GregorianCalendar oneMonthInFuture = (GregorianCalendar)GregorianCalendar.getInstance();
+		System.out.println(aDate.getTime());
 		oneMonthInFuture.add(GregorianCalendar.MONTH, 1);
+		System.out.println(oneMonthInFuture.getTime());
 		if (aDate.after(oneMonthInFuture)) {
 			return false;
 		}
@@ -154,7 +156,9 @@ public class Calendar implements Serializable {
 	 */
 	public boolean dateAtLeastOneWeekInFuture(GregorianCalendar aDate) {
 		GregorianCalendar oneWeekInFuture = (GregorianCalendar)GregorianCalendar.getInstance();
+		System.out.println(aDate.getTime());
 		oneWeekInFuture.add(GregorianCalendar.WEEK_OF_YEAR, 1);
+		System.out.println(oneWeekInFuture.getTime());
 		if (aDate.before(oneWeekInFuture)) {
 			return false;
 		}
