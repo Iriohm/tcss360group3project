@@ -20,7 +20,7 @@ public class UINPContact extends UI {
 		myCalender = theCalendar;
 		ArrayList<String> options = new ArrayList<>();
 		options.add("Submit an auction request");
-		options.add("Add an item to auction inventory list");
+		options.add("Add an item to your upcoming auction.");
 		options.add("Exit AuctionCentral");
 
 		String optHeader = "What would you like to do?";
@@ -66,6 +66,7 @@ public class UINPContact extends UI {
 					Auction auctionRequest = getAuctionDetailsFromUser(inputScanner);
 					if (auctionRequest != null) {
 						theCalendar.addAuction(auctionRequest);
+						theNPContact.addAuction(auctionRequest);
 						System.out.println("AuctionCentral: the auctioneer for non-profit organizations.");
 						System.out.println(myCurrentUsername + " logged in as Non-profit organization contact");
 						System.out.println(myCurrentDate);
@@ -77,12 +78,25 @@ public class UINPContact extends UI {
 					}
 				}
 			} else if (optSel == 2) {
-				//TODO add in the additem method
-				System.out.println("Added " + " to the auction.");
-				System.out.println();
-				System.out.println("Hit any key to continue: ");
-				inputScanner.nextLine();
-				clearScreen();
+				Auction temp = theNPContact.getLatestAuction();
+				GregorianCalendar testDate = null;
+				if (temp != null) {
+					testDate = temp.getDate();
+				}
+				GregorianCalendar todaysDate = (GregorianCalendar)GregorianCalendar.getInstance();
+				if (temp == null || todaysDate.after(testDate)) {
+					System.out.println(todaysDate +"\n" + testDate);
+					System.out.println("================================================");
+					System.out.println("Sorry, but you don't have any upcoming auctions.");
+					System.out.println("================================================\n");
+				} else {
+					
+					System.out.println("Added " + " to the auction.");
+					System.out.println();
+					System.out.println("Hit any key to continue: ");
+					inputScanner.nextLine();
+					clearScreen();
+				}
 			} else if (optSel == 3) {
 				// exit system
 				System.out.println("Goodbye");
@@ -107,6 +121,7 @@ public class UINPContact extends UI {
 	private static Auction getAuctionDetailsFromUser(Scanner input) {
 		String auctionName;
 		GregorianCalendar auctionDate = new GregorianCalendar();
+		auctionDate.clear();
 		int status = 0;
 		int responseCode = 0;
 		
@@ -150,6 +165,7 @@ public class UINPContact extends UI {
 			return null;
 		}
 		
+		System.out.println(auctionDate);
 		return new Auction(auctionDate, auctionName);
 	}
 	
@@ -197,8 +213,10 @@ public class UINPContact extends UI {
 		if (time[1].equals("PM")) {
 			hour += 12;
 		}
-		
-		theGregCalendar = new GregorianCalendar(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), hour, 0);
+
+		System.out.println(theGregCalendar);
+		theGregCalendar.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), hour, 0);
+		System.out.println(theGregCalendar);
 		//GregorianCalendar(int year, int month, int dayOfMonth, int hourOfDay, int minute) 
 		return 0;
 	}
