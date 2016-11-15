@@ -54,7 +54,7 @@ public class UINPContact extends UI {
 				clearScreen();
 				System.out.println("We encountered an error with your input, please try again.");
 				System.out.println();
-			}
+			}//sdf
 			if (optSel == 1) {
 				clearScreen();
 				if (theNPContact.hasAuctionUpcomingOrLastYear()) {
