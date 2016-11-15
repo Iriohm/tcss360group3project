@@ -71,4 +71,8 @@ public class NPContact extends User {
 		}
 		return myAuctions.get(myAuctions.size() - 1);
 	}
+	
+	public List<Auction> getMyAuctions() {
+		return myAuctions;
+	}
 }
