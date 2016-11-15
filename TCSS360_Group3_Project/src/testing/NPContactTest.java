@@ -53,6 +53,6 @@ public class NPContactTest extends TestCase {
      */
     @Test
     public void testAddItem() {
-    	
+    	//
     }
 }

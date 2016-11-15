@@ -26,7 +26,7 @@ public class BidderTest extends TestCase {
     }
 
     /**
-     * Test method for {@link model.Truck#canPass(model.Terrain, model.Light)}.
+     * Test method for testCanPass().
      */
     @Test
     public void testCanPass() {
