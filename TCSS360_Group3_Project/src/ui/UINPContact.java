@@ -71,7 +71,7 @@ public class UINPContact extends UI {
 			}
 			if (optSel == 1) {
 				clearScreen();
-				System.out.println(theNPContact.getMyAuctions());
+//				System.out.println(theNPContact.getMyAuctions());
 				if (theNPContact.hasAuctionUpcomingOrLastYear()) {
 					System.out.println("==============================================================================================================================");
 					System.out.println("Sorry, but it appears that your non-profit either has an upcoming auction, or had an auction less than a year ago.");
