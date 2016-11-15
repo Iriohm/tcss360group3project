@@ -87,7 +87,7 @@ public class UI {
 			aCalendar = UIStaff.beginStaffUI((Staff)theUser, myCalender);
 		} else if (theUser.getType() == 2) { // the NPContact
 			//TODO: the NPContact UI
-//			aCalendar = UINPContact.beginNPContactUI((NPContact)theUser, myCalender);
+			aCalendar = UINPContact.beginNPContactUI((NPContact)theUser, myCalender);
 		} else { // the Bidder type
 			aCalendar = UIBidder.beginBidderUI((Bidder)theUser, myCalender);
 		}
@@ -102,16 +102,20 @@ public class UI {
 	 */
 	private static User chooseLogin() {
 		int choose = 0;
-		do {
-			System.out.println("\nWhich user are you?");
-			System.out.printf("%-15s%-20s%-10s\n", "Index", "Username", "Type of User");
+		if(myListUser != null){//testing if it has null for set.
+			do {
+				System.out.println("\nWhich user are you?");
+				System.out.printf("%-15s%-20s%-10s\n", "Index", "Username", "Type of User");
 
-			for (int i = 0; i < myListUser.size(); i++) {
-				System.out.printf("%-15s%-20s%-10s\n", (i+1) + ")", myListUser.get(i).getUsername(), userTypeToString(myListUser.get(i).getType()));
-			}
-			System.out.print("\nEnter your Selection from 1 to " + myListUser.size() + ": ");
-			choose = myScanner.nextInt();
-		} while (choose < 1 || choose > myListUser.size());
+				for (int i = 0; i < myListUser.size(); i++) {
+					System.out.printf("%-15s%-20s%-10s\n", (i+1) + ")", myListUser.get(i).getUsername(), userTypeToString(myListUser.get(i).getType()));
+				}
+				System.out.print("\nEnter your Selection from 1 to " + myListUser.size() + ": ");
+				choose = myScanner.nextInt();
+			} while (choose < 1 || choose > myListUser.size());
+		} else {
+			return null;
+		}
 		return myListUser.get((choose - 1));
 	}
 

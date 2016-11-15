@@ -10,6 +10,13 @@ import model.Calendar;
 import model.Item;
 import model.NPContact;
 
+/**
+ * Prints the non-profit user interface menu.
+ * 
+ * @author Robert Hinds, Vlad Kaganyuk, Justin Washburn
+ * @version 11/14/2016
+ *
+ */
 public class UINPContact extends UI {
 
 	private static String myCurrentUsername;
@@ -17,6 +24,12 @@ public class UINPContact extends UI {
 	private static GregorianCalendar myDate;
 	// Declaration
 
+	/**
+	 * Starts and handles the UI.
+	 * @param theNPContact The non profit user.
+	 * @param theCalendar The Calendar to add auctions to.
+	 * @return Returns an updated Calendar that will be printed in the UI class.
+	 */
 	public static Calendar beginNPContactUI(NPContact theNPContact, Calendar theCalendar) {
 		int optSel = 0;
 		myCurrentUsername = theNPContact.getUsername();
@@ -101,7 +114,7 @@ public class UINPContact extends UI {
 					inputScanner.nextLine();
 					clearScreen();
 				}
-			} else if (optSel == 3) {
+			} else if (optSel == 3) { //Prints the item inventory of the user's latest auction.
 				clearScreen();
 				Auction latestAuction = theNPContact.getLatestAuction();
 				GregorianCalendar testDate = null;
@@ -139,6 +152,9 @@ public class UINPContact extends UI {
 		return myCalender;
 	}
 	
+	/**
+	 * Prints the same header to keep the UI uniform.
+	 */
 	private static void printHeader() {
 		System.out.println("AuctionCentral: the auctioneer for non-profit organizations.");
 		System.out.println(myCurrentUsername + " logged in as Non-profit organization contact");
@@ -146,6 +162,11 @@ public class UINPContact extends UI {
 		System.out.println();
 	}
 
+	/**
+	 * Gets the item information from the user.
+	 * @param input A Scanner object to read input.
+	 * @return Returns an Item object that was created from the user's inputs.
+	 */
 	private static Item getItemInfo(Scanner input) {
 		//Item Name (string)ields are: Donor Name (string), Item Description for Bidders (string), and Comment for Auction Central staff (string).
 
@@ -174,21 +195,26 @@ public class UINPContact extends UI {
 		return itemToReturn;
 	}
 	
+	/**
+	 * Clears the console screen by printing a bunch of newlines.
+	 */
 	private static void clearScreen(){
 		for(int i = 0; i < 64; i++)
 		System.out.println();
 	}
 	
+	/**
+	 * Gets the auction information from the user.
+	 * @param input A Scanner object to read input.
+	 * @return Returns an Auction object created from the user's inputs.
+	 */
 	private static Auction getAuctionDetailsFromUser(Scanner input) {
 		String auctionName;
 		GregorianCalendar auctionDate = new GregorianCalendar();
 		int status = 0;
 		int responseCode = 0;
 		
-		System.out.println("AuctionCentral: the auctioneer for non-profit organizations.");
-		System.out.println(myCurrentUsername + " logged in as Non-profit organization contact");
-		System.out.println(myCurrentDate);
-		System.out.println();
+		printHeader();
 		System.out.println("Auction Request Details");
 		System.out.println("(Note: You may press 'c' at any time to cancel this auction request.)");
 		System.out.println();
@@ -229,6 +255,12 @@ public class UINPContact extends UI {
 		return new Auction(myDate, auctionName);
 	}
 	
+	/**
+	 * Gets the user's auction date information.
+	 * @param input A Scanner object to read input.
+	 * @param theGregCalendar The GregorianCalendar that manages dates.
+	 * @return Returns an int which signifies this methods result.
+	 */
 	public static int getAuctionDateInput(Scanner input, GregorianCalendar theGregCalendar) {
 		System.out.println("Please enter your proposed auction date in the following format: DD/MM/YYYY");
 		String auctionDay = input.nextLine();
