@@ -101,7 +101,7 @@ public class UINPContact extends UI {
 					inputScanner.nextLine();
 					clearScreen();
 				}
-			} else if (optSel == 3) {
+			} else if (optSel == 3) { //Prints the item inventory of the user's latest auction.
 				clearScreen();
 				Auction latestAuction = theNPContact.getLatestAuction();
 				GregorianCalendar testDate = null;
