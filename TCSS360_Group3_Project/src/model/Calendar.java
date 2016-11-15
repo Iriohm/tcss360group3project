@@ -140,9 +140,9 @@ public class Calendar implements Serializable {
 	 */
 	public boolean validateAuctionRequestAtMostOneMonthInFuture(GregorianCalendar aDate) {
 		GregorianCalendar oneMonthInFuture = (GregorianCalendar)GregorianCalendar.getInstance();
-		System.out.println(aDate.getTime());
+	//	System.out.println(aDate.getTime());
 		oneMonthInFuture.add(GregorianCalendar.MONTH, 1);
-		System.out.println(oneMonthInFuture.getTime());
+		//System.out.println(oneMonthInFuture.getTime());
 		if (aDate.after(oneMonthInFuture)) {
 			return false;
 		}

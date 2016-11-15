@@ -32,8 +32,8 @@ public class UI {
 	protected static Date   myTodayDate = GregorianCalendar.getInstance().getTime();
 	protected static String myCurrentDate = myFormatter.format(myTodayDate);
 	
-	private static String fileCaledar = "testCalendar.ser";
-//	private static String fileCaledar = "testCalendar24Auctions.ser";
+//	private static String fileCaledar = "testCalendar.ser";
+	private static String fileCaledar = "testCalendar24Auctions.ser";
 	private static ArrayList<User> myListUser = null;
 
 
