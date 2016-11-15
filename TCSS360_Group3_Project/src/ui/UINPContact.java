@@ -17,7 +17,7 @@ public class UINPContact extends UI {
 	private static GregorianCalendar myDate;
 	// Declaration
 
-	public static NPContact beginNPContactUI(NPContact theNPContact, Calendar theCalendar) {
+	public static Calendar beginNPContactUI(NPContact theNPContact, Calendar theCalendar) {
 		int optSel = 0;
 		myCurrentUsername = theNPContact.getUsername();
 		myCalender = theCalendar;
@@ -69,7 +69,7 @@ public class UINPContact extends UI {
 				} else {
 					Auction auctionRequest = getAuctionDetailsFromUser(inputScanner);
 					if (auctionRequest != null) {
-						theCalendar.addAuction(auctionRequest);
+						myCalender.addAuction(auctionRequest);
 						theNPContact.addAuction(auctionRequest);
 						printHeader();
 						System.out.println("Your auction request has successfully been submited!\n");
@@ -136,7 +136,7 @@ public class UINPContact extends UI {
 			}
 		}
 		inputScanner.close();
-		return theNPContact;
+		return myCalender;
 	}
 	
 	private static void printHeader() {
