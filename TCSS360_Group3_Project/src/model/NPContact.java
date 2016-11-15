@@ -32,9 +32,17 @@ public class NPContact extends User {
 		myAuctions = new ArrayList<Auction>();
 	}
 	
-	public void addItem(Auction theAuctionToAddTo, Item theItemToAdd) {
-		//checkIfItemExists in Auction Yet.
+	public boolean addItem(Auction theAuctionToAddTo, Item theItemToAdd) {
+		String itemToAddID = theItemToAdd.getID();
+		List<Item> currentItems = theAuctionToAddTo.getItems();
+		for (int i = 0; i < currentItems.size(); i++) {
+			String currID = currentItems.get(i).getID();
+			if (currID.equals(itemToAddID)) {
+				return false;
+			}
+		}
 		theAuctionToAddTo.addItem(theItemToAdd);
+		return true;
 	}
 	
 	public void addAuction(Auction theAuction) {
