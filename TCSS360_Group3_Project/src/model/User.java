@@ -10,10 +10,12 @@ import java.io.Serializable;
 *
 */
 public class User implements Serializable {
-	private String myUsername;
+	// Slight alteration. Changed myUsername to protected (was private).
+	// - M. Scott
+	protected String myUsername;
 	private Calendar myCalendar;
 	private int myType;
-	
+
 	private static final long serialVersionUID = 7526472295622776147L;
 
 	/**
@@ -33,18 +35,18 @@ public class User implements Serializable {
 	public String displayCalendar() {
 		return myCalendar.toString();
 	}
-	
+
 	/**
 	 * @return The Master Calendar
 	 */
 	public Calendar getCalendar() {
 		return myCalendar;
 	}
-	
-	
+
+
 	/**
 	 * This method returns an int so the type of User can be determined.
-	 * Key: 
+	 * Key:
 	 *	1 = Staff
 	 *	2 = NPContact
 	 *	3 = Bidder
@@ -53,7 +55,7 @@ public class User implements Serializable {
 	public int getType() {
 		return myType;
 	}
-	
+
 	/**
 	 * This method returns the username of this User.
      */

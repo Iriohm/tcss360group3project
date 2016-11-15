@@ -15,7 +15,7 @@ import model.Item;
 
 /**
  * Handles all the bidder interaction.
- * 
+ *
  * @author David Nowlin
  * @version 11/11/2016
  *
@@ -23,11 +23,11 @@ import model.Item;
 public class UIBidder {
 	private static Scanner myScanner = new Scanner(System.in);
 	private static String myHeadline = null;
-	
-	private static Format myFormatter = new SimpleDateFormat("MMMM dd, yyyy"); 
+
+	private static Format myFormatter = new SimpleDateFormat("MMMM dd, yyyy");
 	protected static Date   myTodayDate = GregorianCalendar.getInstance().getTime();
 	protected static String myCurrentDate = myFormatter.format(myTodayDate);
-	
+
 	/**
 	 * this is what start all the Bidder UI classes.
 	 * dose all the bidder need to do.
@@ -41,7 +41,7 @@ public class UIBidder {
 				+ " logged in as Bidder.\nToday date: " + myCurrentDate + "\n";
 		System.out.println(myHeadline);
 		do {
-			System.out.print("1) View List Of Acutions.\n" + "2) Exit.\n" + "Enter your Selection from 1 to 2: ");
+			System.out.print("1) View List Of Auctions.\n" + "2) Exit.\n" + "Enter your Selection from 1 to 2: ");
 			choose = myScanner.nextInt();
 		} while (choose != 1 && choose != 2);
 		if (choose == 1) {
@@ -58,8 +58,8 @@ public class UIBidder {
 		boolean exit = false;
 		while (!exit) {
 			System.out.println(myHeadline);
-			List<Auction> desiredAcctions = theCalendar.getAuctions((GregorianCalendar) GregorianCalendar.getInstance());//TODO: shows yesterday auction 
-			for (int i = 0; i < (theCalendar.getUpcomingAuctionsNumber() + 1); i++) {
+			List<Auction> desiredAcctions = theCalendar.getAuctions((GregorianCalendar) GregorianCalendar.getInstance());//TODO: shows yesterday auction
+			for (int i = 0; i < (theCalendar.getUpcomingAuctionsNumber()); i++) {
 				System.out.println((i+1) + ") " + desiredAcctions.get((i)).getAuctionName() + "\t"
 						+ myFormatter.format(desiredAcctions.get(i).getDate().getTime()) + "   ");
 			}
@@ -113,7 +113,7 @@ public class UIBidder {
 		}
 		return exit;
 	}
-	
+
 	/*
 	 * this will allow you to select which item to get more information on.
 	 */
@@ -124,7 +124,7 @@ public class UIBidder {
 				+ myFormatter.format(theAuction.getDate().getTime());
 		System.out.println(AuctionInfo);
 		List<Item> itemlist = theAuction.getItems();
-		
+
 		do {
 			System.out.println("Items Offered For Sale:\n" + "ID\tItem Name\t\t\tCondition\tMin Bid\tMy Bid");
 			for (int i = 0; i < itemlist.size(); i++) {
@@ -138,13 +138,15 @@ public class UIBidder {
 			System.out.print("\nType Item ID to get more information and bid on the item :");
 			choose = myScanner.nextInt();
 		} while (choose < 1 || (itemlist.size()) < choose);
-		placeBid(theBidder, itemlist.get((choose-1)));
+		placeBid(theBidder, itemlist.get((choose-1)), theAuction);
 	}
-	
+
 	/*
 	 * this is will you place your bid on the select item or to go back.
+	 *
+	 * Michael: Altered to pass in an Auction, so placeBid() could call viewItem() to return to the previous screen.
 	 */
-	private static void placeBid(Bidder theBidder, Item theItem) {
+	private static void placeBid(Bidder theBidder, Item theItem, Auction theAuction) {
 		double bid = 0;
 		int choose = 0;
 		System.out.println(myHeadline);
@@ -155,17 +157,37 @@ public class UIBidder {
 					+ "1) Place bid on this item.\n"
 					+ "2) Go back\n");
 			choose = myScanner.nextInt();
+
+			// Michael: Created an extra set of if statements to ensure the user cannot bid on something
+			// they've already bid on, or on an auction past its expiration date.
+			if	(theItem.isBeingBidOnBy(theBidder.getUsername())) {
+				System.out.println("You've already bid on this item!\n");
+
+				choose = 0;
+			} else if	(!theAuction.validateItemAddAuctionDate()) {
+				System.out.println("You can't bid on an item after its auction has expired!\n");
+
+				choose = 0;
+			}
+
+
 		} while (choose < 1 || choose > 2);
 		if(choose == 1){
-			bid = 0;
-			do {
-				System.out.println("Enter a bid of least $" + theItem.getMinBid() + "(no dollar sign or period after dollar amount");
-				bid = myScanner.nextDouble();
-			} while (bid < theItem.getMinBid());
-			System.out.println("You have placed a bid of $" + bid + " on " + theItem.getName() + ",\n"
-					+ "AuctionCentral will notify you after the auction ends to let you know if\n"
-					+ "your are the winning bid. Good Luck!\n");
+				bid = 0;
+				do {
+					System.out.println("Enter a bid of least $" + theItem.getMinBid() + ": $");
+					bid = myScanner.nextDouble();
+				} while (bid < theItem.getMinBid());
+				System.out.println("You have placed a bid of $" + bid + " on " + theItem.getName() + ",\n"
+						+ "AuctionCentral will notify you after the auction ends to let you know if\n"
+						+ "yours was the winning bid. Good Luck!\n");
+
+				theBidder.placeBid(theItem, bid);
+
+		} else if (choose == 2) {
+			// Added a proper "go back" function
+			viewItem(theBidder, theAuction);
+
 		}
-		theBidder.placeBid(theItem, bid);
 	}
 }

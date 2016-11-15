@@ -25,11 +25,11 @@ public class Main {
 		//readsInASerializedCalendarFromFile
 		//authenticate();
 		//starts specific UI Controller.
-		
-		NPContact x = new NPContact("jsmith", new Calendar());
-		UINPContact.beginNPContactUI(x, x.getCalendar());
-		//UI.beginUI();
-		
+
+		//NPContact x = new NPContact("jsmith", new Calendar());
+		//UINPContact.beginNPContactUI(x, x.getCalendar());
+		UI.beginUI();
+
 		//doing a test on the UIBidder.
 //		Item football = new Item("1", "football", "the best football", "Small", 20.0, 1, "Very Fine");
 //		Item baseball = new Item("2", "baseball", "the best baseball", "Small", 20.0, 1, "Very Fine");
