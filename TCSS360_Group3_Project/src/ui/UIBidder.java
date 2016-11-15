@@ -59,19 +59,19 @@ public class UIBidder {
 		while (!exit) {
 			System.out.println(myHeadline);
 			List<Auction> desiredAcctions = theCalendar.getAuctions((GregorianCalendar) GregorianCalendar.getInstance());//TODO: shows yesterday auction 
-			for (int i = 0; i < (theCalendar.getUpcomingAuctionsNumber() + 1); i++) {
+			for (int i = 0; i < (theCalendar.getUpcomingAuctionsNumber()); i++) {
 				System.out.println((i+1) + ") " + desiredAcctions.get((i)).getAuctionName() + "\t"
 						+ myFormatter.format(desiredAcctions.get(i).getDate().getTime()) + "   ");
 			}
-			System.out.println((theCalendar.getUpcomingAuctionsNumber() + 2) + ") Exit");
+			System.out.println((theCalendar.getUpcomingAuctionsNumber() + 1) + ") Exit");
 			do {
-				System.out.print("Enter your Selection from 1 to " + (theCalendar.getUpcomingAuctionsNumber() + 2) + ": ");
+				System.out.print("Enter your Selection from 1 to " + (theCalendar.getUpcomingAuctionsNumber() + 1) + ": ");
 				choose = myScanner.nextInt();
-			} while (choose < 1 || choose > (theCalendar.getUpcomingAuctionsNumber() + 2));
-			if ((theCalendar.getUpcomingAuctionsNumber() + 2) == choose) {
+			} while (choose < 1 || choose > (theCalendar.getUpcomingAuctionsNumber() + 1));
+			if ((theCalendar.getUpcomingAuctionsNumber() + 1) == choose) {
 				return theBidder;
 			}
-			exit = viewItem(theBidder, desiredAcctions.get((choose - 1)));
+			exit = viewItem(theBidder, desiredAcctions.get((choose-1))); // choose -1
 		}
 		return theBidder;
 	}
