@@ -2,6 +2,7 @@ package ui;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Scanner;
 
 import model.Auction;
@@ -23,7 +24,8 @@ public class UINPContact extends UI {
 		myDate = new GregorianCalendar();
 		ArrayList<String> options = new ArrayList<>();
 		options.add("Submit an auction request");
-		options.add("Add an item to your upcoming auction.");
+		options.add("Add an item to my upcoming auction.");
+		options.add("List the item inventory of my upcoming auction.");
 		options.add("Exit AuctionCentral");
 
 		String optHeader = "What would you like to do?";
@@ -37,10 +39,7 @@ public class UINPContact extends UI {
 		clearScreen();
 		while (!exit) {
 			optSel = 0;
-			System.out.println("AuctionCentral: the auctioneer for non-profit organizations.");
-			System.out.println(myCurrentUsername + " logged in as Non-profit organization contact");
-			System.out.println(myCurrentDate);
-			System.out.println();
+			printHeader();
 			System.out.println(optHeader);
 			for (int i = 0; i < options.size(); i++) {
 				System.out.println(i + 1 + ". " + options.get(i));
@@ -72,10 +71,7 @@ public class UINPContact extends UI {
 					if (auctionRequest != null) {
 						theCalendar.addAuction(auctionRequest);
 						theNPContact.addAuction(auctionRequest);
-						System.out.println("AuctionCentral: the auctioneer for non-profit organizations.");
-						System.out.println(myCurrentUsername + " logged in as Non-profit organization contact");
-						System.out.println(myCurrentDate);
-						System.out.println();
+						printHeader();
 						System.out.println("Your auction request has successfully been submited!\n");
 						System.out.println("Press any key to go back to the main menu: ");
 						inputScanner.nextLine();
@@ -88,7 +84,6 @@ public class UINPContact extends UI {
 				GregorianCalendar testDate = null;
 				if (latestAuction != null) {
 					testDate = latestAuction.getDate();
-
 				}
 				GregorianCalendar todaysDate = (GregorianCalendar)GregorianCalendar.getInstance();
 				if (latestAuction == null || todaysDate.after(testDate.clone())) {
@@ -96,10 +91,7 @@ public class UINPContact extends UI {
 					System.out.println("Sorry, but you don't have any upcoming auctions.");
 					System.out.println("================================================\n");
 				} else {
-					System.out.println("AuctionCentral: the auctioneer for non-profit organizations.");
-					System.out.println(myCurrentUsername + " logged in as Non-profit organization contact");
-					System.out.println(myCurrentDate);
-					System.out.println();
+					printHeader();
 					System.out.println("Adding item to auction: " + latestAuction.getAuctionName() + "\n");
 					Item itemToAdd = getItemInfo(inputScanner);
 					theNPContact.addItem(latestAuction, itemToAdd);
@@ -110,7 +102,33 @@ public class UINPContact extends UI {
 					clearScreen();
 				}
 			} else if (optSel == 3) {
-				//print item inventory
+				clearScreen();
+				Auction latestAuction = theNPContact.getLatestAuction();
+				GregorianCalendar testDate = null;
+				if (latestAuction != null) {
+					testDate = latestAuction.getDate();
+				}
+				GregorianCalendar todaysDate = (GregorianCalendar)GregorianCalendar.getInstance();
+				if (latestAuction == null || todaysDate.after(testDate.clone())) {
+					System.out.println("================================================");
+					System.out.println("Sorry, but you don't have any upcoming auctions.");
+					System.out.println("================================================\n");
+				} else {
+					printHeader();
+					System.out.println(latestAuction.getAuctionName() + " Item Inventory");
+					System.out.println("==========================================================");
+					List<Item> itemInv = latestAuction.getItems();
+					for (int i = 1; i <= itemInv.size(); i++) {
+						System.out.println(i + ". " + itemInv.get(i - 1).getName());
+					}
+					if (itemInv.size() == 0) {
+						System.out.println("No items registered to this auction.");
+					}
+					System.out.println();
+					System.out.print("Press any key to return to the main menu: ");
+					inputScanner.nextLine();
+					clearScreen();
+				}
 			} else if (optSel == 4) {
 				// exit system
 				System.out.println("Goodbye");
@@ -119,6 +137,13 @@ public class UINPContact extends UI {
 		}
 		inputScanner.close();
 		return theNPContact;
+	}
+	
+	private static void printHeader() {
+		System.out.println("AuctionCentral: the auctioneer for non-profit organizations.");
+		System.out.println(myCurrentUsername + " logged in as Non-profit organization contact");
+		System.out.println(myCurrentDate);
+		System.out.println();
 	}
 
 	private static Item getItemInfo(Scanner input) {
