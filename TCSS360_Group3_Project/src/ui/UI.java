@@ -18,7 +18,7 @@ import model.User;
 
 /**
  * this start the UI for the user of the program.
- * 
+ *
  * @author David Nowlin
  * @version 11/11/2016
  *
@@ -26,9 +26,9 @@ import model.User;
 public class UI {
 	private static Scanner myScanner = new Scanner(System.in);
 	private static Calendar myCalender	= new Calendar();
-	private static User myUser = null;	
+	private static User myUser = null;
 	//used to generate the current Date.
-	private static Format myFormatter = new SimpleDateFormat("MMMM dd, yyyy"); 
+	private static Format myFormatter = new SimpleDateFormat("MMMM dd, yyyy");
 	protected static Date   myTodayDate = GregorianCalendar.getInstance().getTime();
 	protected static String myCurrentDate = myFormatter.format(myTodayDate);
 
@@ -47,8 +47,8 @@ public class UI {
 		}
 		writeOutData();
 	}
-	
-	
+
+
 	/*
 	 * login on a previously created user account or create a new user account.
 	 * @return the select user.
@@ -57,10 +57,10 @@ public class UI {
 		User myUser = null;
 		int choose = 0;
 		do {
-			System.out.print("AuctionCentral: the auctioneer for non-profit organizations.\n"
+			System.out.print("AuctionCentral: The Company that Cares (Probably)\n"
 					+ "1) Login\n"
-					+ "2) Create acount\n"
-					+ "3) Exit.\n"
+					+ "2) Create Account\n"
+					+ "3) Exit\n"
 					+ "Enter your Selection from 1 to 3: ");
 			choose = myScanner.nextInt();
 		} while (choose < 1 && choose > 3);
@@ -74,9 +74,9 @@ public class UI {
 		}
 		return myUser;
 	}
-	
+
 	/*
-	 * Determine which user type is login and goes to the right UI on type. 
+	 * Determine which user type is login and goes to the right UI on type.
 	 * @param the login user
 	 * @return the update calendar.
 	 */
@@ -87,31 +87,53 @@ public class UI {
 			aCalendar = UIStaff.beginStaffUI((Staff)theUser, myCalender);
 		} else if (theUser.getType() == 2) { // the NPContact
 			//TODO: the NPContact UI
+//			aCalendar = UINPContact.beginNPContactUI((NPContact)theUser, myCalender);
 		} else { // the Bidder type
 			aCalendar = UIBidder.beginBidderUI((Bidder)theUser, myCalender);
 		}
 		return aCalendar;
 	}
-	
+
 	/*
 	 * how you choose the user you are.
 	 * @return the login user
+	 *
+	 * Altered by M. Scott to make the text look cleaner.
 	 */
 	private static User chooseLogin() {
 		int choose = 0;
 		do {
-			System.out.println("\n\nPick the user you are.\n"
-					+ "type of user\n1 is Staff user\n2 is None Profit user\n3 is a bidder user\n\n"
-					+ "index\t\tuserName\t\t typeuser");
+			System.out.println("\nWhich user are you?");
+			System.out.printf("%-15s%-20s%-10s\n", "Index", "Username", "Type of User");
+
 			for (int i = 0; i < myListUser.size(); i++) {
-				System.out.println((i+1) + ") \t\t" + myListUser.get(i).getUsername() + "\t\t  " + myListUser.get(i).getType());
+				System.out.printf("%-15s%-20s%-10s\n", (i+1) + ")", myListUser.get(i).getUsername(), userTypeToString(myListUser.get(i).getType()));
 			}
 			System.out.print("\nEnter your Selection from 1 to " + myListUser.size() + ": ");
 			choose = myScanner.nextInt();
-		} while (choose < 1 || choose > myListUser.size());		
+		} while (choose < 1 || choose > myListUser.size());
 		return myListUser.get((choose - 1));
 	}
-	
+
+
+	/**
+	 * Converts an input user type to its string form.
+	 *
+	 * @param theType The type of user to return a name for.
+	 * @return Returns the english translation of a given user type.
+	 */
+	private static String userTypeToString(int theType) {
+		String sReturn = "";
+
+		if	(theType == 1) { sReturn = "AC Staff"; }
+		else if	(theType == 2) { sReturn = "Non-Profit Contact"; }
+		else if	(theType == 3) { sReturn = "Bidder"; }
+
+		return sReturn;
+
+	}
+
+
 	/*
 	 * this make a new user that is enter in to the systems.
 	 * @return the new user as login.
@@ -121,15 +143,16 @@ public class UI {
 		String userName = "";
 		User aUser = null;
 		do {
-			System.out.print("\n\nCreate a New User.\n"
-					+ "What Type Of User Are You.\n"
-					+ "1) For Staff User.\n"
-					+ "2) For Non For Profit Contact User.\n"
-					+ "3) For Bidder User.\n"
+			System.out.print("\n\nCreate a New User\n"
+					+ "Which type of user are you?\n"
+					+ "1) AC Staff\n"
+					+ "2) Non-Profit Contact\n"
+					+ "3) Bidder\n"
 					+ "Enter your Selection from 1 to 3: ");
+			System.out.printf("Create a New User");
 			typeUser = myScanner.nextInt();
 		} while (typeUser < 1 && typeUser > 3);
-		System.out.println("\nYour User Name With No Space Please.");
+		System.out.println("\nEnter your desired username. (Can't contain spaces)");
 		userName = myScanner.next();
 		if(typeUser == 1) {
 			aUser = new Staff(userName, myCalender);
@@ -140,7 +163,8 @@ public class UI {
 		}
 		return aUser;
 	}
-	
+
+
 	/*
 	 * this is used to read in the user list and the calendar for the as
 	 * serialization object.
@@ -151,7 +175,7 @@ public class UI {
 	    readCaledar();
 	    readUser();
 	}
-	
+
 	/*
 	 * this read in the calendar object serialization.
 	 */
@@ -174,7 +198,7 @@ public class UI {
 	         return;
 	      }
 	}
-	
+
 	/*
 	 * this read in the list of user object serialization.
 	 */
@@ -197,7 +221,7 @@ public class UI {
 	         return;
 	      }
 	}
-	
+
 	/*
 	 * this will write out the update calendar and list of user object as serialization object.
 	 */
@@ -205,7 +229,7 @@ public class UI {
 		writeOutCalendar();
 		writeOutUserList();
 	}
-	
+
 	/*
 	 * how we write out the calendar as a serialization object.
 	 */
@@ -224,13 +248,13 @@ public class UI {
 	         out.writeObject(myCalender);
 	         out.close();
 	         fileOut.close();
-	         System.out.printf("Serialized data is saved in testCalendar.ser\n");
+	         System.out.printf("Serialized data was saved in testCalendar.ser\n");
 	      }catch(IOException i)
 	      {
 	          i.printStackTrace();
 	      }
 	}
-	
+
 	/*
 	 * this is how we write out the user list as a serialization object.
 	 */
@@ -244,7 +268,7 @@ public class UI {
 	         out.writeObject(myListUser);
 	         out.close();
 	         fileOut.close();
-	         System.out.printf("Serialized data is saved in testUserList.ser\n");
+	         System.out.printf("Serialized data was saved in testUserList.ser\n");
 	      }catch(IOException i)
 	      {
 	          i.printStackTrace();

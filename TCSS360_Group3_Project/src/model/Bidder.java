@@ -8,8 +8,8 @@ package model;
 *
 */
 public class Bidder extends User {
-	private String myUsername;
-	
+	// Slight alteration. Removed myUsername variable. Instead inherited from User superclass.
+	//  - M. Scott
 	private static final long serialVersionUID = 7526496795622776147L;
 
 	/**
@@ -30,7 +30,7 @@ public class Bidder extends User {
 		if (theItemToBidOn.getBidOf(this.myUsername) == null) {
 			theItemToBidOn.makeBid(this.myUsername, thePrice);
 			return true;
-		}	
+		}
 		return false;
 	}
 }
