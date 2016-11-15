@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import model.Auction;
 import model.Calendar;
+import model.Item;
 import model.NPContact;
 
 public class UINPContact extends UI {
@@ -29,7 +30,6 @@ public class UINPContact extends UI {
 		String optChoice = "Enter your Selection from 1 to";
 
 		boolean exit = false;
-		boolean goBack = false;
 		String userInput;
 		Scanner inputScanner = new Scanner(System.in);
 
@@ -52,11 +52,14 @@ public class UINPContact extends UI {
 				optSel = Integer.parseInt(userInput);
 			} catch (NumberFormatException e) {
 				clearScreen();
+				System.out.println("==========================================================");
 				System.out.println("We encountered an error with your input, please try again.");
+				System.out.println("==========================================================");
 				System.out.println();
 			}
 			if (optSel == 1) {
 				clearScreen();
+				System.out.println(theNPContact.getMyAuctions());
 				if (theNPContact.hasAuctionUpcomingOrLastYear()) {
 					System.out.println("==============================================================================================================================");
 					System.out.println("Sorry, but it appears that your non-profit either has an upcoming auction, or had an auction less than a year ago.");
@@ -80,27 +83,35 @@ public class UINPContact extends UI {
 					}
 				}
 			} else if (optSel == 2) {
-				Auction temp = theNPContact.getLatestAuction();
+				clearScreen();
+				Auction latestAuction = theNPContact.getLatestAuction();
 				GregorianCalendar testDate = null;
-				if (temp != null) {
-					testDate = temp.getDate();
+				if (latestAuction != null) {
+					testDate = latestAuction.getDate();
 
 				}
 				GregorianCalendar todaysDate = (GregorianCalendar)GregorianCalendar.getInstance();
-				if (temp == null || todaysDate.after(testDate.clone())) {
-			
+				if (latestAuction == null || todaysDate.after(testDate.clone())) {
 					System.out.println("================================================");
 					System.out.println("Sorry, but you don't have any upcoming auctions.");
 					System.out.println("================================================\n");
 				} else {
-					
-					System.out.println("Added " + " to the auction.");
+					System.out.println("AuctionCentral: the auctioneer for non-profit organizations.");
+					System.out.println(myCurrentUsername + " logged in as Non-profit organization contact");
+					System.out.println(myCurrentDate);
 					System.out.println();
-					System.out.println("Hit any key to continue: ");
+					System.out.println("Adding item to auction: " + latestAuction.getAuctionName() + "\n");
+					Item itemToAdd = getItemInfo(inputScanner);
+					theNPContact.addItem(latestAuction, itemToAdd);
+					clearScreen();
+					System.out.println("Successfully added " + itemToAdd.getName() + " to " + latestAuction.getAuctionName() + ".");
+					System.out.print("Press any key to continue: ");
 					inputScanner.nextLine();
 					clearScreen();
 				}
 			} else if (optSel == 3) {
+				//print item inventory
+			} else if (optSel == 4) {
 				// exit system
 				System.out.println("Goodbye");
 				exit = true;
@@ -110,11 +121,33 @@ public class UINPContact extends UI {
 		return theNPContact;
 	}
 
-	private static void getAuction(Calendar theCalendar) {
-		GregorianCalendar aDate = (GregorianCalendar) GregorianCalendar.getInstance();
-		theCalendar.getAuctions(aDate);
+	private static Item getItemInfo(Scanner input) {
+		//Item Name (string)ields are: Donor Name (string), Item Description for Bidders (string), and Comment for Auction Central staff (string).
 
-	} 
+		System.out.print("Please enter the item name: ");
+		String itemName = input.nextLine();
+		
+		System.out.print("Please enter the item condition (good, very good, like new, new): ");
+		String condition = input.nextLine();
+		
+		System.out.print("Please enter the item size (small, medium large): ");
+		String size = input.nextLine();
+		
+		System.out.print("Please enter the item's minimum bid (without a $ sign): ");
+		double minBid = Double.parseDouble(input.nextLine());
+		
+		System.out.print("Please enter the item's quantity: ");
+		int quantity =  Integer.parseInt(input.nextLine());
+		
+		Item itemToReturn;
+		try {
+			itemToReturn = new Item(myCalender.getNextItemID() + "", itemName, "", size, minBid, quantity, condition);
+		} catch (IllegalArgumentException ex) {
+			System.out.println("\nSorry, but there was an error your minimum bid. Please re-enter the item information.\n");
+			itemToReturn = getItemInfo(input);
+		}
+		return itemToReturn;
+	}
 	
 	private static void clearScreen(){
 		for(int i = 0; i < 64; i++)
@@ -139,8 +172,8 @@ public class UINPContact extends UI {
 		if (auctionName.equals("c")) {
 			return null;
 		} else {
-			status = getAuctionDateInput(input, auctionDate);
-			responseCode = myCalender.validateAuctionRequest(auctionDate);
+			status = getAuctionDateInput(input, myDate);
+			responseCode = myCalender.validateAuctionRequest(myDate);
 			while ((status != -1 && status != 0 && status != -2) || responseCode != 0) {
 				if (status != -2) {
 					switch(responseCode) {
@@ -215,9 +248,16 @@ public class UINPContact extends UI {
 		if (time[1].equals("PM")) {
 			hour += 12;
 		}
-		myDate.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), hour, 0, 0);
-		theGregCalendar = new GregorianCalendar();
-		theGregCalendar.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), hour, 0, 0);
+		int year = Integer.parseInt(date[2]);
+		int month = Integer.parseInt(date[1]);
+		int day = Integer.parseInt(date[0]);
+		System.out.println(year + " " + month + " " + day);
+		myDate.set(year, month, day, hour, 0, 0);
+		//I have no idea why
+		myDate.add(GregorianCalendar.MONTH, -1);
+		System.out.println(myDate.getTime());
+		//theGregCalendar = new GregorianCalendar();
+		//theGregCalendar.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), hour, 0, 0);
 
 		return 0;
 	}
