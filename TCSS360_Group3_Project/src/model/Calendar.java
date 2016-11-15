@@ -90,7 +90,7 @@ public class Calendar implements Serializable {
 		if (!validateAuctionRequestAtMostOneMonthInFuture(theDate)) {
 			return -3;
 		}
-		if (!validateAuctionRequestOneWeekAhead(theDate)) {
+		if (dateAtLeastOneWeekInFuture(theDate)) {
 			return -4;
 		}
 		
@@ -152,7 +152,7 @@ public class Calendar implements Serializable {
 	 * @param aDate The Desired date of the Auction
 	 * @return True if if the date is equal to or greater than one week in the future
 	 */
-	public boolean validateAuctionRequestOneWeekAhead(GregorianCalendar aDate) {
+	public boolean dateAtLeastOneWeekInFuture(GregorianCalendar aDate) {
 		GregorianCalendar oneWeekInFuture = (GregorianCalendar)GregorianCalendar.getInstance();
 		oneWeekInFuture.add(GregorianCalendar.WEEK_OF_YEAR, 1);
 		if (aDate.before(oneWeekInFuture)) {
