@@ -147,25 +147,30 @@ public class UIBidder {
 	private static void placeBid(Bidder theBidder, Item theItem) {
 		double bid = 0;
 		int choose = 0;
-		System.out.println(myHeadline);
-		do {
-			System.out.println(theItem.getName() + "\t" + theItem.getCondition() + " condition " + theItem.getMinBid());
-			System.out.println(theItem.getDescription() + "\n\n"
-					+ "What would you like to do?\n"
-					+ "1) Place bid on this item.\n"
-					+ "2) Go back\n");
-			choose = myScanner.nextInt();
-		} while (choose < 1 || choose > 2);
-		if(choose == 1){
-			bid = 0;
+		if(!theItem.isBeingBidOnBy(theBidder.getUsername())){
+			System.out.println(myHeadline);
 			do {
-				System.out.println("Enter a bid of least $" + theItem.getMinBid() + "(no dollar sign or period after dollar amount");
-				bid = myScanner.nextDouble();
-			} while (bid < theItem.getMinBid());
-			System.out.println("You have placed a bid of $" + bid + " on " + theItem.getName() + ",\n"
-					+ "AuctionCentral will notify you after the auction ends to let you know if\n"
-					+ "your are the winning bid. Good Luck!\n");
+				System.out.println(theItem.getName() + "\t" + theItem.getCondition() + " condition " + theItem.getMinBid());
+				System.out.println(theItem.getDescription() + "\n\n"
+						+ "What would you like to do?\n"
+						+ "1) Place bid on this item.\n"
+						+ "2) Go back\n");
+				choose = myScanner.nextInt();
+			} while (choose < 1 || choose > 2);
+			if(choose == 1){
+				bid = 0;
+				do {
+					System.out.println("Enter a bid of least $" + theItem.getMinBid() + "(no dollar sign or period after dollar amount");
+					bid = myScanner.nextDouble();
+				} while (bid < theItem.getMinBid());
+				System.out.println("You have placed a bid of $" + bid + " on " + theItem.getName() + ",\n"
+						+ "AuctionCentral will notify you after the auction ends to let you know if\n"
+						+ "your are the winning bid. Good Luck!\n");
+			}
+
+			theBidder.placeBid(theItem, bid);
+		}else {
+			System.out.println("\n\nSorry you have aready made a bid");
 		}
-		theBidder.placeBid(theItem, bid);
 	}
 }
