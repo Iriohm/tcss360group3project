@@ -1,9 +1,9 @@
-
 package ui;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 import model.Auction;
@@ -78,30 +78,68 @@ public class UIStaff extends UI {
 	}
 
 	private static void getAuction(Calendar theCalendar) {
-		int monthSize = 32;
-		java.util.Calendar aDate =  GregorianCalendar.getInstance();
-//		aDate.add(java.util.Calendar.MONTH, +1);
-		List<Auction> auctionList = theCalendar.getAuctions((GregorianCalendar)aDate); 
+		int monthSize = 64;
+		int i = 0, j = 0;
+		java.util.Calendar aDate = GregorianCalendar.getInstance();
+		List<Auction> auctionList = theCalendar.getAuctions((GregorianCalendar) aDate);
 		ArrayList<Integer> displayCalendar = new ArrayList<>(monthSize);
 		displayCalendar.add(0);
-		for(int i = 1; i < monthSize; i++){
+		for (i = 1; i < monthSize; i++) {
 			displayCalendar.add(0);
 		}
-				
-		for(int i = 0; i < auctionList.size(); i++){
+		for (i = 0; i < auctionList.size(); i++) {
 			int temp = auctionList.get(i).getDate().get(java.util.Calendar.DATE);
-			
-	displayCalendar.set(temp,displayCalendar.get(temp)+1);
+			displayCalendar.set(temp, displayCalendar.get(temp) + 1);
 		}
-		for(int i = 1; i < monthSize; i++){
-			System.out.print("|" + i + ":" + displayCalendar.get(i) + "|");
-			if(i%5 == 0) System.out.println("");
+		System.out.println(aDate.getDisplayName(((java.util.Calendar.MONTH)), java.util.Calendar.LONG, Locale.US));
+		for (i = aDate.get(java.util.Calendar.DATE); i <= aDate.getActualMaximum(java.util.Calendar.DATE) + 1; i++) {
+			j++;
+			if (i < 10) {
+				System.out.print("| 0" + i + ":" + displayCalendar.get(i) + " ");
+			} else {
+				System.out.print("| " + i + ":" + displayCalendar.get(i) + " ");
+			}
+			if (j % 5 == 0) {
+				if (i != 30) {
+					System.out.print("|");
 				}
-	} 
-	
-	private static void clearScreen(){
-		for(int i = 0; i < 64; i++)
-		System.out.println();
+				System.out.println("");
+
+				j = 0;
+			}
+		}
+		System.out.print("|");
+		if (i + aDate.get(java.util.Calendar.DATE) >= aDate.getActualMaximum(java.util.Calendar.DATE)) {
+			int daysLeft = (aDate.get(java.util.Calendar.DATE));
+			aDate.add(java.util.Calendar.MONTH, +1);
+			int daysToCount = 0;
+			daysToCount = (aDate.getActualMaximum(java.util.Calendar.DATE) - daysLeft);
+			System.out.println("");
+			System.out.println(aDate.getDisplayName(((java.util.Calendar.MONTH)), java.util.Calendar.LONG, Locale.US));
+			j = 0;
+			for (i = 1; i < (aDate.getActualMaximum(java.util.Calendar.DATE) - daysToCount); i++) {
+				j++;
+				if (i < 10) {
+					System.out.print("| 0" + i + ":" + displayCalendar.get(i) + " ");
+				} else {
+					System.out.print("| " + i + ":" + displayCalendar.get(i) + " ");
+				}
+
+				if (j % 5 == 0) {
+					if (i != 30) {
+						System.out.print("|");
+					}
+					System.out.println("");
+					j = 0;
+				}
+			}
+			System.out.print("|");
+		}
+	}
+
+	private static void clearScreen() {
+		for (int i = 0; i < 64; i++)
+			System.out.println();
 	}
 
 }
