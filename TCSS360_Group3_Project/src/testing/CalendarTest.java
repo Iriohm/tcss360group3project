@@ -272,11 +272,11 @@ public class CalendarTest extends TestCase {
 		aDate.add(GregorianCalendar.WEEK_OF_YEAR, 1);
 		aDate.add(GregorianCalendar.DAY_OF_MONTH, -1);
 		//Exactly six days
-		assertFalse(calendarTest.validateAuctionRequestOneWeekAhead(aDate));
+		assertFalse(calendarTest.dateAtLeastOneWeekInFuture(aDate));
 		aDate.add(GregorianCalendar.DAY_OF_MONTH, -3);
-		assertFalse(calendarTest.validateAuctionRequestOneWeekAhead(aDate));
+		assertFalse(calendarTest.dateAtLeastOneWeekInFuture(aDate));
 		aDate.add(GregorianCalendar.DAY_OF_MONTH, -1000);
-		assertFalse(calendarTest.validateAuctionRequestOneWeekAhead(aDate));
+		assertFalse(calendarTest.dateAtLeastOneWeekInFuture(aDate));
 	}
 	
 	/**
@@ -287,9 +287,9 @@ public class CalendarTest extends TestCase {
 		GregorianCalendar aDate = (GregorianCalendar)GregorianCalendar.getInstance();
 		aDate.add(GregorianCalendar.WEEK_OF_YEAR, 1);
 		//Exactly one week
-		assertTrue(calendarTest.validateAuctionRequestOneWeekAhead(aDate));
+		assertTrue(calendarTest.dateAtLeastOneWeekInFuture(aDate));
 		aDate.add(GregorianCalendar.DAY_OF_MONTH, 10);
-		assertTrue(calendarTest.validateAuctionRequestOneWeekAhead(aDate));
+		assertTrue(calendarTest.dateAtLeastOneWeekInFuture(aDate));
 	}
 	
 	/**

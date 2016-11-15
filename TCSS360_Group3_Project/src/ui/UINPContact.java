@@ -60,7 +60,7 @@ public class UINPContact extends UI {
 					System.out.println("Sorry, but it appears that your non-profit either has an upcoming auction, or had an auction less than a year ago.");
 					System.out.println("You may not submit an auction request at this time. If you have any questions, please call customer support at 1-800-101-6969.");
 					System.out.println("==============================================================================================================================\n");
-				} else if (myCalender.validateAuctionRequestMax25Auctions()) {
+				} else if (!myCalender.validateAuctionRequestMax25Auctions()) {
 					System.out.println("Sorry, but it appears that we have reached our 25 upcoming auctions limit. Please try again at a later date.\n");
 				} else {
 					Auction auctionRequest = getAuctionDetailsFromUser(inputScanner);
@@ -124,21 +124,21 @@ public class UINPContact extends UI {
 		} else {
 			status = getAuctionDateInput(input, auctionDate);
 			responseCode = myCalender.validateAuctionRequest(auctionDate);
-			while (responseCode != -2 && status != -1 && status != 0 && responseCode != 0) {
-				if (status == 0 || status == -1) {
-					System.out.println("There was an error with your proposed date, please try again.");
-				}
-				
-				switch(responseCode) {
-					case -1:
-						System.out.println("There are already two auctions scheduled on this day, please choose another.\n");
-						break;
-					case -3:
-						System.out.println("We are only allowed to schedule auctions within one month into the future. Please choose a closer date.\n");
-						break;
-					case -4:
-						System.out.println("Please choose a date that is AT LEAST one week into the future.\n");
-						break;
+			while ((status != -1 && status != 0 && status != -2) || responseCode != 0) {
+				if (status != -2) {
+					switch(responseCode) {
+						case -1:
+							System.out.println("There are already two auctions scheduled on this day, please choose another.\n");
+							break;
+						case -3:
+							System.out.println("We are only allowed to schedule auctions within one month into the future. Please choose a closer date.\n");
+							break;
+						case -4:
+							System.out.println("\n====================================================================");
+							System.out.println("Please choose a date that is AT LEAST one week into the future.");
+							System.out.println("====================================================================\n");
+							break;
+					}
 				}
 				
 				status = getAuctionDateInput(input, auctionDate);
@@ -168,7 +168,8 @@ public class UINPContact extends UI {
 		
 		System.out.println("Please enter the time you would like your auction to start in the following format: HH [AM/PM] - Ex. 02 PM");
 		String auctionTime = input.nextLine();
-		while (!auctionTime.equals("c") && (auctionTime.indexOf("AM") == -1 || auctionTime.indexOf("PM") == -1)) {
+		
+		while (!auctionTime.equals("c") && (auctionTime.indexOf(" ") == -1 || (auctionTime.indexOf("AM") == -1 && auctionTime.indexOf("PM") == -1))) {
 			System.out.print("There was an error with your input, please try again: ");
 			auctionTime = input.nextLine();
 		}
@@ -179,13 +180,25 @@ public class UINPContact extends UI {
 		
 		String[] date = auctionDay.split("/");
 		String[] time = auctionTime.split(" ");	
-		int hour = Integer.parseInt(time[0]);
+		int hour = 0;
+		try {
+			hour = Integer.parseInt(time[0]);
+		} catch (NumberFormatException e) {
+			clearScreen();
+			System.out.println("We encountered an error with your time input, and must restart auction date input.\n");
+			return -2;
+		}
+		
+		if (hour > 12 || hour < 1) {
+			System.out.println("We encountered an error with your time input, and must restart auction date input.\n");
+			return -2;
+		}
 		
 		if (time[1].equals("PM")) {
 			hour += 12;
 		}
 		
-		theGregCalendar = new GregorianCalendar(Integer.parseInt(date[2]), Integer.parseInt(date[0]), Integer.parseInt(date[1]), hour, 0);
+		theGregCalendar = new GregorianCalendar(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]), hour, 0);
 		//GregorianCalendar(int year, int month, int dayOfMonth, int hourOfDay, int minute) 
 		return 0;
 	}

@@ -51,9 +51,16 @@ public class NPContact extends User {
 		for (int i = 0; i < myAuctions.size(); i++) {
 			//check if had an auction less than a year ago or have an upcoming auction already.
 			if (myAuctions.get(i).getDate().after(oneYearAgo)) {
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
+	}
+	
+	public Auction getLatestAuction() {
+		if (myAuctions.size() == 0) {
+			return null;
+		}
+		return myAuctions.get(myAuctions.size() - 1);
 	}
 }
