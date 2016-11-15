@@ -187,8 +187,8 @@ public class Calendar implements Serializable {
 	public List<Auction> getAuctions(GregorianCalendar theDate) {
 		//sets the start date to look at the day you give it
 		GregorianCalendar startDate = (GregorianCalendar)theDate.clone();
-		//Adds one millisecond since we are includign the time they give us
 		startDate.add(GregorianCalendar.MILLISECOND, -1);
+
 		//sets the end date to 31 days after the day you give it
 		GregorianCalendar endDate = (GregorianCalendar)theDate.clone();
 		endDate.add(GregorianCalendar.DAY_OF_YEAR, 31);
@@ -207,7 +207,6 @@ public class Calendar implements Serializable {
 		
 		return desiredMonth;
 	}
-	
 	/**
 	 * Returns a list of all of the Auctions ever added to the Calendar
 	 * 
@@ -216,7 +215,6 @@ public class Calendar implements Serializable {
 	public List<Auction> getAllAuctions() {
 		return myAuctions;
 	}
-	
 	/**
 	 * Gets the next unique ItemID to be used when creating an Item
 	 * 

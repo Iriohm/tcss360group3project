@@ -146,7 +146,7 @@ public class Auction implements Serializable {
 	 * @return The date associated with the Auction
 	 */
 	public GregorianCalendar getDate() {
-		return myDate;
+		return (GregorianCalendar)myDate.clone();
 	}
 	
 	/**

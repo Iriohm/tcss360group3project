@@ -11,6 +11,18 @@ import junit.framework.*;
 import model.Auction;
 import model.Calendar;
 
+
+
+
+/**
+ * The Calendar class takes care of keeping track of Auction requests and holds all of the Auctions.
+ * This class tests its logic
+ * 
+ * @author Justin Washburn
+ * @version 11/10/2016
+ *
+ */
+
 public class CalendarTest extends TestCase {
 	
 	private Calendar calendarTest;
@@ -212,6 +224,7 @@ public class CalendarTest extends TestCase {
 		Calendar testCalendar = new Calendar();
 		
 		GregorianCalendar aDate = (GregorianCalendar)GregorianCalendar.getInstance();
+		aDate.set(GregorianCalendar.HOUR, 0);
 		aDate.add(GregorianCalendar.DAY_OF_YEAR, 8);
 		assertTrue(testCalendar.validateAuctionRequestTwoPerDay(aDate));
 		Auction upcomingAuction1 = new Auction(aDate, "test");
@@ -285,11 +298,11 @@ public class CalendarTest extends TestCase {
 	@Test
 	public void testdateAtLeastOneWeekInFutureExactlyOneWeekOrMore() {
 		GregorianCalendar aDate = (GregorianCalendar)GregorianCalendar.getInstance();
-		aDate.add(GregorianCalendar.WEEK_OF_YEAR, 1);
+		aDate.add(GregorianCalendar.DAY_OF_YEAR, 7);
 		//Exactly one week
-		assertTrue(calendarTest.validateAuctionRequestAtMostOneMonthInFuture(aDate));
-		aDate.add(GregorianCalendar.DAY_OF_MONTH, 10);
-		assertTrue(calendarTest.validateAuctionRequestAtMostOneMonthInFuture(aDate));
+		assertTrue(calendarTest.dateAtLeastOneWeekInFuture(aDate));
+		aDate.add(GregorianCalendar.DAY_OF_YEAR, 10);
+		assertTrue(calendarTest.dateAtLeastOneWeekInFuture(aDate));
 	}
 	
 	/**
@@ -320,13 +333,11 @@ public class CalendarTest extends TestCase {
 		GregorianCalendar aDate = (GregorianCalendar)GregorianCalendar.getInstance();
 		aDate.add(GregorianCalendar.WEEK_OF_YEAR, 1);
 		for (int i = 0; i < 25; i++) {
-			System.out.println(i);
 			//adds 2 auctions a day until there are 25 auctions
 			aDate.add(GregorianCalendar.HOUR_OF_DAY, 12);
 			Auction temp = new Auction(aDate, "test");
 			assertTrue(testCalendar.validateAuctionRequestMax25Auctions());
 			assertTrue(testCalendar.addAuction(temp));
-			System.out.println(i);
 		}
 		//tries to add 2 auctions over 25
 		aDate.add(GregorianCalendar.HOUR_OF_DAY, 12);
