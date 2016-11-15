@@ -28,7 +28,7 @@ public class UI {
 	private static Calendar myCalender	= new Calendar();
 	private static User myUser = null;
 	//used to generate the current Date.
-	private static Format myFormatter = new SimpleDateFormat("MMMM dd, yyyy");
+	private static Format myFormatter = new SimpleDateFormat("yyyy/MM/dd H:mm:ss a");
 	protected static Date   myTodayDate = GregorianCalendar.getInstance().getTime();
 	protected static String myCurrentDate = myFormatter.format(myTodayDate);
 
