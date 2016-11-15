@@ -31,7 +31,9 @@ public class UI {
 	private static Format myFormatter = new SimpleDateFormat("yyyy/MM/dd H:mm:ss a");
 	protected static Date   myTodayDate = GregorianCalendar.getInstance().getTime();
 	protected static String myCurrentDate = myFormatter.format(myTodayDate);
-
+	
+	private static String fileCaledar = "testCalendar.ser";
+//	private static String fileCaledar = "testCalendar24Auctions.ser";
 	private static ArrayList<User> myListUser = null;
 
 
@@ -39,7 +41,7 @@ public class UI {
 	 * this is the start of the UI.
 	 */
 	public static void beginUI() {
-
+//		writeOutCalendar24Auction();
 		readInData();
 		User chooseUser = choosePreviousOrMakeUser();
 		if(chooseUser != null) {
@@ -186,7 +188,7 @@ public class UI {
 	private static void readCaledar() {
 		try
 	      {
-	         FileInputStream fileIn = new FileInputStream("testCalendar.ser");
+	         FileInputStream fileIn = new FileInputStream(fileCaledar);
 	         ObjectInputStream in = new ObjectInputStream(fileIn);
 	         myCalender = (Calendar) in.readObject();
 	         in.close();
@@ -247,9 +249,49 @@ public class UI {
 //		myCalender.addAuction(testAuction);
 		try
 	      {
-	         FileOutputStream fileOut = new FileOutputStream("testCalendar.ser");
+	         FileOutputStream fileOut = new FileOutputStream(fileCaledar);
 	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
 	         out.writeObject(myCalender);
+	         out.close();
+	         fileOut.close();
+	         System.out.printf("Serialized data was saved in testCalendar.ser\n");
+	      }catch(IOException i)
+	      {
+	          i.printStackTrace();
+	      }
+	}
+	
+	/*
+	 * write the 22 Auction to test the 25 Auctions.
+	 */
+	private static void writeOutCalendar24Auction() {
+		Calendar aCalender = new Calendar();
+		int date = 0;
+		int mounth = 0;
+		Item football = new Item("1", "computer", "ASUS", "Small", 20.0, 1, "great");
+		Item baseball = new Item("2", "pie", "the nothing much", "mid", 20.0, 1, "Very Fine");
+		String nameOfAuction = "";
+		for(int i = 22; i < 46; i++) {
+			date = i;
+			mounth = 10;
+			if(i >= 30) {
+				date = i%31;
+				mounth = 11;
+			}
+			nameOfAuction = "testAuction"+i;
+			Auction testAuction = new Auction(new GregorianCalendar(2016, mounth, date), nameOfAuction);
+			testAuction.addItem(football);
+			testAuction.addItem(baseball);
+			aCalender.addAuction(testAuction);
+		}
+		
+		
+
+		try
+	      {
+	         FileOutputStream fileOut = new FileOutputStream("testCalendar24Auctions.ser");
+	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	         out.writeObject(aCalender);
 	         out.close();
 	         fileOut.close();
 	         System.out.printf("Serialized data was saved in testCalendar.ser\n");
