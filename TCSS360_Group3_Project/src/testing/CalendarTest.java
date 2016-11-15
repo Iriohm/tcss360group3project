@@ -15,7 +15,6 @@ public class CalendarTest extends TestCase {
 	
 	private Calendar calendarTest;
 	private Calendar calendarTests2345;
-	private Calendar calendarTests167;
 	private Auction auctionOne;
 	private Auction auctionSix;
 	private Auction auctionSeven;
@@ -33,6 +32,7 @@ public class CalendarTest extends TestCase {
 		
 		//2000-1-1
 		GregorianCalendar aDate = new GregorianCalendar(2000, 1, 1);
+		aDate.add(GregorianCalendar.HOUR_OF_DAY, 1);
 		Auction testAuction1 = new Auction(((GregorianCalendar)aDate.clone()), "Test1");
 		testAuctions.add(testAuction1); 
 		testAuctions167.add(testAuction1); 
@@ -78,7 +78,7 @@ public class CalendarTest extends TestCase {
 		
 		calendarTest = new Calendar(testAuctions);
 		calendarTests2345 = new Calendar(testAuctions2345);
-		calendarTests167 = new Calendar(testAuctions167);
+		new Calendar(testAuctions167);
 	}
 	
 	/**
@@ -272,11 +272,11 @@ public class CalendarTest extends TestCase {
 		aDate.add(GregorianCalendar.WEEK_OF_YEAR, 1);
 		aDate.add(GregorianCalendar.DAY_OF_MONTH, -1);
 		//Exactly six days
-		assertFalse(calendarTest.dateAtLeastOneWeekInFuture(aDate));
+		assertFalse(calendarTest.validateAuctionRequestOneWeekAhead(aDate));
 		aDate.add(GregorianCalendar.DAY_OF_MONTH, -3);
-		assertFalse(calendarTest.dateAtLeastOneWeekInFuture(aDate));
+		assertFalse(calendarTest.validateAuctionRequestOneWeekAhead(aDate));
 		aDate.add(GregorianCalendar.DAY_OF_MONTH, -1000);
-		assertFalse(calendarTest.dateAtLeastOneWeekInFuture(aDate));
+		assertFalse(calendarTest.validateAuctionRequestOneWeekAhead(aDate));
 	}
 	
 	/**
@@ -287,9 +287,9 @@ public class CalendarTest extends TestCase {
 		GregorianCalendar aDate = (GregorianCalendar)GregorianCalendar.getInstance();
 		aDate.add(GregorianCalendar.WEEK_OF_YEAR, 1);
 		//Exactly one week
-		assertTrue(calendarTest.dateAtLeastOneWeekInFuture(aDate));
+		assertTrue(calendarTest.validateAuctionRequestAtMostOneMonthInFuture(aDate));
 		aDate.add(GregorianCalendar.DAY_OF_MONTH, 10);
-		assertTrue(calendarTest.dateAtLeastOneWeekInFuture(aDate));
+		assertTrue(calendarTest.validateAuctionRequestAtMostOneMonthInFuture(aDate));
 	}
 	
 	/**
