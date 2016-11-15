@@ -14,7 +14,6 @@ import java.util.List;
 *
 **/
 public class NPContact extends User {
-	private Calendar myCalendar;
 	
 	private List<Auction> myAuctions;
 	
@@ -28,10 +27,15 @@ public class NPContact extends User {
     */
 	public NPContact(String theUsername, Calendar theCalendar) {
 		super(theUsername, theCalendar, 2);
-		myCalendar = theCalendar;
 		myAuctions = new ArrayList<Auction>();
 	}
 	
+	/**
+	 * Adds the given item to the given auction, and disallows adding duplicate items.
+	 * @param theAuctionToAddTo The Auction to add the Item to.
+	 * @param theItemToAdd The Item object to add to the Auction.
+	 * @return Returns whether or not the add was successful.
+	 */
 	public boolean addItem(Auction theAuctionToAddTo, Item theItemToAdd) {
 		String itemToAddID = theItemToAdd.getID();
 		List<Item> currentItems = theAuctionToAddTo.getItems();
@@ -45,6 +49,10 @@ public class NPContact extends User {
 		return true;
 	}
 	
+	/**
+	 * Adds an auction to the myCalendar object.
+	 * @param theAuction An auction that the user wants to add to the Calendar.
+	 */
 	public void addAuction(Auction theAuction) {
 		myAuctions.add(theAuction);
 	}
@@ -65,6 +73,10 @@ public class NPContact extends User {
 		return false;
 	}
 	
+	/**
+	 * Gets the most recently added auction.
+	 * @return Returns the latest Auction object.
+	 */
 	public Auction getLatestAuction() {
 		if (myAuctions.size() == 0) {
 			return null;
@@ -72,6 +84,10 @@ public class NPContact extends User {
 		return myAuctions.get(myAuctions.size() - 1);
 	}
 	
+	/**
+	 * Gets a list of this user's past and present auctions.
+	 * @return A list of Auction objects belonging to this user.
+	 */
 	public List<Auction> getMyAuctions() {
 		return myAuctions;
 	}
