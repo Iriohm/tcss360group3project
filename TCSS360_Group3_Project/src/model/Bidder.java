@@ -33,4 +33,9 @@ public class Bidder extends User {
 		}
 		return false;
 	}
+
+	public boolean cancelBid(Item myTestItem) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
