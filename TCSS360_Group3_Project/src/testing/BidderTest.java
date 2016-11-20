@@ -36,4 +36,15 @@ public class BidderTest extends TestCase {
     	//Placing another bid on myTestItem...NOT ALLOWED
     	assertFalse(myTestBidder.placeBid(myTestItem, 7.00));
     }
+    
+    /**
+     * Test method to test that a bid can't be called without  a bid placed
+     * @author Robert hinds
+     */
+    @Test
+    public void testBidCancelledWithoutBidPlace(){
+    	//Canceling a big without having a prior bid...NOT ALLOWED
+    	assertFalse(myTestBidder.cancelBid(myTestItem));
+    }
+    
 }
