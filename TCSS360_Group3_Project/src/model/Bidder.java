@@ -59,6 +59,10 @@ public class Bidder extends User {
 		else if((validateCancelBidGreaterThanDayLimit(theItemToCancelBidOn, theBidder)) == false){
 			return false;
 		}
+		else{
+			//TODO validation to cancel bid
+			//TODO call remove bid method from item class.
+		}
 		return true;
 	}
 	/**
