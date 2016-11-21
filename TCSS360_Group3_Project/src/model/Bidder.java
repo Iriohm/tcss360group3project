@@ -66,9 +66,9 @@ public class Bidder extends User {
 		return true;
 	}
 	/**
-	 * This method validates that the auction is greater than cancellation deadline
+	 * This method validates that the auction is greater than or equal to cancellation deadline
 	 * @author "Robert Hinds"
-	 * @return true if the auction date of the item bid being cancelled is  greater than cancellation deadline, false otherwise. 
+	 * @return true if the auction date of the item bid being cancelled is  greater than or equal to cancellation deadline, false otherwise. 
 	 */
 	public boolean validateCancelBidGreaterThanDayLimit(Item theItemToCancelBidOn, Bidder theBidder) {
 
@@ -101,7 +101,7 @@ public class Bidder extends User {
 				differenceInMillis = theDate.getTimeInMillis() - theAuctionList.get(i).getDate().getTimeInMillis();
 				diffenceInDays = differenceInMillis / (24 * 60 * 60 * 1000);
 				
-				if ( diffenceInDays > dayLimitToCancel) {
+				if ( diffenceInDays >= dayLimitToCancel) {
 					returnValue = true;
 				}
 				else{
