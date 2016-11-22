@@ -69,11 +69,78 @@ public class NPContactTest extends TestCase {
     	Calendar aCalender = new Calendar();
     	Item aTestItem = new Item("theID", "Beanie Baby", "Brand-new Beanie Baby", "Small", 5.00, 1, "New in box");
     	Item aTestItem2 = new Item("ID2", "Seahawks shirt", "Seahawks shirt", "Small", 5.00, 1, "New");
-    	Auction testAuction = new Auction(new GregorianCalendar(2016, 11, 19), "im a auctions");
+    	GregorianCalendar date = (GregorianCalendar) GregorianCalendar.getInstance();
+    	date.add(GregorianCalendar.DAY_OF_YEAR, 12);
+    	Auction testAuction = new Auction(date, "im a auctions");
     	testAuction.addItem(aTestItem2);
     	testAuction.addItem(aTestItem);
     	aCalender.addAuction(testAuction);
     	myTestContact.addAuction(testAuction);
     	assertEquals(0, myTestContact.removeAuction(aCalender, testAuction));
+    }
+    
+    @Test
+    public void testRemoveAuctionNPNoAuctions() {
+    	Calendar aCalender = new Calendar();
+    	Item aTestItem = new Item("theID", "Beanie Baby", "Brand-new Beanie Baby", "Small", 5.00, 1, "New in box");
+    	Item aTestItem2 = new Item("ID2", "Seahawks shirt", "Seahawks shirt", "Small", 5.00, 1, "New");
+    	GregorianCalendar date = (GregorianCalendar) GregorianCalendar.getInstance();
+    	date.add(GregorianCalendar.DAY_OF_YEAR, 12);
+    	Auction testAuction = new Auction(date, "im a auctions");
+    	testAuction.addItem(aTestItem2);
+    	testAuction.addItem(aTestItem);
+    	aCalender.addAuction(testAuction);
+//    	myTestContact.addAuction(testAuction);
+    	assertEquals(-3, myTestContact.removeAuction(aCalender, testAuction));
+    }
+    
+    @Test
+    public void testRemoveAuctionSomeOneElesNPAuctions() {
+    	Calendar aCalender = new Calendar();
+    	Item aTestItem = new Item("theID", "Beanie Baby", "Brand-new Beanie Baby", "Small", 5.00, 1, "New in box");
+    	Item aTestItem2 = new Item("ID2", "Seahawks shirt", "Seahawks shirt", "Small", 5.00, 1, "New");
+    	GregorianCalendar date = (GregorianCalendar) GregorianCalendar.getInstance();
+    	date.add(GregorianCalendar.DAY_OF_YEAR, 12);
+    	Auction testAuction = new Auction(date, "im a auctions");
+    	Auction testAuction2 = new Auction(date, "im someone else");
+    	testAuction.addItem(aTestItem2);
+    	testAuction.addItem(aTestItem);
+    	aCalender.addAuction(testAuction);
+    	aCalender.addAuction(testAuction2);
+    	myTestContact.addAuction(testAuction);
+    	NPContact someone = new NPContact("someone", aCalender);
+    	someone.addAuction(testAuction2);
+    	assertEquals(-4, myTestContact.removeAuction(aCalender, testAuction2));
+    }
+    
+    @Test
+    public void testRemoveAuctionTwoDayWay() {
+    	Calendar aCalender = new Calendar();
+    	Item aTestItem = new Item("theID", "Beanie Baby", "Brand-new Beanie Baby", "Small", 5.00, 1, "New in box");
+    	Item aTestItem2 = new Item("ID2", "Seahawks shirt", "Seahawks shirt", "Small", 5.00, 1, "New");
+    	GregorianCalendar date = (GregorianCalendar) GregorianCalendar.getInstance();
+    	date.add(GregorianCalendar.DAY_OF_YEAR, 2);
+    	Auction testAuction = new Auction(date, "im a auctions");
+    	testAuction.addItem(aTestItem2);
+    	testAuction.addItem(aTestItem);
+    	aCalender.addAuction(testAuction);
+    	myTestContact.addAuction(testAuction);
+    	assertEquals(-1, myTestContact.removeAuction(aCalender, testAuction));
+    }
+    
+    @Test
+    public void testRemoveAuctionNoInCalendar() {
+    	Calendar aCalender = new Calendar();
+    	Item aTestItem = new Item("theID", "Beanie Baby", "Brand-new Beanie Baby", "Small", 5.00, 1, "New in box");
+    	Item aTestItem2 = new Item("ID2", "Seahawks shirt", "Seahawks shirt", "Small", 5.00, 1, "New");
+    	GregorianCalendar date = (GregorianCalendar) GregorianCalendar.getInstance();
+    	date.add(GregorianCalendar.DAY_OF_YEAR, 12);
+    	Auction testAuction = new Auction(date, "im a auctions");
+    	Auction testAuction2 = new Auction(date, "im someone else");
+    	testAuction.addItem(aTestItem2);
+    	testAuction.addItem(aTestItem);
+    	aCalender.addAuction(testAuction2);
+    	myTestContact.addAuction(testAuction);
+    	assertEquals(-2, myTestContact.removeAuction(aCalender, testAuction));
     }
 }
