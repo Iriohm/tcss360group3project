@@ -20,7 +20,7 @@ import model.Item;
  * @version 11/11/2016
  *
  */
-public class UIBidder {
+public class UIBidder extends UI{
 	private static Scanner myScanner = new Scanner(System.in);
 	private static String myHeadline = null;
 

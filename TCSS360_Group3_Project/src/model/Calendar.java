@@ -228,4 +228,28 @@ public class Calendar implements Serializable {
 		myNextItemID++;
 		return myNextItemID;
 	}
+	
+	/**
+	 * @author David Nowlin
+	 * check in 3
+	 * 
+	 * this look for a NP actions and remove it. return 0 if safely remove from the list. return -1 if no auction in the past two day.
+	 * return -2 if the NP auction can't be found.
+	 * 
+	 * @param theAuction
+	 * @return return 0 if safely remove from the list. return -1 if no auction in the past two day.
+	 * return -2 if the NP auction can't be found.
+	 */
+	public int removeNPAuction(Auction theAuction) {//, String theNpUserName, String theAuctionName) {
+		GregorianCalendar twoDayForrowed = (GregorianCalendar) GregorianCalendar.getInstance();
+		twoDayForrowed.add(GregorianCalendar.DAY_OF_YEAR, 2);
+		List<Auction> nextTwoDayAuction = getAuctions(twoDayForrowed);
+		if(nextTwoDayAuction.isEmpty()){
+			return -1; // no auction past two days.
+		} else if(nextTwoDayAuction.contains(theAuction)) {
+			myAuctions.remove(theAuction); 
+			return 0; // found and remove the actions
+		}
+		return -2; // could not find there actions in the system
+	}
 }
