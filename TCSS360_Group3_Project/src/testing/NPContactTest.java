@@ -63,4 +63,17 @@ public class NPContactTest extends TestCase {
     	
     	assertFalse(myTestContact.addItem(auctionToAddTo, aTestItem));
     }
+    
+    @Test
+    public void testRemoveAuction() {
+    	Calendar aCalender = new Calendar();
+    	Item aTestItem = new Item("theID", "Beanie Baby", "Brand-new Beanie Baby", "Small", 5.00, 1, "New in box");
+    	Item aTestItem2 = new Item("ID2", "Seahawks shirt", "Seahawks shirt", "Small", 5.00, 1, "New");
+    	Auction testAuction = new Auction(new GregorianCalendar(2016, 11, 19), "im a auctions");
+    	testAuction.addItem(aTestItem2);
+    	testAuction.addItem(aTestItem);
+    	aCalender.addAuction(testAuction);
+    	myTestContact.addAuction(testAuction);
+    	assertEquals(0, myTestContact.removeAuction(aCalender, testAuction));
+    }
 }

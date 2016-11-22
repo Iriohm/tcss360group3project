@@ -244,6 +244,9 @@ public class Calendar implements Serializable {
 		GregorianCalendar twoDayForrowed = (GregorianCalendar) GregorianCalendar.getInstance();
 		twoDayForrowed.add(GregorianCalendar.DAY_OF_YEAR, 2);
 		List<Auction> nextTwoDayAuction = getAuctions(twoDayForrowed);
+		System.out.println(theAuction.getAuctionName());
+		System.out.println(nextTwoDayAuction.size());
+		System.out.println(myAuctions.size());
 		if(nextTwoDayAuction.isEmpty()){
 			return -1; // no auction past two days.
 		} else if(nextTwoDayAuction.contains(theAuction)) {
