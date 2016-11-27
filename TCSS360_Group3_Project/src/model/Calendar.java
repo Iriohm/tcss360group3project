@@ -212,15 +212,15 @@ public class Calendar implements Serializable {
 		return desiredMonth;
 	}
 	
-	//this needs a junit test.
-	/**
+/*	//this needs a junit test.
+	*//**
 	 * Gets the auctions for today's date
 	 * 
 	 * @param theDate The date to start the list of Auctions
 	 * @return The list of Auctions on the Date given
 	 * @author Robert Hinds
 	 *  
-	 */
+	 *//*
 	public List<Auction> getTodayAuctions(GregorianCalendar theDate) {
 		//sets the start date to look at the day you give it
 		GregorianCalendar startDate = (GregorianCalendar)theDate.clone();
@@ -243,6 +243,18 @@ public class Calendar implements Serializable {
 		}
 		
 		return desiredDay;
+	}*/
+	
+	/**
+	 * Developer only. Needed to be able to test other methods. Adds an Auction to the Calendar.
+	 *  Request IS NOT validated before being added
+	 * 
+	 * @param theAuction The auction to be added to the calendar
+	 * @return True if the Auction was added
+	 */
+	public boolean devOnlyAddAuctionByPassValidation(Auction theAuction) {
+			return myAuctions.add(theAuction);
+		
 	}
 	
 	

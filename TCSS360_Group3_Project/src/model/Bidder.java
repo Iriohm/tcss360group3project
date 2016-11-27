@@ -48,30 +48,24 @@ public class Bidder extends User {
 	/**
 	 * This method allows the user to cancel a bid on an Item object.
 	 * @author "Robert Hinds"
+	 * @return true if bid was removed, false otherwise.
 	 */
 	public boolean cancelBid(Item theItemToCancelBidOn, Bidder theBidder) {
-		// TODO Auto-generated method stub
-
-		
 		if(theItemToCancelBidOn.isBeingBidOnBy(theBidder.myUsername) == false){
 			return false;
 		}
-		else if((validateCancelBidGreaterThanDayLimit(theItemToCancelBidOn, theBidder)) == false){
+		if((validateCancelBidGreaterThanDayLimit(theItemToCancelBidOn, theBidder)) == false){
 			return false;
 		}
-		else{
-			//TODO validation to cancel bid
-			//TODO call remove bid method from item class.
-		}
-		return true;
+			return theItemToCancelBidOn.getBidChain().removeBid(getUsername());		
 	}
 	/**
 	 * This method validates that the auction is greater than or equal to cancellation deadline
 	 * @author "Robert Hinds"
-	 * @return true if the auction date of the item bid being cancelled is  greater than or equal to cancellation deadline, false otherwise. 
+	 * @return true if the auction date of the item bid being cancelled is  greater than cancellation deadline, false otherwise. 
 	 */
 	public boolean validateCancelBidGreaterThanDayLimit(Item theItemToCancelBidOn, Bidder theBidder) {
-
+		
 		int i = 0, j = 0;
 		int sizeOfListOfAuctionItems = 0;
 		int dayLimitToCancel = 2;
@@ -79,12 +73,10 @@ public class Bidder extends User {
 		long diffenceInDays = 0;
 		
 		GregorianCalendar theDate = (GregorianCalendar) GregorianCalendar.getInstance();
-		//TODO remove add day.
-		//theDate.add(java.util.Calendar.DATE, +15);
 		boolean foundItem = false;
 		boolean returnValue = false;
-		List<Auction> theAuctionList = theBidder.getCalendar().getTodayAuctions(theDate);
-		
+		//TODO refactor this area if time allows.
+		List<Auction> theAuctionList = theBidder.getCalendar().getAuctions(theDate);
 		while (i < theAuctionList.size() && foundItem == false) {
 			sizeOfListOfAuctionItems = theAuctionList.get(i).getItems().size();
 			for (j = 0; j < sizeOfListOfAuctionItems; j++) {
@@ -94,11 +86,11 @@ public class Bidder extends User {
 				}
 			}
 			if (foundItem == true) {
-				//this check kinda iffy.
-				//theDate.add(java.util.Calendar.DATE, 4);
-				
+				//this check kinda iffy.				
 				//converts dates into milliseconds then converts them to days.
-				differenceInMillis = theDate.getTimeInMillis() - theAuctionList.get(i).getDate().getTimeInMillis();
+				differenceInMillis =  theAuctionList.get(i).getDate().getTimeInMillis() - theDate.getTimeInMillis() ;
+			//	double temp =  differenceInMillis / (24 * 60 * 60 * 1000);
+				
 				diffenceInDays = differenceInMillis / (24 * 60 * 60 * 1000);
 				
 				if ( diffenceInDays >= dayLimitToCancel) {
@@ -108,7 +100,7 @@ public class Bidder extends User {
 					returnValue = false;
 				}
 			}
-
+			i++;
 		}
 		return returnValue;
 	}
