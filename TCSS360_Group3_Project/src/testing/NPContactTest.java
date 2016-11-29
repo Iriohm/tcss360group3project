@@ -64,6 +64,7 @@ public class NPContactTest extends TestCase {
     	assertFalse(myTestContact.addItem(auctionToAddTo, aTestItem));
     }
     
+    
     @Test
     public void testRemoveAuction() {
     	Calendar aCalender = new Calendar();
@@ -78,6 +79,7 @@ public class NPContactTest extends TestCase {
     	myTestContact.addAuction(testAuction);
     	assertEquals(0, myTestContact.removeAuction(aCalender, testAuction));
     }
+    
     
     @Test
     public void testRemoveAuctionNPNoAuctions() {
