@@ -37,12 +37,19 @@ public class Calendar implements Serializable {
 	private int myCurrentAuctions;
 	
 	/**
+	 * The maximum number of upcoming Auctions allowed.
+	 * @author "Robert Hinds"
+	 */
+	private int myMaxAuctionsLimit;
+	
+	/**
 	 * Creates a Calendar with an empty list of Auctions
 	 */
 	public Calendar() {
 		myAuctions = new LinkedList<Auction>();
 		myNextItemID = 0;
 		myCurrentAuctions = 0;
+		myMaxAuctionsLimit = 25;
 	}
 	/**
 	 * Creates a Calendar with the given list of auctions for testing purposes
@@ -52,7 +59,36 @@ public class Calendar implements Serializable {
 		myAuctions = theAuctions;
 		myNextItemID = 0;
 		myCurrentAuctions = 0;
-		
+		myMaxAuctionsLimit = 25;
+	}
+	
+	/**
+	 * @author "Robert Hinds"
+	 * @return the myMaxAuctionsLimit
+	 */
+	public int getMaxAuctionsLimit() {
+		return myMaxAuctionsLimit;
+	}
+	
+	/**
+	 * Sets current maximum number of upcoming Auctions allowed
+	 * if value is validated true.
+	 * @param theMaxAuctions Maximum number of Auctions.
+	 * @return true if value given does not set the auction limit to zero, below zero and less than the number of upcoming auctions. False otherwise.
+	 */
+	public boolean setMaxAuctionsLimit(int theMaxAuctions) {
+		boolean returnValue = false;	
+		if( theMaxAuctions <= 0){
+			returnValue = false;
+		}
+		else if(theMaxAuctions <= this.getUpcomingAuctionsNumber()){
+			returnValue = false;
+		}
+		else{
+		this.myMaxAuctionsLimit = theMaxAuctions;
+		returnValue = true;
+		}
+		return returnValue;
 	}
 	
 	/**
@@ -121,6 +157,7 @@ public class Calendar implements Serializable {
 		return true;
 	}
 	
+	//TODO change 25 into myMaxAuctionsLimit and test. maybe make the limit number be grabbed from a properties file.
 	/**
 	 * Returns true if there are currently less than 25 auctions scheduled for the future
 	 * 
