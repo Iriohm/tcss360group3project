@@ -20,11 +20,11 @@ import model.Item;
  * @version 11/11/2016
  *
  */
-public class UIBidder {
+public class UIBidder extends UI{
 	private static Scanner myScanner = new Scanner(System.in);
 	private static String myHeadline = null;
 
-	private static Format myFormatter = new SimpleDateFormat("MMMM dd, yyyy");
+	private static Format myFormatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 	protected static Date   myTodayDate = GregorianCalendar.getInstance().getTime();
 	protected static String myCurrentDate = myFormatter.format(myTodayDate);
 
@@ -146,7 +146,7 @@ public class UIBidder {
 			System.out.print("\nType Item ID to get more information and bid on the item :");
 			choose = myScanner.nextInt();
 		} while (choose < 1 || (itemlist.size()) < choose);
-		placeBid(theBidder, itemlist.get((choose-1)), theAuction);
+		placeBid(theBidder, itemlist.get((choose-1)));
 	}
 
 	/*
@@ -154,31 +154,22 @@ public class UIBidder {
 	 *
 	 * Michael: Altered to pass in an Auction, so placeBid() could call viewItem() to return to the previous screen.
 	 */
-	private static void placeBid(Bidder theBidder, Item theItem, Auction theAuction) {
+	private static void placeBid(Bidder theBidder, Item theItem) {
+		if	(theItem.isBeingBidOnBy(theBidder.getUsername())) {
+			System.out.println("You've already bid on this item!\n");
+			return;
+		} 
 		double bid = 0;
 		int choose = 0;
 		System.out.println(myHeadline);
 		do {
+			choose = 0;
 			System.out.println(theItem.getName() + "\t" + theItem.getCondition() + " condition " + theItem.getMinBid());
 			System.out.println(theItem.getDescription() + "\n\n"
 					+ "What would you like to do?\n"
 					+ "1) Place bid on this item.\n"
 					+ "2) Go back\n");
 			choose = myScanner.nextInt();
-
-			// Michael: Created an extra set of if statements to ensure the user cannot bid on something
-			// they've already bid on, or on an auction past its expiration date.
-			if	(theItem.isBeingBidOnBy(theBidder.getUsername())) {
-				System.out.println("You've already bid on this item!\n");
-
-				choose = 0;
-			} else if	(!theAuction.validateItemAddAuctionDate()) {
-				System.out.println("You can't bid on an item after its auction has expired!\n");
-
-				choose = 0;
-			}
-
-
 		} while (choose < 1 || choose > 2);
 		if(choose == 1){
 				bid = 0;
@@ -191,39 +182,9 @@ public class UIBidder {
 						+ "yours was the winning bid. Good Luck!\n");
 
 				theBidder.placeBid(theItem, bid);
+		}else if (choose == 2) {
+			return;
 
-		} else if (choose == 2) {
-			// Added a proper "go back" function
-			viewItem(theBidder, theAuction);
-
-		if(!theItem.isBeingBidOnBy(theBidder.getUsername())){
-			System.out.println(myHeadline);
-			do {
-				System.out.println(theItem.getName() + "\t" + theItem.getCondition() + " condition " + theItem.getMinBid());
-				System.out.println(theItem.getDescription() + "\n\n"
-						+ "What would you like to do?\n"
-						+ "1) Place bid on this item.\n"
-						+ "2) Go back\n");
-				choose = myScanner.nextInt();
-			} while (choose < 1 || choose > 2);
-			if(choose == 1){
-				bid = 0;
-				do {
-					System.out.println("Enter a bid of least $" + theItem.getMinBid() + "(no dollar sign or period after dollar amount");
-					bid = myScanner.nextDouble();
-				} while (bid < theItem.getMinBid());
-				System.out.println("You have placed a bid of $" + bid + " on " + theItem.getName() + ",\n"
-						+ "AuctionCentral will notify you after the auction ends to let you know if\n"
-						+ "your are the winning bid. Good Luck!\n");
-			}
-
-			theBidder.placeBid(theItem, bid);
-		}else {
-			System.out.println("\n\nSorry you have aready made a bid");
-
-		}
-
-	}
-
+		} 
 	}
 }

@@ -140,7 +140,9 @@ public class Calendar implements Serializable {
 	 */
 	public boolean validateAuctionRequestAtMostOneMonthInFuture(GregorianCalendar aDate) {
 		GregorianCalendar oneMonthInFuture = (GregorianCalendar)GregorianCalendar.getInstance();
+	//	System.out.println(aDate.getTime());
 		oneMonthInFuture.add(GregorianCalendar.MONTH, 1);
+		//System.out.println(oneMonthInFuture.getTime());
 		if (aDate.after(oneMonthInFuture)) {
 			return false;
 		}
@@ -154,7 +156,9 @@ public class Calendar implements Serializable {
 	 */
 	public boolean dateAtLeastOneWeekInFuture(GregorianCalendar aDate) {
 		GregorianCalendar oneWeekInFuture = (GregorianCalendar)GregorianCalendar.getInstance();
+		System.out.println(aDate.getTime());
 		oneWeekInFuture.add(GregorianCalendar.WEEK_OF_YEAR, 1);
+		System.out.println(oneWeekInFuture.getTime());
 		if (aDate.before(oneWeekInFuture)) {
 			return false;
 		}
@@ -207,6 +211,53 @@ public class Calendar implements Serializable {
 		
 		return desiredMonth;
 	}
+	
+/*	//this needs a junit test.
+	*//**
+	 * Gets the auctions for today's date
+	 * 
+	 * @param theDate The date to start the list of Auctions
+	 * @return The list of Auctions on the Date given
+	 * @author Robert Hinds
+	 *  
+	 *//*
+	public List<Auction> getTodayAuctions(GregorianCalendar theDate) {
+		//sets the start date to look at the day you give it
+		GregorianCalendar startDate = (GregorianCalendar)theDate.clone();
+		startDate.add(GregorianCalendar.DATE, -1);
+
+		//sets the end date to 1 days after the day you give it
+		GregorianCalendar endDate = (GregorianCalendar)theDate.clone();
+		endDate.add(GregorianCalendar.DATE, +1);
+		endDate.add(GregorianCalendar.MILLISECOND, 1);
+		LinkedList<Auction> desiredDay = new LinkedList<Auction>();
+		for (int i = 0; i < myAuctions.size(); i++) {
+			
+			Auction tempAuction = myAuctions.get(i);
+			if (tempAuction.getDate().after(startDate) &&
+				tempAuction.getDate().before(endDate)) {
+				
+				
+				desiredDay.add(tempAuction);
+			}
+		}
+		
+		return desiredDay;
+	}*/
+	
+	/**
+	 * Developer only. Needed to be able to test other methods. Adds an Auction to the Calendar.
+	 *  Request IS NOT validated before being added
+	 * 
+	 * @param theAuction The auction to be added to the calendar
+	 * @return True if the Auction was added
+	 */
+	public boolean devOnlyAddAuctionByPassValidation(Auction theAuction) {
+			return myAuctions.add(theAuction);
+		
+	}
+	
+	
 	/**
 	 * Returns a list of all of the Auctions ever added to the Calendar
 	 * 
@@ -223,5 +274,32 @@ public class Calendar implements Serializable {
 	public int getNextItemID() {
 		myNextItemID++;
 		return myNextItemID;
+	}
+	
+	/**
+	 * @author David Nowlin
+	 * check in 3
+	 * 
+	 * this look for a NP actions and remove it. return 0 if safely remove from the list. return -1 if no auction in the past two day.
+	 * return -2 if the NP auction can't be found.
+	 * 
+	 * @param theAuction
+	 * @return return 0 if safely remove from the list. return -1 if no auction in the past two day.
+	 * return -2 if the NP auction can't be found.
+	 */
+	public int removeNPAuction(Auction theAuction) {//, String theNpUserName, String theAuctionName) {
+		GregorianCalendar twoDayForrowed = (GregorianCalendar) GregorianCalendar.getInstance();
+		twoDayForrowed.add(GregorianCalendar.DAY_OF_YEAR, 2);
+		List<Auction> nextTwoDayAuction = getAuctions(twoDayForrowed);
+		System.out.println(theAuction.getAuctionName());
+		System.out.println(nextTwoDayAuction.size());
+		System.out.println(myAuctions.size());
+		if(nextTwoDayAuction.isEmpty()){
+			return -1; // no auction past two days.
+		} else if(nextTwoDayAuction.contains(theAuction)) {
+			myAuctions.remove(theAuction); 
+			return 0; // found and remove the actions
+		}
+		return -2; // could not find there actions in the system
 	}
 }
