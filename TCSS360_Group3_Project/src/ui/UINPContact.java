@@ -242,7 +242,7 @@ public class UINPContact extends UI {
 					}
 				}
 				
-				status = getAuctionDateInput(input, auctionDate);
+				status = getAuctionDateInput(input, myDate);
 				responseCode = myCalender.validateAuctionRequest((GregorianCalendar)auctionDate.clone());
 			}
 		}

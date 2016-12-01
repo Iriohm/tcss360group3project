@@ -85,6 +85,34 @@ public class NPContact extends User {
 	}
 	
 	/**
+	 * 
+	 * @author David Nowlin
+	 * check in 3
+	 * 
+	 * it look thought the np actions and the calendar to remove the auction.
+	 * 
+	 * @param theCalendar main calendar
+	 * @param theAction look for actions
+	 * @return return -3 if the Np has no Auctions. return -4 if it not that Np Action.
+	 *  if problem with the calendar removeNPAuctions return that values. return 0 if done successfully.
+	 */
+	public int removeAuction(Calendar theCalendar, Auction theAction)	{
+		int noList = -3;
+		if(myAuctions.isEmpty()){
+			return noList; // the actions not in the list
+		}else if (myAuctions.contains(theAction)) {
+			int removeSaft = theCalendar.removeNPAuction(myAuctions.get(myAuctions.indexOf(theAction)));
+			if(removeSaft != 0) {
+				return removeSaft;
+			}
+			myAuctions.remove(theAction);
+			return 0;
+		}
+		
+		return -4;
+	}
+	
+	/**
 	 * Gets a list of this user's past and present auctions.
 	 * @return A list of Auction objects belonging to this user.
 	 */
