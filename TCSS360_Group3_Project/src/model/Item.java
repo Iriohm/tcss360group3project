@@ -36,7 +36,9 @@ public class Item implements Serializable {
 
 	/** The top (dummy) node of this Item's Bid chain. */
 	private Bid myBidChain;
-
+	
+	/** The Auction this item is associated with. */
+	private Auction myAuction;
 
 	/**
 	 * A basic constructor for Items.
@@ -56,6 +58,36 @@ public class Item implements Serializable {
 		myDescription = theDescription;
 		mySize = theSize;
 		myCondition = theCondition;
+		myAuction = null;
+
+		setMinBid(theMinimumBid);
+		setQuantity(theQuantity);
+
+		myBidChain = new Bid();
+
+	}
+	
+	
+	/**
+	 * A basic constructor for Items, which also adds them to some Auction.
+	 *
+	 * @param theID The Item ID.
+	 * @param theName The name of the Item.
+	 * @param theDescription A description of the Item.
+	 * @param theSize The size of the Item. Should be either small, medium, or large.
+	 * @param theMinimumBid The minimum bid that can be made on the Item. Must be > 0
+	 * @param theQuantity The quantity of the Item. Must be > 0
+	 * @param theCondition The condition of the Item. Should be either acceptable, good, very good, like new, or new.
+	 * @param theAuction
+	 */
+	public Item(String theID, String theName, String theDescription, String theSize, double theMinimumBid,
+					int theQuantity, String theCondition, Auction theAuction) {
+		myID = theID;
+		myName = theName;
+		myDescription = theDescription;
+		mySize = theSize;
+		myCondition = theCondition;
+		myAuction = theAuction;
 
 		setMinBid(theMinimumBid);
 		setQuantity(theQuantity);
@@ -64,6 +96,7 @@ public class Item implements Serializable {
 
 	}
 
+	
 	// Getters
 	public String getID() { return myID; }
 	public String getName() { return myName; }
