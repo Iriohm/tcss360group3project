@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import dataStorage.SerializeData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,13 +34,11 @@ import model.User;
 public class AddUser {
 
 
-	private static List<User> myListUser;
+	private static SerializeData myData;
 	
-	private static Calendar myCalendar;
-	
-	public static void addUser(Stage theStage, List<User> theUsers, Calendar theCalendar) {
-		myListUser = theUsers;
-		myCalendar = theCalendar;
+	public static void addUser(Stage theStage, SerializeData theData) {
+
+		myData = theData;
 		setupAddUser(theStage);
 	}
 	
@@ -119,6 +118,7 @@ public class AddUser {
          	  */
              @Override
              public void handle(ActionEvent e) {
+            	 List<User> theUsers = myData.getUsers();
             	 String userID = userTextField.getText();
             	 String userType = userTypes.getValue();
             	 if (userType == null) {
@@ -126,50 +126,31 @@ public class AddUser {
                       actiontarget.setText("Select user type");
                       return;
             	 }
-            	 for (int i = 0; i < myListUser.size(); i++) {
-            		 if (userID.equals(myListUser.get(i).getUsername())) {
+            	 for (int i = 0; i < theUsers.size(); i++) {
+            		 if (userID.equals(theUsers.get(i).getUsername())) {
                          actiontarget.setFill(Color.FIREBRICK);
                          actiontarget.setText("UserID already exists");
                          return;
             		 }
             	 }
+            	 Calendar theCalendar = myData.getCalendar();
             	 User newUser;
             	 if (userType.equals("Staff")) {
-            		 newUser = new Staff(userID, myCalendar);
-            		 myListUser.add(newUser);
+            		 newUser = new Staff(userID, theCalendar);
+            		 theUsers.add(newUser);
             		 Authenticate.setupAuthenticate(primaryStage);
             	 } else  if (userType.equals("NPContact")) {
-            		 newUser = new NPContact(userID, myCalendar);
-            		 myListUser.add(newUser);
+            		 newUser = new NPContact(userID, theCalendar);
+            		 theUsers.add(newUser);
             		 Authenticate.setupAuthenticate(primaryStage);
             	 } else  if (userType.equals("Bidder")) {
-            		 newUser = new Bidder(userID, myCalendar);
-            		 myListUser.add(newUser);
+            		 newUser = new Bidder(userID, theCalendar);
+            		 theUsers.add(newUser);
             		 Authenticate.setupAuthenticate(primaryStage);
             	 }
-            	 writeOutUserList();
+            	// myData.writeOutUserList();
              }             
          });
     }
-	/*
-	 * this is how we write out the user list as a serialization object.
-	 */
-	private static void writeOutUserList() {
-//		myListUser = new ArrayList<User>();
-//		myListUser.add(new Bidder("davidTest", myCalender));
-		try
-	      {
-	         FileOutputStream fileOut =new FileOutputStream("testUserList.ser");
-	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-	         out.writeObject(myListUser);
-	         out.close();
-	         fileOut.close();
-	         System.out.printf("Serialized data was saved in testUserList.ser\n");
-	      }catch(IOException i)
-	      {
-	          i.printStackTrace();
-	      }
-	}
-    
-    
+
 }

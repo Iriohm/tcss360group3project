@@ -2,21 +2,18 @@ package gui;
 
 
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
 
+import java.util.List;
+
+import dataStorage.SerializeData;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -26,6 +23,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Bidder;
 import model.Calendar;
 import model.NPContact;
@@ -43,15 +41,17 @@ import model.User;
 */
 public class Authenticate extends Application {
 
-	public static final String CALENDAR_SER = "testCalendar.ser";
+
 			
-	private static  ArrayList<User> myListUser;
+	private static List<User> myListUser;
 	private static Calendar myCalendar;
 	private static Stage myStage;
+	private static SerializeData myData;
 
-	public static void beginUI(String[] args) {
-		readUser();
-		readCalendar();
+	public static void beginUI(String[] args, SerializeData theData) {
+		myListUser = theData.getUsers();
+		myCalendar = theData.getCalendar();
+		myData = theData;
 		launch(args);
 		
 		
@@ -67,6 +67,16 @@ public class Authenticate extends Application {
     public void start(Stage primaryStage) {
     	myStage = primaryStage;
         primaryStage.setTitle("Auction Central");
+        
+        /**
+         * Write out data on window close
+         */
+        myStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                myData.writeOutCalendar();
+                myData.writeOutUserList();
+            }
+        });        
         setupAuthenticate(myStage);
     }
     
@@ -123,7 +133,7 @@ public class Authenticate extends Application {
          	   grid.getChildren().remove(actiontarget);*/
          	   //scenetitle.setText("Hello, New User!");
         	  // userName.setText("Desired user ID");
-        	   AddUser.addUser(theStage, myListUser, myCalendar);
+        	   AddUser.addUser(theStage, myData);
         	   
         	   
         	   
@@ -150,7 +160,7 @@ public class Authenticate extends Application {
             	for (int i = 0; i < myListUser.size(); i++) {
             		if (userInput.equals(myListUser.get(i).getUsername())) {
             			if (myListUser.get(i).getClass() == Staff.class) {
-            				StaffGUI.startStaffGUI(myStage, myListUser, myCalendar);
+            				StaffGUI.startStaffGUI(myStage, myListUser.get(i), myData);
             			} else if (myListUser.get(i).getClass() == NPContact.class) {
             				//ToDO call NPUI
             			} else if (myListUser.get(i).getClass() == Bidder.class) {
@@ -167,49 +177,5 @@ public class Authenticate extends Application {
         });
     }
         
-    
-    /**
-     * Reads in the list of users from the .ser file
-     */
-    private static void readUser() {
-		try
-	      {
-	         FileInputStream fileIn = new FileInputStream("testUserList.ser");
-	         ObjectInputStream in = new ObjectInputStream(fileIn);
-	         myListUser = (ArrayList<User>)in.readObject();
-	         in.close();
-	         fileIn.close();
-	      }catch(IOException i)
-	      {
-	         i.printStackTrace();
-	         return;
-	      }catch(ClassNotFoundException c)
-	      {
-	         System.out.println("Calender class not found");
-	         c.printStackTrace();
-	         return;
-	      }
-	}
-    /**
-     * Reads in the Calendar from the .ser file
-     */
-	private static void readCalendar() {
-		try
-	      {
-	         FileInputStream fileIn = new FileInputStream(CALENDAR_SER);
-	         ObjectInputStream in = new ObjectInputStream(fileIn);
-	         myCalendar = (Calendar) in.readObject();
-	         in.close();
-	         fileIn.close();
-	      }catch(IOException i)
-	      {
-	         i.printStackTrace();
-	         return;
-	      }catch(ClassNotFoundException c)
-	      {
-	         System.out.println("Calender class not found");
-	         c.printStackTrace();
-	         return;
-	      }
-	}
+ 
 }
