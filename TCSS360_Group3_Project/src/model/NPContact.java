@@ -96,7 +96,7 @@ public class NPContact extends User {
 	 * @return return -3 if the Np has no Auctions. return -4 if it not that Np Action.
 	 *  if problem with the calendar removeNPAuctions return that values. return 0 if done successfully.
 	 */
-	public int removeAuction(Calendar theCalendar, Auction theAction)	{
+	public int removeMyAuction(Calendar theCalendar, Auction theAction)	{
 		int noList = -3;
 		if(myAuctions.isEmpty()){
 			return noList; // the actions not in the list
@@ -106,6 +106,32 @@ public class NPContact extends User {
 				return removeSaft;
 			}
 			myAuctions.remove(theAction);
+			return 0;
+		}
+		
+		return -4;
+	}
+	
+	/**
+	 * @author David Nowlin
+	 * this will remove the none profit item form the list
+	 * 
+	 * @param theCalendar
+	 * @param theAction
+	 * @param theItem
+	 * @return what you get form the removeNPItemAuction. return -3 if the auction is in the auction list. 
+	 * return the -4 if the auction is not in the list.
+	 */
+	public int removeMyItem(Calendar theCalendar, Auction theAction, Item theItem)	{
+		int noList = -3;
+		if(myAuctions.isEmpty()){
+			return noList; // the actions not in the list
+		}else if (myAuctions.contains(theAction)) {
+			int removeSaft = theCalendar.removeNPItemAuction((myAuctions.get(myAuctions.indexOf(theAction))), theItem);
+			if(removeSaft != 0) {
+				return removeSaft;
+			}
+			myAuctions.get(myAuctions.indexOf(theAction)).removeItem(theItem);
 			return 0;
 		}
 		

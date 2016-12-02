@@ -231,6 +231,18 @@ public class Calendar implements Serializable {
 	
 	/**
 	 * @author David Nowlin
+	 * this get all the auction after two day way
+	 * @return the auction after two days
+	 */
+	public List<Auction> getAuctionsTwoDayhAead() {
+		final int DAY_TO_CANCEL_AUCTION = 2;
+		GregorianCalendar twoDayForrowed = (GregorianCalendar) GregorianCalendar.getInstance();
+		twoDayForrowed.add(GregorianCalendar.DAY_OF_YEAR, DAY_TO_CANCEL_AUCTION);
+		return getAuctions(twoDayForrowed);
+	}
+	
+	/**
+	 * @author David Nowlin
 	 * check in 3
 	 * 
 	 * this look for a NP actions and remove it. return 0 if safely remove from the list. return -1 if no auction in the past two day.
@@ -240,18 +252,36 @@ public class Calendar implements Serializable {
 	 * @return return 0 if safely remove from the list. return -1 if no auction in the past two day.
 	 * return -2 if the NP auction can't be found.
 	 */
-	public int removeNPAuction(Auction theAuction) {//, String theNpUserName, String theAuctionName) {
-		GregorianCalendar twoDayForrowed = (GregorianCalendar) GregorianCalendar.getInstance();
-		twoDayForrowed.add(GregorianCalendar.DAY_OF_YEAR, 2);
-		List<Auction> nextTwoDayAuction = getAuctions(twoDayForrowed);
-		System.out.println(theAuction.getAuctionName());
-		System.out.println(nextTwoDayAuction.size());
-		System.out.println(myAuctions.size());
+	public int removeNPAuction(Auction theAuction) {
+		List<Auction> nextTwoDayAuction = getAuctionsTwoDayhAead();
 		if(nextTwoDayAuction.isEmpty()){
 			return -1; // no auction past two days.
 		} else if(nextTwoDayAuction.contains(theAuction)) {
 			myAuctions.remove(theAuction); 
 			return 0; // found and remove the actions
+		}
+		return -2; // could not find there actions in the system
+	}
+	
+	/**
+	 * @author David Nowlin
+	 * 
+	 * this will remove a item form the none Profit auction.
+	 * 
+	 * @param theAuction the NP Auction.
+	 * @param theItem want item to remove.
+	 * @return -1 if the auction list is empty. -2 if the None profit auction is not in the list. return what the remove item and 0 if there it work out.
+	 */
+	public int removeNPItemAuction(Auction theAuction, Item theItem) {
+		List<Auction> nextTwoDayAuction = getAuctionsTwoDayhAead();
+		if(nextTwoDayAuction.isEmpty()){
+			return -1; // no auction past two days.
+		} else if(nextTwoDayAuction.contains(theAuction)) {
+			int  removeSaft = nextTwoDayAuction.get(nextTwoDayAuction.indexOf(theAuction)).removeItem(theItem); 
+			if(removeSaft != 0) {
+				return removeSaft; // return the auction error
+			}
+			return 0; // found and remove the Item
 		}
 		return -2; // could not find there actions in the system
 	}

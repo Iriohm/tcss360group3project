@@ -158,4 +158,21 @@ public class Auction implements Serializable {
 		return myAuctionName;
 	}
 	
+	/**
+	 * @author David Nowlin
+	 * this is to remove a item to form the Auction.
+	 * 
+	 * @param theItem want to remove.
+	 * @return this return a -5 if the list is empty. return -6 if the Item is not in the list.
+	 * return a 0 if the list has a item and remove it.
+	 */
+	public int removeItem(Item theItem) {
+		if (myItems.isEmpty()) {
+			return -5; // no item in the list.
+		}else if(myItems.contains(theItem)) {
+			myItems.remove(theItem);
+			return 0;//was able to remove item.
+		}
+		return -6;// if my item is not in the list.
+	}
 }
