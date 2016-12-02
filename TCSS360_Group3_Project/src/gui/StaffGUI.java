@@ -90,7 +90,7 @@ public class StaffGUI {
           @Override
           public void handle(ActionEvent e) {
         	  int newMaxAuctions = maxAuctionsBox.getValue();
-        	  if (theCalendar.setMaxAuctionsLimit(newMaxAuctions)) {
+        	  if (theCalendar.setMaxAuctionsLimit(newMaxAuctions) == 0) {
         		  actiontarget.setFill(Color.GREEN);
                   actiontarget.setText("Succesfully updated");
                   //Serialize?
