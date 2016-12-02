@@ -52,7 +52,7 @@ public class StaffTest extends TestCase{
     //Maximum future auctions increased by zero... ALLOWED
     public void testChangeMaxAuctionLimitByZero() {
     	String myNumberToIncreaseMaxAuctionLimitTo = Integer.toString(myTestStaff.getCalendar().getMaxAuctionsLimit());
-    	assertTrue(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToIncreaseMaxAuctionLimitTo));
+    	assertEquals(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToIncreaseMaxAuctionLimitTo), 0);
 
     }
     
@@ -66,7 +66,7 @@ public class StaffTest extends TestCase{
     public void testChangeMaxAuctionLimitBelowZero() {
     	
     	String myNumberToChangeMaxAuctionLimitTo = "-1";
-		assertFalse(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitTo));
+		assertEquals(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitTo),-1);
     }
     
     /**
@@ -78,7 +78,7 @@ public class StaffTest extends TestCase{
   //Maximum future auctions set to zero... NOT ALLOWED
     public void testChangeMaxAuctionLimitToZero() {
     	String myNumberToChangeMaxAuctionLimitBy = "0";
-    	assertFalse(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitBy));
+    	assertEquals(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitBy),-1);
     }
     
     /**
@@ -91,7 +91,7 @@ public class StaffTest extends TestCase{
     public void testChangeMaxAuctionLimitToBelowCurrentActiveAuctionCount() {
     	String myNumberToChangeMaxAuctionLimitBy = Integer.toString(myTestStaff.getCalendar().getUpcomingAuctionsNumber()-1);
 
-    	assertFalse(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitBy));
+    	assertEquals(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitBy),-2);
     }
     
     /**
@@ -101,10 +101,10 @@ public class StaffTest extends TestCase{
      */
     @Test
   //Maximum future auctions set to one more than current max auction limit value... ALLOWED
-    public void testChangeMaxAuctionLimitByOneAboveCurrentNumbert() {
+    public void testChangeMaxAuctionLimitByOneAboveCurrentNumber() {
     	String myNumberToChangeMaxAuctionLimitBy = Integer.toString(myTestStaff.getCalendar().getMaxAuctionsLimit()+1);
 
-    	assertTrue(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitBy));
+    	assertEquals(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitBy),0);
     }
     
     /**
@@ -114,10 +114,10 @@ public class StaffTest extends TestCase{
      */
     @Test
   //Maximum future auctions set to 10 more than current max auction limit value... ALLOWED
-    public void testChangeMaxAuctionLimitByTenAboveCurrentNumbert() {
+    public void testChangeMaxAuctionLimitByTenAboveCurrentNumber() {
     	String myNumberToChangeMaxAuctionLimitBy = Integer.toString(myTestStaff.getCalendar().getMaxAuctionsLimit()+10);
 
-    	assertTrue(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitBy));
+    	assertEquals(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitBy),0);
     }
     
     /**
@@ -132,10 +132,37 @@ public class StaffTest extends TestCase{
   // which will be at least 5 less than the previous max but still greater than the  current active auction count... ALLOWED
     public void testChangeMaxAuctionDecreaseLimitByRange() {
     	String myNumberToChangeMaxAuctionLimitBy = Integer.toString(myTestStaff.getCalendar().getMaxAuctionsLimit()+10);
-    	assertTrue(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitBy));
+    	assertEquals(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitBy),0);
     	
     	String myCurrentMaxAuctionLimitAmount = Integer.toString(myTestStaff.getCalendar().getMaxAuctionsLimit() - (myTestStaff.getCalendar().getMaxAuctionsLimit() - myTestStaff.getCalendar().getUpcomingAuctionsNumber())/2);
-    	assertTrue(myTestStaff.changeMaxAuctionLimit(myTestStaff, myCurrentMaxAuctionLimitAmount));
+    	assertEquals(myTestStaff.changeMaxAuctionLimit(myTestStaff, myCurrentMaxAuctionLimitAmount),0);
     }
     
+    
+    /**
+     * Test method for attemping to change the maximum auction limit to a non integer.
+     * 
+     * @author "Robert Hinds"
+     */
+    @Test
+  //Maximum future auctions input given as a non integer...NOT ALLOWED
+    public void testChangeMaxAuctionLimitByANonInteger() {
+    	String myNumberToChangeMaxAuctionLimitBy = "Twenty";
+
+    	assertEquals(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitBy),-100);
+    }
+    
+    /**
+     * Test method for increasing the maximum auction limit to a number greater than
+     * the maximum future auction count.
+     * 
+     * @author "Robert Hinds"
+     */
+    @Test
+  //Maximum future auctions set to one more than max future auction allowed value... NOT ALLOWED
+    public void testChangeMaxAuctionLimitByTenAboveCurrentNumbert() {
+    	String myNumberToChangeMaxAuctionLimitBy = Integer.toString(myTestStaff.getCalendar().getTotalMaxFutureAuctions() + 1);
+
+    	assertEquals(myTestStaff.changeMaxAuctionLimit(myTestStaff, myNumberToChangeMaxAuctionLimitBy), -3);
+    }
 }

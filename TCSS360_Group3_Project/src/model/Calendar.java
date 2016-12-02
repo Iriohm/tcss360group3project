@@ -43,6 +43,14 @@ public class Calendar implements Serializable {
 	private int myMaxAuctionsLimit;
 	
 	/**
+	 * The maximum number future auctions allowed
+	 * By Business Rule: Max 2 auctions per day.
+	 * 	  Business Rule: Max of 31 days allowed to schedule auctions.
+	 * @author "Robert Hinds"
+	 */
+	private int myTotalMaxFutureAuctions;
+	
+	/**
 	 * Creates a Calendar with an empty list of Auctions
 	 */
 	public Calendar() {
@@ -50,6 +58,7 @@ public class Calendar implements Serializable {
 		myNextItemID = 0;
 		myCurrentAuctions = 0;
 		myMaxAuctionsLimit = 25;
+		myTotalMaxFutureAuctions = 62;
 	}
 	/**
 	 * Creates a Calendar with the given list of auctions for testing purposes
@@ -60,33 +69,49 @@ public class Calendar implements Serializable {
 		myNextItemID = 0;
 		myCurrentAuctions = 0;
 		myMaxAuctionsLimit = 25;
+		myTotalMaxFutureAuctions = 62;
 	}
 	
 	/**
 	 * @author "Robert Hinds"
-	 * @return the myMaxAuctionsLimit
+	 * @return the MaxAuctionsLimit
 	 */
 	public int getMaxAuctionsLimit() {
 		return myMaxAuctionsLimit;
 	}
 	
 	/**
+	 * @author "Robert Hinds"
+	 * @return the TotalMaxFutureAuctions
+	 */
+	public int getTotalMaxFutureAuctions() {
+		return myTotalMaxFutureAuctions;
+	}
+	
+	/**
 	 * Sets current maximum number of upcoming Auctions allowed
 	 * if value is validated true.
 	 * @param theMaxAuctions Maximum number of Auctions.
-	 * @return true if value given does not set the auction limit to zero, below zero and less than the number of upcoming auctions. False otherwise.
+	 * 
+	 *@return 0 if maxiumum number of upcoming auctions is set. -1 if value given does not set the auction limit to zero, below zero. 
+	 * -2 if value given sets the auction limit less than the number of upcoming auctions.
+	 * -3 if value given sets the auction limit greater than the total maximum future auction limit based on max auctions per days and how many days in advance a auction can be scheduled.
+	 *
 	 */
-	public boolean setMaxAuctionsLimit(int theMaxAuctions) {
-		boolean returnValue = false;	
+	public int setMaxAuctionsLimit(int theMaxAuctions) {
+		int returnValue = 0;	
 		if( theMaxAuctions <= 0){
-			returnValue = false;
+			returnValue = -1;
 		}
 		else if(theMaxAuctions <= this.getUpcomingAuctionsNumber()){
-			returnValue = false;
+			returnValue = -2;
+		}
+		else if(theMaxAuctions > this.getTotalMaxFutureAuctions()){
+			return -3;
 		}
 		else{
 		this.myMaxAuctionsLimit = theMaxAuctions;
-		returnValue = true;
+		returnValue = 0;
 		}
 		return returnValue;
 	}
@@ -109,12 +134,16 @@ public class Calendar implements Serializable {
 	
 	
 	/**
-	 * Returns true if the given date does not conflict with any of Auction Central's 
+	 * Returns zero if the given date does not conflict with any of Auction Central's 
 	 * rules about auction scheduling. Automatically runs every test related to the actual
 	 * date of the Auction. Does not run tests related to the NPContact information.
 	 * 
 	 * @param theDate The desired date for an auction request
-	 * @return True if the Auction can be added
+	 * @return 0 if the Auction can be added -1 if request date already has reached maximum auction per day limit 
+	 * -2 if auction request will exceed maximum auction limit
+	 * -3 if auction date requested is greater than 1 month in advance
+	 * -4 if auction date requested is less than 1 week in advance
+	 * 
 	 */
 	public int validateAuctionRequest(GregorianCalendar theDate) {
 		if (!validateAuctionRequestTwoPerDay((GregorianCalendar)theDate.clone())) {

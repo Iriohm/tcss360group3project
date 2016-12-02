@@ -10,6 +10,8 @@ import org.junit.Test;
 import junit.framework.*;
 import model.Auction;
 import model.Calendar;
+import model.Item;
+import model.Staff;
 
 
 
@@ -30,6 +32,12 @@ public class CalendarTest extends TestCase {
 	private Auction auctionOne;
 	private Auction auctionSix;
 	private Auction auctionSeven;
+	private Calendar testCalendar;
+	private Calendar testCalendar2;
+	private GregorianCalendar aNewDate;
+	private Auction testAuction;
+	private Item testItem1;
+	private Item testItem2;
 	
 	/**
 	 * Creates and adds all auctions to a Calendar
@@ -91,6 +99,16 @@ public class CalendarTest extends TestCase {
 		calendarTest = new Calendar(testAuctions);
 		calendarTests2345 = new Calendar(testAuctions2345);
 		new Calendar(testAuctions167);
+		
+		testCalendar2 = new Calendar();
+	
+		aNewDate = (GregorianCalendar)GregorianCalendar.getInstance();
+		for(int i = 0; i < testCalendar2.getMaxAuctionsLimit();i++){
+		aNewDate.add(GregorianCalendar.DATE, i);
+		testAuction = new Auction(aNewDate, "test");
+		testCalendar2.devOnlyAddAuctionByPassValidation(testAuction);
+		}
+		
 	}
 	
 	/**
@@ -352,10 +370,97 @@ public class CalendarTest extends TestCase {
 	}
 	
 	/**
-	 * Tests to make sure you get auction for specified day
-	 */
-	@Test
-	public void testgetTodayAuctions(){
-		//TODO make test
-	}
+     * Test method for increasing the max auction count by zero
+     * 
+     * @author "Robert Hinds"
+     */
+    @Test
+    //Maximum future auctions increased by zero... ALLOWED
+    public void testSetMaxAuctionsLimitByZero() {
+    	int myNumberToIncreaseMaxAuctionLimitTo = testCalendar2.getMaxAuctionsLimit();
+    	assertEquals(testCalendar2.setMaxAuctionsLimit(myNumberToIncreaseMaxAuctionLimitTo), 0);
+
+    }
+    
+    /**
+     * Test method for increasing the max auction count below zero
+     * 
+     * @author "Robert Hinds"
+     */
+    @Test
+  //Maximum future auctions set below zero... NOT ALLOWED
+    public void testSetMaxAuctionsLimitBelowZero() {
+    	
+    	int myNumberToChangeMaxAuctionLimitTo = -1;
+		assertEquals(testCalendar2.setMaxAuctionsLimit(myNumberToChangeMaxAuctionLimitTo),-1);
+    }
+    
+    /**
+     * Test method for increasing the max auction count to zero
+     * 
+     * @author "Robert Hinds"
+     */
+    @Test
+  //Maximum future auctions set to zero... NOT ALLOWED
+    public void testSetMaxAuctionsLimitToZero() {
+    	int myNumberToChangeMaxAuctionLimitTo =  0;
+    	assertEquals(testCalendar2.setMaxAuctionsLimit(myNumberToChangeMaxAuctionLimitTo),-1);
+    }
+    
+    /**
+     * Test method for decreasing maximum auction limit below the number of active auctions.
+     * 
+     * @author "Robert Hinds"
+     */
+    @Test
+  //Maximum future auctions set to below current active auctions... NOT ALLOWED
+    public void testSetMaxAuctionsLimitToBelowCurrentActiveAuctionCount() {
+    	int myNumberToChangeMaxAuctionLimitTo =  testCalendar2.getUpcomingAuctionsNumber() ;
+
+    	assertEquals(testCalendar2.setMaxAuctionsLimit(myNumberToChangeMaxAuctionLimitTo), -2);
+    }
+    
+    /**
+     * Test method for increasing the maximum auction limit by 1.
+     * 
+     * @author "Robert Hinds"
+     */
+    @Test
+  //Maximum future auctions set to one more than current max auction limit value... ALLOWED
+    public void testSetMaxAuctionsLimitByOneAboveCurrentNumber() {
+    	int myNumberToChangeMaxAuctionLimitBy = testCalendar2.getMaxAuctionsLimit()+1;
+
+    	assertEquals(testCalendar2.setMaxAuctionsLimit(myNumberToChangeMaxAuctionLimitBy),0);
+    }
+    
+    /**
+     * Test method for increasing the maximum auction limit by 10.
+     * 
+     * @author "Robert Hinds"
+     */
+    @Test
+  //Maximum future auctions set to 10 more than current max auction limit value... ALLOWED
+    public void testSetMaxAuctionsLimitByTenAboveCurrentNumber() {
+    	int myNumberToChangeMaxAuctionLimitBy = testCalendar2.getMaxAuctionsLimit()+10;
+
+    	assertEquals(testCalendar2.setMaxAuctionsLimit(myNumberToChangeMaxAuctionLimitBy),0);
+    }
+    
+    /**
+     * Test method for decreased to some value greater than both zero and the number of current active auctions.
+     * 
+     * @author "Robert Hinds"
+     */
+    @Test
+  //Maximum future auctions set to 10 more than current max auction limit value then find active auction count which 
+  //can't be more than previous max auction limit. Find the difference which at the most will be ten. Divide this result by 2, giving
+  //a value of at least 5. Subtract this newly calculated value from the current max auction limit. Set max auction limit to this new result.
+  // which will be at least 5 less than the previous max but still greater than the  current active auction count... ALLOWED
+    public void testSetMaxAuctionDecreaseLimitByRange() {
+    	int myNumberToChangeMaxAuctionLimitBy = testCalendar2.getMaxAuctionsLimit()+10;
+    	assertEquals(testCalendar2.setMaxAuctionsLimit(myNumberToChangeMaxAuctionLimitBy),0);
+    	
+    	int myCurrentMaxAuctionLimitAmount = testCalendar2.getMaxAuctionsLimit() - (testCalendar2.getMaxAuctionsLimit() - testCalendar2.getUpcomingAuctionsNumber())/2;
+    	assertEquals(testCalendar2.setMaxAuctionsLimit(myCurrentMaxAuctionLimitAmount),0);
+    }
 }
