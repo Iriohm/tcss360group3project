@@ -23,17 +23,21 @@ public class Staff  extends User{
 	}
 
 	/**
+	 * This method changes the maximum upcoming auction limit.
 	 * @author "Robert Hinds"
 	 * @param theStaff 
 	 * @param theNumberToIncreaseMaxAuctionLimitBy A string that contains the value the maximum auction limit will be set to.
-	 * @return true if value given does not set the auction limit to zero, below zero and less than the number of upcoming auctions. False otherwise.
+	 *@return 0 if maxiumum number of upcoming auctions is set. -1 if value given does not set the auction limit to zero, below zero. 
+	 * -2 if value given sets the auction limit less than the number of upcoming auctions.
+	 * -3 if value given sets the auction limit greater than the total maximum future auction limit based on max auctions per days and how many days in advance a auction can be scheduled.
+	 * -100 if value given is a non integer.
 	 */
-	public boolean changeMaxAuctionLimit(Staff theStaff, String theNumberToIncreaseMaxAuctionLimitBy) {
-		boolean returnValue = false;
+	public int changeMaxAuctionLimit(Staff theStaff, String theNumberToIncreaseMaxAuctionLimitBy) {
+		int returnValue = 0;
 		try{
 		returnValue = theStaff.getCalendar().setMaxAuctionsLimit(Integer.parseInt(theNumberToIncreaseMaxAuctionLimitBy));
 		}catch (NumberFormatException e){
-			returnValue = false;
+			returnValue = -100;
 		}
 		 return returnValue;
 		
