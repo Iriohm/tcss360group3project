@@ -211,6 +211,53 @@ public class Calendar implements Serializable {
 		
 		return desiredMonth;
 	}
+	
+/*	//this needs a junit test.
+	*//**
+	 * Gets the auctions for today's date
+	 * 
+	 * @param theDate The date to start the list of Auctions
+	 * @return The list of Auctions on the Date given
+	 * @author Robert Hinds
+	 *  
+	 *//*
+	public List<Auction> getTodayAuctions(GregorianCalendar theDate) {
+		//sets the start date to look at the day you give it
+		GregorianCalendar startDate = (GregorianCalendar)theDate.clone();
+		startDate.add(GregorianCalendar.DATE, -1);
+
+		//sets the end date to 1 days after the day you give it
+		GregorianCalendar endDate = (GregorianCalendar)theDate.clone();
+		endDate.add(GregorianCalendar.DATE, +1);
+		endDate.add(GregorianCalendar.MILLISECOND, 1);
+		LinkedList<Auction> desiredDay = new LinkedList<Auction>();
+		for (int i = 0; i < myAuctions.size(); i++) {
+			
+			Auction tempAuction = myAuctions.get(i);
+			if (tempAuction.getDate().after(startDate) &&
+				tempAuction.getDate().before(endDate)) {
+				
+				
+				desiredDay.add(tempAuction);
+			}
+		}
+		
+		return desiredDay;
+	}*/
+	
+	/**
+	 * Developer only. Needed to be able to test other methods. Adds an Auction to the Calendar.
+	 *  Request IS NOT validated before being added
+	 * 
+	 * @param theAuction The auction to be added to the calendar
+	 * @return True if the Auction was added
+	 */
+	public boolean devOnlyAddAuctionByPassValidation(Auction theAuction) {
+			return myAuctions.add(theAuction);
+		
+	}
+	
+	
 	/**
 	 * Returns a list of all of the Auctions ever added to the Calendar
 	 * 

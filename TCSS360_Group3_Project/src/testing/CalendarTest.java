@@ -291,7 +291,7 @@ public class CalendarTest extends TestCase {
 		aDate.add(GregorianCalendar.DAY_OF_MONTH, -1000);
 		assertFalse(calendarTest.dateAtLeastOneWeekInFuture(aDate));
 	}
-	
+
 	/**
 	 * Tests to make sure that a Date one week ahead or more will work for an auction
 	 */
@@ -351,4 +351,11 @@ public class CalendarTest extends TestCase {
 		assertFalse(testCalendar.addAuction(temp));
 	}
 	
+	/**
+	 * Tests to make sure you get auction for specified day
+	 */
+	@Test
+	public void testgetTodayAuctions(){
+		//TODO make test
+	}
 }

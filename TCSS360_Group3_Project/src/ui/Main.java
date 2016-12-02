@@ -1,11 +1,8 @@
-package model;
+package ui;
 
 import java.util.GregorianCalendar;
 
-import ui.UI;
-import ui.UIBidder;
-import ui.UINPContact;
-import ui.UIStaff;
+import model.Calendar;
 
 /**
 * This class is used to begin the AuctionCentral environment.
@@ -22,10 +19,11 @@ public class Main {
 	* and then starts a UI Controller/Manager.
     */
 	public static void main(String[] args) {
+		Authenticate.beginUI(args);
 		//readsInASerializedCalendarFromFile
 		//authenticate();
 		//starts specific UI Controller.
-		UI.beginUI(); // this start the UI then gose to the right UI depend on user type
+	//UI.beginUI(); // this start the UI then gose to the right UI depend on user type
 
 		
 //		UI.beginUI(); // this start the UI then gose to the right UI depend on user type?
@@ -56,10 +54,4 @@ public class Main {
 	//	UINPContact.beginNPContactUI(new NPContact("Jack",  testCalendar),testCalendar);
 	}
 
-	/**
-	* This method authenticates an AuctionCentral user.
-    */
-	public void authenticate() {
-
-	}
 }
