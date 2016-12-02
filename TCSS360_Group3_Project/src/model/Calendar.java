@@ -14,7 +14,10 @@ import java.util.List;
  */
 public class Calendar implements Serializable {
 
-	
+	/**
+	 * Based on 31 days of 2 auctions per day
+	 */
+	public static final int MAX_POSSIBLE_AUCTIONS = 62;
 	
 	/**
 	 * Default global needed by Serializable

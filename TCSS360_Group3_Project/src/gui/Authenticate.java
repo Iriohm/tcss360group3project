@@ -1,4 +1,4 @@
-package ui;
+package gui;
 
 
 
@@ -47,7 +47,7 @@ public class Authenticate extends Application {
 			
 	private static  ArrayList<User> myListUser;
 	private static Calendar myCalendar;
-	private Stage myStage;
+	private static Stage myStage;
 
 	public static void beginUI(String[] args) {
 		readUser();
@@ -150,7 +150,7 @@ public class Authenticate extends Application {
             	for (int i = 0; i < myListUser.size(); i++) {
             		if (userInput.equals(myListUser.get(i).getUsername())) {
             			if (myListUser.get(i).getClass() == Staff.class) {
-            				//ToDO call staffUI
+            				StaffGUI.startStaffGUI(myStage, myListUser, myCalendar);
             			} else if (myListUser.get(i).getClass() == NPContact.class) {
             				//ToDO call NPUI
             			} else if (myListUser.get(i).getClass() == Bidder.class) {

@@ -1,4 +1,4 @@
-package ui;
+package gui;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -84,8 +84,31 @@ public class AddUser {
        createNewUserhbBtn.getChildren().add(createNewUserbtn);
        grid.add(createNewUserhbBtn, 1, 5);
        
+       Button backbtn = new Button("Back");
+       HBox backhbBtn = new HBox(10);
+       backhbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+       backhbBtn.getChildren().add(backbtn);
+       grid.add(backhbBtn, 0, 5);
+       
        final Text actiontarget = new Text();
        grid.add(actiontarget, 1, 6);
+       
+       
+       backbtn.setOnAction(new EventHandler<ActionEvent>() {
+       	 /**
+       	  * Goes back to the authenticate scene
+       	  * 
+       	  * @param e The button press that will send the user back to authenticate
+       	  */
+           @Override
+           public void handle(ActionEvent e) {
+        	   Authenticate.setupAuthenticate(primaryStage);
+           }             
+       });
+       
+       
+       
+       
        
        createNewUserbtn.setOnAction(new EventHandler<ActionEvent>() {
          	 /**
