@@ -100,6 +100,7 @@ public class CalendarTest extends TestCase {
 		calendarTests2345 = new Calendar(testAuctions2345);
 		new Calendar(testAuctions167);
 		
+		//used in testSetMaxAuctions.. methods
 		testCalendar2 = new Calendar();
 	
 		aNewDate = (GregorianCalendar)GregorianCalendar.getInstance();
