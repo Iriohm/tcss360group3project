@@ -42,10 +42,7 @@ import model.User;
 *
 */
 public class Authenticate extends Application {
-
-
 	private static List<User> myListUser;
-	private static Calendar myCalendar;
 	private static Stage myStage;
 	private static SerializeData myData;
 
@@ -55,18 +52,22 @@ public class Authenticate extends Application {
 		launch(args);
 
 
-		List<User> myListUser = myData.getUsers();
-		System.out.println("\nWhich user are you?");
-		System.out.printf("%-15s%-20s%-10s\n", "Index", "Username", "Type of User");
-
-		for (int i = 0; i < myListUser.size(); i++) {
-			System.out.printf("%-15s%-20s%-10s\n", (i+1) + ")", myListUser.get(i).getUsername(),myListUser.get(i).getClass().toString());
-		}
+		//List<User> myListUser = myData.getUsers();
+//		System.out.println();
+//		System.out.println("\nWhich user are you?");
+//		System.out.printf("%-15s%-20s%-10s\n", "Index", "Username", "Type of User");
+//
+//		for (int i = 0; i < myListUser.size(); i++) {
+//			System.out.printf("%-15s%-20s%-10s\n", (i+1) + ")", myListUser.get(i).getUsername(),myListUser.get(i).getClass().toString());
+//		}
 
 	}
+
+
     @Override
     public void start(Stage primaryStage) {
     	myStage = primaryStage;
+    	myListUser = myData.getUsers();
         primaryStage.setTitle("Auction Central");
 
         /**
@@ -136,10 +137,6 @@ public class Authenticate extends Application {
         	  // userName.setText("Desired user ID");
         	   AddUser.addUser(theStage, myData);
 
-
-
-
-
            }
 
 
@@ -156,16 +153,15 @@ public class Authenticate extends Application {
         	  */
             @Override
             public void handle(ActionEvent e) {
-        		List<User> theListUser = myData.getUsers();
             	actiontarget.setText("");
             	String userInput = userTextField.getText();
-            	for (int i = 0; i < theListUser.size(); i++) {
-            		if (userInput.equals(theListUser.get(i).getUsername())) {
-            			if (theListUser.get(i).getClass() == Staff.class) {
-            				StaffGUI.startStaffGUI(myStage, theListUser.get(i), myData);
+            	for (int i = 0; i < myListUser.size(); i++) {
+            		if (userInput.equals(myListUser.get(i).getUsername())) {
+            			if (myListUser.get(i).getClass() == Staff.class) {
+            				StaffGUI.startStaffGUI(myStage, myListUser.get(i), myData);
             				myStage.setTitle("Auction Central - " + userInput);
             				myStage.centerOnScreen();
-            			} else if (theListUser.get(i).getClass() == NPContact.class) {
+            			} else if (myListUser.get(i).getClass() == NPContact.class) {
 
             			} else if (myListUser.get(i).getClass() == Bidder.class) {
             				myStage.setTitle("Auction Central - " + userInput);
