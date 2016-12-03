@@ -139,7 +139,7 @@ public class Authenticate extends Application {
          	   grid.getChildren().remove(actiontarget);*/
          	   //scenetitle.setText("Hello, New User!");
         	  // userName.setText("Desired user ID");
-        	   AddUser.addUser(theStage, myData);
+        	   AddUser.addUser(theStage, myListUser, myCalendar);
         	   
         	   
         	   
