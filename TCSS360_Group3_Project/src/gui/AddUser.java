@@ -31,11 +31,19 @@ import model.NPContact;
 import model.Staff;
 import model.User;
 
+
+/**
+* This class contains the GUI for adding a user to AuctionCentral
+*
+* @author Justin Washburn
+* @version 30 Nov 2016
+*
+*/
 public class AddUser {
 
 
 	private static SerializeData myData;
-	
+
 	public static void addUser(Stage theStage, SerializeData theData) {
 
 		myData = theData;
@@ -43,6 +51,8 @@ public class AddUser {
 	}
 	
 	private static void setupAddUser(Stage primaryStage) {
+		List<User> theListUser = myData.getUsers();
+		Calendar theCalendar = myData.getCalendar();
 		GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -118,7 +128,6 @@ public class AddUser {
          	  */
              @Override
              public void handle(ActionEvent e) {
-            	 List<User> theUsers = myData.getUsers();
             	 String userID = userTextField.getText();
             	 String userType = userTypes.getValue();
             	 if (userType == null) {
@@ -126,26 +135,26 @@ public class AddUser {
                       actiontarget.setText("Select user type");
                       return;
             	 }
-            	 for (int i = 0; i < theUsers.size(); i++) {
-            		 if (userID.equals(theUsers.get(i).getUsername())) {
+            	 for (int i = 0; i < theListUser.size(); i++) {
+            		 if (userID.equals(theListUser.get(i).getUsername())) {
                          actiontarget.setFill(Color.FIREBRICK);
                          actiontarget.setText("UserID already exists");
                          return;
             		 }
             	 }
-            	 Calendar theCalendar = myData.getCalendar();
+
             	 User newUser;
             	 if (userType.equals("Staff")) {
             		 newUser = new Staff(userID, theCalendar);
-            		 theUsers.add(newUser);
+            		 theListUser.add(newUser);
             		 Authenticate.setupAuthenticate(primaryStage);
             	 } else  if (userType.equals("NPContact")) {
             		 newUser = new NPContact(userID, theCalendar);
-            		 theUsers.add(newUser);
+            		 theListUser.add(newUser);
             		 Authenticate.setupAuthenticate(primaryStage);
             	 } else  if (userType.equals("Bidder")) {
             		 newUser = new Bidder(userID, theCalendar);
-            		 theUsers.add(newUser);
+            		 theListUser.add(newUser);
             		 Authenticate.setupAuthenticate(primaryStage);
             	 }
             	// myData.writeOutUserList();

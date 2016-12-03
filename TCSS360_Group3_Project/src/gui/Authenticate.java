@@ -3,6 +3,7 @@ package gui;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dataStorage.SerializeData;
@@ -34,15 +35,13 @@ import model.User;
 
 
 /**
-* This class is used to begin the AuctionCentral environment.
+* This class is used to begin the AuctionCentral GUi and authenticate the users credentials.
 *
 * @author Justin Washburn
-* @author Oracle tutorial http://docs.oracle.com/javafx/2/get_started/form.htm
 * @version 30 Nov 2016
 *
 */
 public class Authenticate extends Application {
-
 
 
 	private static List<User> myListUser;
@@ -51,12 +50,12 @@ public class Authenticate extends Application {
 	private static SerializeData myData;
 
 	public static void beginUI(String[] args, SerializeData theData) {
-		myListUser = theData.getUsers();
-		myCalendar = theData.getCalendar();
 		myData = theData;
+
 		launch(args);
 
 
+		List<User> myListUser = myData.getUsers();
 		System.out.println("\nWhich user are you?");
 		System.out.printf("%-15s%-20s%-10s\n", "Index", "Username", "Type of User");
 
@@ -157,16 +156,20 @@ public class Authenticate extends Application {
         	  */
             @Override
             public void handle(ActionEvent e) {
+        		List<User> theListUser = myData.getUsers();
             	actiontarget.setText("");
             	String userInput = userTextField.getText();
-            	for (int i = 0; i < myListUser.size(); i++) {
-            		if (userInput.equals(myListUser.get(i).getUsername())) {
-            			if (myListUser.get(i).getClass() == Staff.class) {
-            				StaffGUI.startStaffGUI(myStage, myListUser.get(i), myData);
+            	for (int i = 0; i < theListUser.size(); i++) {
+            		if (userInput.equals(theListUser.get(i).getUsername())) {
+            			if (theListUser.get(i).getClass() == Staff.class) {
+            				StaffGUI.startStaffGUI(myStage, theListUser.get(i), myData);
+            				myStage.setTitle("Auction Central - " + userInput);
             				myStage.centerOnScreen();
-            			} else if (myListUser.get(i).getClass() == NPContact.class) {
-            				//ToDO call NPUI
+            			} else if (theListUser.get(i).getClass() == NPContact.class) {
+
             			} else if (myListUser.get(i).getClass() == Bidder.class) {
+            				myStage.setTitle("Auction Central - " + userInput);
+
             		    	try {
             					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Bidder.fxml"));
             					Parent root = (Parent)fxmlLoader.load();
@@ -188,8 +191,6 @@ public class Authenticate extends Application {
 
             				}
 
-            			}
-
             			return;
             		}
             	}
@@ -197,6 +198,8 @@ public class Authenticate extends Application {
                 actiontarget.setFill(Color.FIREBRICK);
                 actiontarget.setText("Invalid Login");
             }
+          }
+
         });
 
     }

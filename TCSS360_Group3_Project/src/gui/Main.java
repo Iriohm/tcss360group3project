@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Scanner;
 
 import dataStorage.SerializeData;
 import model.Calendar;
@@ -27,7 +28,7 @@ public class Main {
 	* This method loads Calendar info, authenticates a User,
 	* and then starts a UI Controller/Manager.
     */
-	public static void main(String[] args) {	
+	public static void main(String[] args) {
 		SerializeData allData = new SerializeData();
 		Authenticate.beginUI(args, allData);
 	}

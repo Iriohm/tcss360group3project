@@ -1,21 +1,24 @@
 package dataStorage;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import model.Calendar;
 import model.User;
 
 public class SerializeData {
 
-	public static final String CALENDAR_SER = "testCalendar.ser";
+	public static String myCalendarFile = "testCalendar.ser";
 	
-	public static final String USER_SER = "testUserList.ser";
+	public static String myUserFile = "testUserList.ser";
 	
 	private Calendar myCalendar;
 	
@@ -26,9 +29,22 @@ public class SerializeData {
 	* and then starts a UI Controller/Manager.
     */
 	public SerializeData() {
+		
+		getFileNames();
 		readCalendar();
-		readUser();			
+		readUser();	
+		//In the event that the user or calendar is currently non-existent
+		if (myCalendar == null) {
+			myCalendar = new Calendar();
+			System.err.println("No current calendar");
+		}
+		if (myUserList == null) {
+			myUserList = new ArrayList<User>();
+			System.err.println("No current list of Users");
+		}
+				
 	}
+	
 	
 	public Calendar getCalendar() {
 		return myCalendar;
@@ -38,6 +54,38 @@ public class SerializeData {
 		return myUserList;
 	}
 	
+	private void getFileNames() {
+		 File file = new File("CalendarFileName");
+
+		    try {
+
+		        Scanner sc = new Scanner(file);
+
+		        if (sc.hasNextLine()) {
+		            myCalendarFile = sc.nextLine();
+		        }
+		        sc.close();
+		    } 
+		    catch (FileNotFoundException e) {
+		        e.printStackTrace();
+		    }
+		    
+		    file = new File("UserFileName");
+
+		    try {
+
+		        Scanner sc = new Scanner(file);
+
+		        if (sc.hasNextLine()) {
+		            myUserFile = sc.nextLine();
+		        }
+		        sc.close();
+		    } 
+		    catch (FileNotFoundException e) {
+		        e.printStackTrace();
+		    }
+	}
+	
 	/*
 	 * how we write out the calendar as a serialization object.
 	 */
@@ -45,12 +93,12 @@ public class SerializeData {
 
 		try
 	      {
-	         FileOutputStream fileOut = new FileOutputStream(CALENDAR_SER);
+	         FileOutputStream fileOut = new FileOutputStream(myCalendarFile);
 	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
 	         out.writeObject(myCalendar);
 	         out.close();
 	         fileOut.close();
-	         System.out.printf("Serialized data was saved in testCalendar.ser\n");
+	         System.out.printf("Serialized data was saved\n");
 	      }catch(IOException i)
 	      {
 	          i.printStackTrace();
@@ -64,7 +112,7 @@ public class SerializeData {
 
 		try
 	      {
-	         FileInputStream fileIn = new FileInputStream(CALENDAR_SER);
+	         FileInputStream fileIn = new FileInputStream(myCalendarFile);
 	         ObjectInputStream in = new ObjectInputStream(fileIn);
 	         myCalendar = (Calendar) in.readObject();
 	         in.close();
@@ -88,7 +136,7 @@ public class SerializeData {
 	private void readUser() {
 		try
 	      {
-	         FileInputStream fileIn = new FileInputStream("testUserList.ser");
+	         FileInputStream fileIn = new FileInputStream(myUserFile);
 	         ObjectInputStream in = new ObjectInputStream(fileIn);
 	         myUserList = (ArrayList<User>)in.readObject();
 	         in.close();
@@ -111,12 +159,12 @@ public class SerializeData {
 	public void writeOutUserList() {
 		try
 	      {
-	         FileOutputStream fileOut =new FileOutputStream(USER_SER);
+	         FileOutputStream fileOut =new FileOutputStream(myUserFile);
 	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
 	         out.writeObject(myUserList);
 	         out.close();
 	         fileOut.close();
-	         System.out.printf("Serialized data was saved in testUserList.ser\n");
+	         System.out.printf("Serialized data was saved\n");
 	      }catch(IOException i)
 	      {
 	          i.printStackTrace();

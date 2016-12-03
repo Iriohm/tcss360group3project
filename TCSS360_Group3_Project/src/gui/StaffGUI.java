@@ -1,5 +1,6 @@
 package gui;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import dataStorage.SerializeData;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -20,36 +22,53 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Auction;
 import model.Calendar;
 import model.User;
 
+
+/**
+* This class contains the GUI for staff members to update the maximum number of Auctions and view upcoming auctions.
+*
+* @author Justin Washburn
+* @version 30 Nov 2016
+*
+*/
+
 public class StaffGUI {
 	
+
+	    
 	private static User myUser;
 	
 	private static SerializeData myData;
 	
+	private static Calendar myCalendar;
+	
 	public static void startStaffGUI(Stage theStage, User theUser, SerializeData theData) {
 		myUser = theUser;
 		myData = theData;
+		myCalendar = myData.getCalendar();
+		
+		if (myCalendar == null) {
+			myCalendar = new Calendar();
+		}
 		setUpStaffGUI(theStage);
 	}
 	
 
 	public static void setUpStaffGUI(Stage primaryStage) {
-		Calendar theCalendar = myData.getCalendar();
-		
 		GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Scene scene = new Scene(grid, 600, 550);
+        Scene scene = new Scene(grid, 550, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        Text scenetitle = new Text("Welcome Auction Central Staff, Current Upcoming Auctions: " + theCalendar.getUpcomingAuctionsNumber());
+        Text scenetitle = new Text("Welcome " + myUser.getUsername() + ", Current Upcoming Auctions: " + myCalendar.getUpcomingAuctionsNumber());
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
 
@@ -63,7 +82,7 @@ public class StaffGUI {
         }
        
  	    final ComboBox<Integer> maxAuctionsBox = new ComboBox<Integer>(options);
- 	    maxAuctionsBox.setValue(theCalendar.getMaxAuctionsLimit());
+ 	    maxAuctionsBox.setValue(myCalendar.getMaxAuctionsLimit());
 
  	    HBox maxAuctionsbx = new HBox(10);
  	    maxAuctionsbx.setAlignment(Pos.BOTTOM_RIGHT);
@@ -90,7 +109,7 @@ public class StaffGUI {
           @Override
           public void handle(ActionEvent e) {
         	  int newMaxAuctions = maxAuctionsBox.getValue();
-        	  if (theCalendar.setMaxAuctionsLimit(newMaxAuctions) == 0) {
+        	  if (myCalendar.setMaxAuctionsLimit(newMaxAuctions) == 0) {
         		  actiontarget.setFill(Color.GREEN);
                   actiontarget.setText("Succesfully updated");
                   //Serialize?
@@ -98,11 +117,30 @@ public class StaffGUI {
                 
         	  } else {
         		  actiontarget.setFill(Color.FIREBRICK);
-                  actiontarget.setText("You already have " + theCalendar.getUpcomingAuctionsNumber() + " schduled");
+                  actiontarget.setText("You already have " + myCalendar.getUpcomingAuctionsNumber() + " schduled");
         	  }
           }
  
       });
-
+       
+       Button viewCalendarbtn = new Button("View Calendar");
+       HBox viewCalendarhbx = new HBox(10);
+       viewCalendarhbx.setAlignment(Pos.BOTTOM_RIGHT);
+       viewCalendarhbx.getChildren().add(viewCalendarbtn);
+       grid.add(viewCalendarhbx, 1, 7);
+       
+       
+       viewCalendarbtn.setOnAction(new EventHandler<ActionEvent>() {
+      	 /**
+      	  * Chanegs the GUI to view upcoming auctions
+      	  * 
+      	  * @param e The button press that will try to submit the new number
+      	  */
+          @Override
+          public void handle(ActionEvent e) {
+        	  ViewCalendarGUI.viewCalendar(primaryStage, myData);
+          }
+ 
+      });
 	}
 }
