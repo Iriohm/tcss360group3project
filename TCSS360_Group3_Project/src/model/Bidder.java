@@ -1,10 +1,7 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.time.Period;
-import java.time.temporal.ChronoUnit;
 
 /**
  * This class is used to handle/hold methods and fields specifically for
@@ -23,7 +20,7 @@ public class Bidder extends User {
 	/**
 	 * This constructor sets the fields equal to the user-provided values, and
 	 * sets the User type to 3.
-	 * 
+	 *
 	 * @param theUsername
 	 *            The String that contains the User's username.
 	 * @param theCalendar
@@ -45,33 +42,62 @@ public class Bidder extends User {
 		return false;
 	}
 
+
 	/**
 	 * This method allows the user to cancel a bid on an Item object.
-	 * @author "Robert Hinds"
+	 * @author "Robert Hinds", "Iriohm"
 	 * @return true if bid was removed, false otherwise.
 	 */
 	public boolean cancelBid(Item theItemToCancelBidOn, Bidder theBidder) {
-		if(theItemToCancelBidOn.isBeingBidOnBy(theBidder.myUsername) == false){
+		// Heavily altered to implement new test, which in turn implements
+		// new Item functionality (pointer to parent Auction).
+		if	(hasAuctionPassedTwoDayCutoffPoint(theItemToCancelBidOn)) {
 			return false;
+
+		} else {
+			return theItemToCancelBidOn.getBidChain().removeBid(myUsername);
+
 		}
-		if((validateCancelBidGreaterThanDayLimit(theItemToCancelBidOn, theBidder)) == false){
-			return false;
-		}
-			return theItemToCancelBidOn.getBidChain().removeBid(getUsername());		
+
 	}
+
+
+	/**
+	 * Tests to see whether the Auction for the given Item is within the next two days. Bids can only
+	 * be canceled on Items if their Auctions are at or more than two days away.
+	 *
+	 * @author Iriohm
+	 * @return Returns true if the Auction the Item belongs to has passed its two-day cutoff point (no bid cancellation beyond then).
+	 */
+	public static boolean hasAuctionPassedTwoDayCutoffPoint(Item theItem) {
+		if	(theItem.getAuction() == null) {
+			System.err.println("Error: Bidder.isWithinTwoDaysOfAuction() encountered an Item with a null myAuction!");
+
+			return false;
+
+		}
+
+		long lTwoDaysFromNow = new GregorianCalendar().getTimeInMillis() + (2 * 24 * 60 * 60 * 1000);
+		long lAuctionDate = theItem.getAuction().getDate().getTimeInMillis();
+
+		return (lTwoDaysFromNow > lAuctionDate);
+
+	}
+
+
 	/**
 	 * This method validates that the auction is greater than or equal to cancellation deadline
 	 * @author "Robert Hinds"
-	 * @return true if the auction date of the item bid being cancelled is  greater than cancellation deadline, false otherwise. 
+	 * @return true if the auction date of the item bid being cancelled is  greater than cancellation deadline, false otherwise.
 	 */
 	public boolean validateCancelBidGreaterThanDayLimit(Item theItemToCancelBidOn, Bidder theBidder) {
-		
+
 		int i = 0, j = 0;
 		int sizeOfListOfAuctionItems = 0;
 		int dayLimitToCancel = 2;
 		long differenceInMillis = 0;
 		long diffenceInDays = 0;
-		
+
 		GregorianCalendar theDate = (GregorianCalendar) GregorianCalendar.getInstance();
 		boolean foundItem = false;
 		boolean returnValue = false;
@@ -86,13 +112,13 @@ public class Bidder extends User {
 				}
 			}
 			if (foundItem == true) {
-				//this check kinda iffy.				
+				//this check kinda iffy.
 				//converts dates into milliseconds then converts them to days.
 				differenceInMillis =  theAuctionList.get(i).getDate().getTimeInMillis() - theDate.getTimeInMillis() ;
 			//	double temp =  differenceInMillis / (24 * 60 * 60 * 1000);
-				
+
 				diffenceInDays = differenceInMillis / (24 * 60 * 60 * 1000);
-				
+
 				if ( diffenceInDays >= dayLimitToCancel) {
 					returnValue = true;
 				}

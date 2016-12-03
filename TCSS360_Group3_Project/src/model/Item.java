@@ -2,12 +2,16 @@ package model;
 
 import java.io.Serializable;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 /**
  * Represents an Item to be bid upon. Includes fields for the ID number, name, description,
  * minimum bid, quantity, and condition. Also keeps track of any bids made on it.
  *
  * @author Iriohm
- * @version Nov 2016
+ * @version Dec 2016
  */
 public class Item implements Serializable {
 	/** A generated serial ID. */
@@ -36,7 +40,7 @@ public class Item implements Serializable {
 
 	/** The top (dummy) node of this Item's Bid chain. */
 	private Bid myBidChain;
-	
+
 	/** The Auction this item is associated with. */
 	private Auction myAuction;
 
@@ -66,8 +70,8 @@ public class Item implements Serializable {
 		myBidChain = new Bid();
 
 	}
-	
-	
+
+
 	/**
 	 * A basic constructor for Items, which also adds them to some Auction.
 	 *
@@ -96,7 +100,7 @@ public class Item implements Serializable {
 
 	}
 
-	
+
 	// Getters
 	public String getID() { return myID; }
 	public String getName() { return myName; }
@@ -106,6 +110,7 @@ public class Item implements Serializable {
 	public int getQuantity() { return myQuantity; }
 	public String getCondition() { return myCondition; }
 	public Bid getBidChain() { return myBidChain; }
+	public Auction getAuction() { return myAuction; }
 
 
 	/**
@@ -120,6 +125,7 @@ public class Item implements Serializable {
 	public void setDescription(String theNewDescription) { myDescription = theNewDescription; }
 	public void setSize(String theNewSize) { mySize = theNewSize; }
 	public void setCondition(String theNewCondition) { myCondition = theNewCondition; }
+	public void setAuction(Auction theNewAuction) { myAuction = theNewAuction; }
 
 
 	/**
