@@ -99,18 +99,29 @@ public class BidderTest extends TestCase {
     }
 
     /**
-     * Test method for testCanPass().
+     * Test method for placeBid().
+     * 
+     * @author Vlad Kaganyuk
      */
     @Test
-    public void testCanPass() {
+    public void testPlaceBidCanPlaceValidBidOnItem() {
     	//Placing a valid bid on myTestItem...ALLOWED
     	assertTrue(myTestBidder.placeBid(myTestItem, 6.00));
+    }
 
+    /**
+     * Test method for placeBid().
+     * 
+     * @author Vlad Kaganyuk
+     */
+    @Test
+    public void testPlaceBidTryingToPlaceAnotherValidBid() {
+    	//Placing a valid bid on myTestItem.
+    	myTestBidder.placeBid(myTestItem, 6.00);
+    	
     	//Placing another bid on myTestItem...NOT ALLOWED
     	assertFalse(myTestBidder.placeBid(myTestItem, 7.00));
     }
-
-
 
     /**
      * Test method to test that a bid can't be cancelled exactly on the day of an auction.
