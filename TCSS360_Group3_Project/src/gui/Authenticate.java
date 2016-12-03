@@ -3,6 +3,7 @@ package gui;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dataStorage.SerializeData;
@@ -52,6 +53,11 @@ public class Authenticate extends Application {
 		myListUser = theData.getUsers();
 		myCalendar = theData.getCalendar();
 		myData = theData;
+		
+		if (myListUser == null) {
+			myListUser = new ArrayList<User>();
+		}
+		
 		launch(args);
 		
 		
