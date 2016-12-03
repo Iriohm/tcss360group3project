@@ -45,8 +45,8 @@ public class GuiLoader extends Application {
 
 	private void prepareTest() {
 		myCalendar = new Calendar();
-		Auction a1 = new Auction(new GregorianCalendar(2016, 11, 10), "Lady's Auction");
-		Auction a2 = new Auction(new GregorianCalendar(2016, 11, 15), "Gentleman's Auction");
+		Auction a1 = new Auction(new GregorianCalendar(2016, 11, 25), "Gentleman's Auction");
+		Auction a2 = new Auction(new GregorianCalendar(2016, 11, 20), "Lady's Auction");
 
 		a1.addItem(new Item("000", "Fancy Hat", "An extremely fancy hat.", "Small", 2.0, 1, "Very Fine"));
 		a1.addItem(new Item("001", "Monocle", "A rather nice monocle.", "Small", 3.0, 1, "Very Fine"));

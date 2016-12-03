@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import dataStorage.SerializeData;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -98,7 +99,7 @@ public class BidderGUI implements Initializable {
 
 
 	/** A simple formatter for dates. */
-	private Format myDateFormatter = new SimpleDateFormat("yyyy/MM/dd");
+	private Format myDateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
 
 	/**
@@ -136,6 +137,21 @@ public class BidderGUI implements Initializable {
 		myCurrentAuctionList = myCalendar.getAuctions(new GregorianCalendar());
 
 	}
+
+
+	/**
+	 * Sets the Bidder using this GUI. Also sets the Calendar and Auction Lists based on the given SerializeData.
+	 * This method must be called before initAll().
+	 *
+	 * @param theBidder The Bidder to be using the GUI.
+	 */
+	public void feedData(Bidder theBidder, SerializeData theData) {
+		myBidder = theBidder;
+		myCalendar = theData.getCalendar();
+		myCurrentAuctionList = myCalendar.getAuctions(new GregorianCalendar());
+
+	}
+
 
 	/**
 	 * This method must be called in addition to initialize() to fully initialize the Controller.

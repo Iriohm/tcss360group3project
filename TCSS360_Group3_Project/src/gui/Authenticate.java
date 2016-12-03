@@ -10,8 +10,10 @@ import javafx.application.Application;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -42,7 +44,7 @@ import model.User;
 public class Authenticate extends Application {
 
 
-			
+
 	private static List<User> myListUser;
 	private static Calendar myCalendar;
 	private static Stage myStage;
@@ -53,21 +55,21 @@ public class Authenticate extends Application {
 		myCalendar = theData.getCalendar();
 		myData = theData;
 		launch(args);
-		
-		
+
+
 		System.out.println("\nWhich user are you?");
 		System.out.printf("%-15s%-20s%-10s\n", "Index", "Username", "Type of User");
 
 		for (int i = 0; i < myListUser.size(); i++) {
 			System.out.printf("%-15s%-20s%-10s\n", (i+1) + ")", myListUser.get(i).getUsername(),myListUser.get(i).getClass().toString());
 		}
-		
+
 	}
     @Override
     public void start(Stage primaryStage) {
     	myStage = primaryStage;
         primaryStage.setTitle("Auction Central");
-        
+
         /**
          * Write out data on window close
          */
@@ -76,10 +78,10 @@ public class Authenticate extends Application {
                 myData.writeOutCalendar();
                 myData.writeOutUserList();
             }
-        });        
+        });
         setupAuthenticate(myStage);
     }
-    
+
     public static void setupAuthenticate(Stage theStage) {
     	GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -90,7 +92,7 @@ public class Authenticate extends Application {
         Scene scene = new Scene(grid, 300, 275);
         theStage.setScene(scene);
         theStage.show();
-        
+
         Text scenetitle = new Text("Welcome to Auction Central");
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
@@ -107,21 +109,21 @@ public class Authenticate extends Application {
         loginhbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         loginhbBtn.getChildren().add(loginbtn);
         grid.add(loginhbBtn, 1, 4);
-        
-        
+
+
         Button newUserbtn = new Button("New User");
         HBox newUserhbBtn = new HBox(10);
         newUserhbBtn.setAlignment(Pos.BOTTOM_RIGHT);
         newUserhbBtn.getChildren().add(newUserbtn);
         grid.add(newUserhbBtn, 1, 5);
-        
+
         final Text actiontarget = new Text();
         grid.add(actiontarget, 1, 6);
-        
+
         newUserbtn.setOnAction(new EventHandler<ActionEvent>() {
        	 /**
        	  * Sends the user to the gui to add a new user
-       	  * 
+       	  *
        	  * @param e The button press that will enable the new user gui
        	  */
            @Override
@@ -134,23 +136,23 @@ public class Authenticate extends Application {
          	   //scenetitle.setText("Hello, New User!");
         	  // userName.setText("Desired user ID");
         	   AddUser.addUser(theStage, myData);
-        	   
-        	   
-        	   
-   
-        	
+
+
+
+
+
            }
-           
-           
+
+
        });
 
-        
-        
+
+
         loginbtn.setOnAction(new EventHandler<ActionEvent>() {
         	 /**
-        	  * Checks the info given by the user against the list of known users and 
+        	  * Checks the info given by the user against the list of known users and
         	  * either makes them try again or directs them to the appropriate gui
-        	  * 
+        	  *
         	  * @param e The button press that will enable the login attempt
         	  */
             @Override
@@ -161,12 +163,33 @@ public class Authenticate extends Application {
             		if (userInput.equals(myListUser.get(i).getUsername())) {
             			if (myListUser.get(i).getClass() == Staff.class) {
             				StaffGUI.startStaffGUI(myStage, myListUser.get(i), myData);
+            				myStage.centerOnScreen();
             			} else if (myListUser.get(i).getClass() == NPContact.class) {
             				//ToDO call NPUI
             			} else if (myListUser.get(i).getClass() == Bidder.class) {
-            				//ToDO call BidderUI
+            		    	try {
+            					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Bidder.fxml"));
+            					Parent root = (Parent)fxmlLoader.load();
+            					BidderGUI ctrlBidderGUI = fxmlLoader.<BidderGUI>getController();
+
+            					ctrlBidderGUI.feedData((Bidder) myListUser.get(i), myData);
+
+            					ctrlBidderGUI.initAll();
+
+            					Scene scene = new Scene(root);
+            					scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            					myStage.setScene(scene);
+            					myStage.setResizable(false);
+            					myStage.centerOnScreen();
+            					myStage.show();
+
+            				} catch(Exception anException) {
+            					anException.printStackTrace();
+
+            				}
+
             			}
-            			
+
             			return;
             		}
             	}
@@ -175,7 +198,7 @@ public class Authenticate extends Application {
                 actiontarget.setText("Invalid Login");
             }
         });
+
     }
-        
- 
+
 }
