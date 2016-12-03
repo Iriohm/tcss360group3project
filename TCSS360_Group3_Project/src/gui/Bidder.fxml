@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -12,12 +17,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="658.0" maxWidth="732.0" minHeight="658.0" minWidth="732.0" prefHeight="658.0" prefWidth="732.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="BidderGUI">
+<AnchorPane maxHeight="658.0" maxWidth="912.0" minHeight="658.0" minWidth="732.0" prefHeight="658.0" prefWidth="912.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.BidderGUI">
    <children>
       <GridPane maxHeight="658.0" maxWidth="732.0" minHeight="658.0" minWidth="732.0" prefHeight="658.0" prefWidth="732.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="451.0" minWidth="10.0" prefWidth="341.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="571.0" minWidth="10.0" prefWidth="571.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -25,8 +30,8 @@
          <children>
             <GridPane>
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="102.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="264.0" minWidth="10.0" prefWidth="264.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="261.0" minWidth="10.0" prefWidth="88.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="360.0" minWidth="10.0" prefWidth="253.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints maxHeight="39.0" minHeight="39.0" prefHeight="39.0" vgrow="SOMETIMES" />
@@ -37,10 +42,10 @@
                <children>
                   <Button fx:id="myLogOutButton" mnemonicParsing="false" text="Log Out" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                   <Text fx:id="myUserNameDisplay" strokeType="OUTSIDE" strokeWidth="0.0" text="Logged in as [Bidder Name]" wrappingWidth="261.6708984375" GridPane.columnIndex="1" />
-                  <Text fx:id="myFeedbackText" strokeType="OUTSIDE" strokeWidth="0.0" text="Testificate" wrappingWidth="264.6708984375" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="TOP" GridPane.vgrow="SOMETIMES" />
+                  <Text fx:id="myFeedbackText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="264.6708984375" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="TOP" GridPane.vgrow="SOMETIMES" />
                   <Button fx:id="myPlaceBidButton" mnemonicParsing="false" text="Place Bid" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                   <Button fx:id="myCancelBidButton" mnemonicParsing="false" text="Cancel Bid" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                  <TextField fx:id="myPlaceBidField" prefHeight="31.0" prefWidth="69.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                  <TextField fx:id="myBidAmountField" prefHeight="31.0" prefWidth="69.0" text="0.00" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                      <GridPane.margin>
                         <Insets left="12.0" right="5.0" />
                      </GridPane.margin>
@@ -54,15 +59,16 @@
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints maxHeight="39.0" minHeight="39.0" prefHeight="39.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="296.0" minHeight="10.0" prefHeight="281.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="327.0" minHeight="10.0" prefHeight="311.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="39.0" minHeight="39.0" prefHeight="39.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="416.0" minHeight="10.0" prefHeight="338.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ComboBox fx:id="myAuctionDropDown" prefHeight="31.0" prefWidth="242.0" GridPane.halignment="RIGHT">
+                  <ComboBox fx:id="myAuctionDropDown" prefHeight="31.0" prefWidth="436.0" GridPane.halignment="RIGHT">
                      <GridPane.margin>
                         <Insets right="5.0" />
                      </GridPane.margin></ComboBox>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current Auction" wrappingWidth="113.6708984375" GridPane.halignment="LEFT">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="  Current Auction" wrappingWidth="113.6708984375" GridPane.halignment="LEFT">
                      <GridPane.margin>
                         <Insets left="8.0" />
                      </GridPane.margin>
@@ -71,19 +77,28 @@
                      <content>
                         <AnchorPane>
                            <children>
-                              <ListView fx:id="myItemDetails" prefHeight="279.0" prefWidth="346.0" />
+                              <Text fx:id="myItemDetails" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="568.0" AnchorPane.bottomAnchor="-17.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-450.0" AnchorPane.topAnchor="0.0">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
                            </children>
                         </AnchorPane>
                      </content>
                   </ScrollPane>
-                  <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
+                  <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
                     <content>
                       <AnchorPane>
                            <children>
-                              <ListView fx:id="myItemsList" prefHeight="327.0" prefWidth="346.0" />
+                              <ListView fx:id="myItemsList" prefHeight="302.0" prefWidth="569.0" />
                            </children></AnchorPane>
                     </content>
                   </ScrollPane>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="  Item Name                       Condition           Min Bid         My Bid" wrappingWidth="569.13671875" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                     <font>
+                        <Font name="Monospaced Regular" size="12.0" />
+                     </font>
+                  </Text>
                </children>
             </GridPane>
          </children>

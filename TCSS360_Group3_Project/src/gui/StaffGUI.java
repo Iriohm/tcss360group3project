@@ -38,16 +38,21 @@ public class StaffGUI {
 	
 	private static SerializeData myData;
 	
+	private static Calendar myCalendar;
+	
 	public static void startStaffGUI(Stage theStage, User theUser, SerializeData theData) {
 		myUser = theUser;
 		myData = theData;
+		myCalendar = myData.getCalendar();
+		
+		if (myCalendar == null) {
+			myCalendar = new Calendar();
+		}
 		setUpStaffGUI(theStage);
 	}
 	
 
 	public static void setUpStaffGUI(Stage primaryStage) {
-		Calendar theCalendar = myData.getCalendar();
-		
 		GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -58,7 +63,7 @@ public class StaffGUI {
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        Text scenetitle = new Text("Welcome Auction Central Staff, Current Upcoming Auctions: " + theCalendar.getUpcomingAuctionsNumber());
+        Text scenetitle = new Text("Welcome Auction Central Staff, Current Upcoming Auctions: " + myCalendar.getUpcomingAuctionsNumber());
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
 
@@ -72,7 +77,7 @@ public class StaffGUI {
         }
        
  	    final ComboBox<Integer> maxAuctionsBox = new ComboBox<Integer>(options);
- 	    maxAuctionsBox.setValue(theCalendar.getMaxAuctionsLimit());
+ 	    maxAuctionsBox.setValue(myCalendar.getMaxAuctionsLimit());
 
  	    HBox maxAuctionsbx = new HBox(10);
  	    maxAuctionsbx.setAlignment(Pos.BOTTOM_RIGHT);
@@ -99,7 +104,7 @@ public class StaffGUI {
           @Override
           public void handle(ActionEvent e) {
         	  int newMaxAuctions = maxAuctionsBox.getValue();
-        	  if (theCalendar.setMaxAuctionsLimit(newMaxAuctions) == 0) {
+        	  if (myCalendar.setMaxAuctionsLimit(newMaxAuctions) == 0) {
         		  actiontarget.setFill(Color.GREEN);
                   actiontarget.setText("Succesfully updated");
                   //Serialize?
@@ -107,7 +112,7 @@ public class StaffGUI {
                 
         	  } else {
         		  actiontarget.setFill(Color.FIREBRICK);
-                  actiontarget.setText("You already have " + theCalendar.getUpcomingAuctionsNumber() + " schduled");
+                  actiontarget.setText("You already have " + myCalendar.getUpcomingAuctionsNumber() + " schduled");
         	  }
           }
  

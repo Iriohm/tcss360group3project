@@ -3,6 +3,7 @@ package gui;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dataStorage.SerializeData;
@@ -51,6 +52,11 @@ public class Authenticate extends Application {
 		myListUser = theData.getUsers();
 		myCalendar = theData.getCalendar();
 		myData = theData;
+		
+		if (myListUser == null) {
+			myListUser = new ArrayList<User>();
+		}
+		
 		launch(args);
 		
 		
@@ -132,7 +138,7 @@ public class Authenticate extends Application {
          	   grid.getChildren().remove(actiontarget);*/
          	   //scenetitle.setText("Hello, New User!");
         	  // userName.setText("Desired user ID");
-        	   AddUser.addUser(theStage, myData);
+        	   AddUser.addUser(theStage, myListUser, myCalendar);
         	   
         	   
         	   

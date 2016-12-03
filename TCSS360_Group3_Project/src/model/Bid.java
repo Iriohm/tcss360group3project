@@ -23,6 +23,7 @@ public class Bid implements Serializable {
 	/** The bid immediately lower in the chain. */
 	private Bid myNextBid;
 
+
 	/**
 	 * Basic constructor.
 	 *
