@@ -31,6 +31,14 @@ import model.NPContact;
 import model.Staff;
 import model.User;
 
+
+/**
+* This class contains the GUI for adding a user to AuctionCentral
+*
+* @author Justin Washburn
+* @version 30 Nov 2016
+*
+*/
 public class AddUser {
 
 

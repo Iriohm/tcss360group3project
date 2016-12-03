@@ -32,10 +32,9 @@ import model.User;
 
 
 /**
-* This class is used to begin the AuctionCentral environment.
+* This class is used to begin the AuctionCentral GUi and authenticate the users credentials.
 *
 * @author Justin Washburn
-* @author Oracle tutorial http://docs.oracle.com/javafx/2/get_started/form.htm
 * @version 30 Nov 2016
 *
 */
@@ -161,9 +160,12 @@ public class Authenticate extends Application {
             		if (userInput.equals(myListUser.get(i).getUsername())) {
             			if (myListUser.get(i).getClass() == Staff.class) {
             				StaffGUI.startStaffGUI(myStage, myListUser.get(i), myData);
+            				myStage.setTitle("Auction Central - " + userInput);
             			} else if (myListUser.get(i).getClass() == NPContact.class) {
             				//ToDO call NPUI
+            				myStage.setTitle("Auction Central - " + userInput);
             			} else if (myListUser.get(i).getClass() == Bidder.class) {
+            				myStage.setTitle("Auction Central - " + userInput);
             				//ToDO call BidderUI
             			}
             			

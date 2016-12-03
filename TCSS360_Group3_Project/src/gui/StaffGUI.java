@@ -23,6 +23,15 @@ import javafx.stage.Stage;
 import model.Calendar;
 import model.User;
 
+
+/**
+* This class contains the GUI for staff members to update the maximum number of Auctions and view upcoming auctions.
+*
+* @author Justin Washburn
+* @version 30 Nov 2016
+*
+*/
+
 public class StaffGUI {
 	
 	private static User myUser;
