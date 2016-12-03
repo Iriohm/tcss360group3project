@@ -42,17 +42,17 @@ import model.User;
 public class AddUser {
 
 
-	private static List<User> myListUser;
-	private static Calendar myCalendar;
+	private static SerializeData myData;
 
-	public static void addUser(Stage theStage, List<User> theListUser, Calendar theCalendar) {
+	public static void addUser(Stage theStage, SerializeData theData) {
 
-		myListUser = theListUser;
-		myCalendar = theCalendar;
+		myData = theData;
 		setupAddUser(theStage);
 	}
 	
 	private static void setupAddUser(Stage primaryStage) {
+		List<User> theListUser = myData.getUsers();
+		Calendar theCalendar = myData.getCalendar();
 		GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -135,8 +135,8 @@ public class AddUser {
                       actiontarget.setText("Select user type");
                       return;
             	 }
-            	 for (int i = 0; i < myListUser.size(); i++) {
-            		 if (userID.equals(myListUser.get(i).getUsername())) {
+            	 for (int i = 0; i < theListUser.size(); i++) {
+            		 if (userID.equals(theListUser.get(i).getUsername())) {
                          actiontarget.setFill(Color.FIREBRICK);
                          actiontarget.setText("UserID already exists");
                          return;
@@ -145,16 +145,16 @@ public class AddUser {
 
             	 User newUser;
             	 if (userType.equals("Staff")) {
-            		 newUser = new Staff(userID, myCalendar);
-            		 myListUser.add(newUser);
+            		 newUser = new Staff(userID, theCalendar);
+            		 theListUser.add(newUser);
             		 Authenticate.setupAuthenticate(primaryStage);
             	 } else  if (userType.equals("NPContact")) {
-            		 newUser = new NPContact(userID, myCalendar);
-            		 myListUser.add(newUser);
+            		 newUser = new NPContact(userID, theCalendar);
+            		 theListUser.add(newUser);
             		 Authenticate.setupAuthenticate(primaryStage);
             	 } else  if (userType.equals("Bidder")) {
-            		 newUser = new Bidder(userID, myCalendar);
-            		 myListUser.add(newUser);
+            		 newUser = new Bidder(userID, theCalendar);
+            		 theListUser.add(newUser);
             		 Authenticate.setupAuthenticate(primaryStage);
             	 }
             	// myData.writeOutUserList();
