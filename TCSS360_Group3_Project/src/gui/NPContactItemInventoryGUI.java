@@ -44,7 +44,7 @@ public class NPContactItemInventoryGUI implements Initializable {
 	private Button myRemoveItemBtn;
 	
 	@FXML
-	private ChoiceBox<Integer> myItemChoice;
+	private ChoiceBox<String> myItemChoice;
 	
 	@FXML
 	private Label myUsernameLabel;
@@ -119,7 +119,6 @@ public class NPContactItemInventoryGUI implements Initializable {
 				Auction yo = myNPContact.getLatestAuction();
 				yo.addItem(new Item("2", "Yo-yo", "Brand-new", "Small", 10.00, 1, "New"));
 				
-				System.out.println(yo.getItems().get(0));
 				updateItemsInTable();
 				return;
 				
@@ -139,6 +138,18 @@ public class NPContactItemInventoryGUI implements Initializable {
 					anException.printStackTrace();
 				}
 				**/
+			}
+		});
+		
+		myRemoveItemBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Auction theAuction = myNPContact.getLatestAuction();
+				List<Item> itemsInAuction = myNPContact.getLatestAuction().getItems();
+				int itemToRemoveIndex = myItemChoice.getSelectionModel().getSelectedIndex();
+				
+				theAuction.removeItem(itemsInAuction.get(itemToRemoveIndex));
+				updateItemsInTable();
 			}
 		});
 		
@@ -167,12 +178,25 @@ public class NPContactItemInventoryGUI implements Initializable {
 	private void updateItemsInTable() {
 		List<Item> itemsInAuction = myNPContact.getLatestAuction().getItems();
 		ItemCell[] itemInfo = new ItemCell[itemsInAuction.size()];
+		String[] itemIDs = new String[itemInfo.length];
 		
 		for (int i = 0; i < itemsInAuction.size(); i++) {
 			Item currentItem = itemsInAuction.get(i);
+			itemIDs[i] = currentItem.getID();
 			itemInfo[i] = new ItemCell(currentItem.getID(), currentItem.getName(), currentItem.getMinBid(), currentItem.getQuantity(), currentItem.getCondition(), currentItem.getDescription());
 		}
 		myItemTableView.setItems(FXCollections.observableList(Arrays.asList(itemInfo)));
+		
+		if (itemIDs.length >= 1) {
+			myItemChoice.setDisable(false);
+			myItemChoice.setItems(FXCollections.observableArrayList(Arrays.asList(itemIDs)));
+			myItemChoice.setValue(itemIDs[0]);
+			myRemoveItemBtn.setDisable(false);
+		} else {
+			myItemChoice.setItems(FXCollections.observableArrayList(Arrays.asList(itemIDs)));
+			myRemoveItemBtn.setDisable(true);
+			myItemChoice.setDisable(true);
+		}
 	}
 	
 	public class ItemCell {
