@@ -45,6 +45,10 @@ public class Authenticate extends Application {
 	private static List<User> myListUser;
 	private static Stage myStage;
 	private static SerializeData myData;
+	
+	private static final int STAFF_USER_TYPE_ID = 1;
+	private static final int NPCONTACT_USER_TYPE_ID = 2;
+	private static final int BIDDER_USER_TYPE_ID = 3;
 
 	public static void beginUI(String[] args, SerializeData theData) {
 		myData = theData;
@@ -157,13 +161,14 @@ public class Authenticate extends Application {
             	String userInput = userTextField.getText();
             	for (int i = 0; i < myListUser.size(); i++) {
             		if (userInput.equals(myListUser.get(i).getUsername())) {
-            			if (myListUser.get(i).getClass() == Staff.class) {
+            			int userType = myListUser.get(i).getType();
+            			if (userType == STAFF_USER_TYPE_ID) {
             				StaffGUI.startStaffGUI(myStage, myListUser.get(i), myData);
             				myStage.setTitle("Auction Central - " + userInput);
             				myStage.centerOnScreen();
-            			} else if (myListUser.get(i).getClass() == NPContact.class) {
+            			} else if (userType == NPCONTACT_USER_TYPE_ID) {
 
-            			} else if (myListUser.get(i).getClass() == Bidder.class) {
+            			} else if (userType == BIDDER_USER_TYPE_ID) {
             				myStage.setTitle("Auction Central - " + userInput);
 
             		    	try {
