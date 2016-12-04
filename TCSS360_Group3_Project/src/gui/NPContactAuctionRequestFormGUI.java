@@ -107,13 +107,23 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 				int year = Integer.parseInt(date[YEAR_INDEX]);
 				int month = Integer.parseInt(date[MONTH_INDEX]);
 				int day = Integer.parseInt(date[DAY_INDEX]);
-				System.out.println(year + " " + month + " " + day);
 				auctionDateGregCalendar.set(year, month, day, auctionHour, 0, 0);
 				auctionDateGregCalendar.add(GregorianCalendar.MONTH, -1);
 				
 				Auction auctionRequest = new Auction(auctionDateGregCalendar, auctionName);
 				myCalendar.addAuction(auctionRequest);
 				myNPContact.addAuction(auctionRequest);
+				
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Auction Central");
+				alert.setHeaderText("Successful submission");
+				
+				myStage.hide();
+				alert.setContentText("Successfully submitted your auction request. You can see your auctions by pressing the \"View my auctions\" button on the main menu.");
+
+				alert.showAndWait();
+				
+				myParentStage.show();
 			}
 		});
 		
@@ -132,8 +142,8 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == yesBtn){
-					myStage.hide();
 					myParentStage.show();
+					myStage.hide();
 				}
 			}
 		});
