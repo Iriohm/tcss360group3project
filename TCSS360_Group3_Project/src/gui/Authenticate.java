@@ -27,6 +27,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.Bidder;
+import model.NPContact;
 import model.User;
 
 
