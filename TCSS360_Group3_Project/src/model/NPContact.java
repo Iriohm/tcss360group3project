@@ -58,6 +58,22 @@ public class NPContact extends User {
 	}
 	
 	/**
+	 * this dose all the cheek that have to be done to add the auction to the non-profit and the calendar
+	 * @param theAuction want auction that you want to add.
+	 * @param theCalendar that has all auction.
+	 * @return true if it succeed add auction. false if it failed to add the auction.
+	 */
+	public boolean addAuction(Auction theAuction, Calendar theCalendar) {
+		if(hasAuctionUpcomingOrLastYear()) {
+			return false;
+		}else if (theCalendar.addAuction(theAuction)) {
+			addAuction(theAuction);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Checks if the non-profit had an auction less than a year ago and if they have an upcoming auction.
 	 */
 	public boolean hasAuctionUpcomingOrLastYear() {
