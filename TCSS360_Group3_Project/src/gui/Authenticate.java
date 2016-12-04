@@ -3,7 +3,6 @@ package gui;
 
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dataStorage.SerializeData;
@@ -28,9 +27,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.Bidder;
-import model.Calendar;
 import model.NPContact;
-import model.Staff;
 import model.User;
 
 
@@ -50,12 +47,18 @@ public class Authenticate extends Application {
 	private static final int NPCONTACT_USER_TYPE_ID = 2;
 	private static final int BIDDER_USER_TYPE_ID = 3;
 
+	/**
+	 * Launches the GUI for the first time, stores fields, 
+	 * and begins the Authenticate GUI
+	 * @param args String of command line arguments
+	 * @param theData The data for the calendar and list of users
+	 */
 	public static void beginUI(String[] args, SerializeData theData) {
 		myData = theData;
 
 		launch(args);
 
-
+//Uncomment if you want to view list of users
 		//List<User> myListUser = myData.getUsers();
 //		System.out.println();
 //		System.out.println("\nWhich user are you?");
@@ -67,7 +70,11 @@ public class Authenticate extends Application {
 
 	}
 
-
+	/**
+	 * Starts the GUI and calls the method to build the Authenticate scene
+	 * 
+	 * @param primaryStage the current window
+	 */
     @Override
     public void start(Stage primaryStage) {
     	myStage = primaryStage;
@@ -75,7 +82,7 @@ public class Authenticate extends Application {
         primaryStage.setTitle("Auction Central");
 
         /**
-         * Write out data on window close
+         * Write out data to given .ser files on window close
          */
         myStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
@@ -86,6 +93,10 @@ public class Authenticate extends Application {
         setupAuthenticate(myStage);
     }
 
+    /**
+     * Builds the Authenticate GUI
+     * @param theStage The current open window
+     */
     public static void setupAuthenticate(Stage theStage) {
     	GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -166,6 +177,8 @@ public class Authenticate extends Application {
             	for (int i = 0; i < myListUser.size(); i++) {
             		if (userInput.equals(myListUser.get(i).getUsername())) {
             			int userType = myListUser.get(i).getType();
+            			
+            			//Sends the User to the appropriate GUI based on USer type
             			if (userType == STAFF_USER_TYPE_ID) {
             				StaffGUI.startStaffGUI(myStage, myListUser.get(i), myData);
             				myStage.setTitle("Auction Central - " + userInput);

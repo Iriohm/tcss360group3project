@@ -1,9 +1,6 @@
 package gui;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import dataStorage.SerializeData;
@@ -41,15 +38,27 @@ import model.User;
 */
 public class AddUser {
 
-
+	/**
+	 * The data for the calendar and list of users
+	 */
 	private static SerializeData myData;
 
+	/**
+	 * Starts up the object and sets its fields
+	 * 
+	 * @param theStage The current open window
+	 * @param theData The data for the calendar and list of users
+	 */
 	public static void addUser(Stage theStage, SerializeData theData) {
 
 		myData = theData;
 		setupAddUser(theStage);
 	}
 	
+	/**
+	 * Builds the GUI and adds it to the given stage. Also creates button events
+	 * @param primaryStage
+	 */
 	private static void setupAddUser(Stage primaryStage) {
 		List<User> theListUser = myData.getUsers();
 		Calendar theCalendar = myData.getCalendar();
@@ -102,7 +111,9 @@ public class AddUser {
        final Text actiontarget = new Text();
        grid.add(actiontarget, 1, 6);
        
-       
+       /**
+        * The back button returns you one screen
+        */
        backbtn.setOnAction(new EventHandler<ActionEvent>() {
        	 /**
        	  * Goes back to the authenticate scene
@@ -118,7 +129,9 @@ public class AddUser {
        
        
        
-       
+       /**
+        * Adds the user to the list of users as long as it is valid
+        */
        createNewUserbtn.setOnAction(new EventHandler<ActionEvent>() {
          	 /**
          	  * Checks the user input against the current list of users and creates
@@ -142,7 +155,7 @@ public class AddUser {
                          return;
             		 }
             	 }
-
+            	 //Create the correct type of user and add it to the user list
             	 User newUser;
             	 if (userType.equals("Staff")) {
             		 newUser = new Staff(userID, theCalendar);
