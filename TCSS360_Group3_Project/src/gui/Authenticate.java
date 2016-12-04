@@ -171,6 +171,22 @@ public class Authenticate extends Application {
             				myStage.setTitle("Auction Central - " + userInput);
             				myStage.centerOnScreen();
             			} else if (userType == NPCONTACT_USER_TYPE_ID) {
+            				myStage.setTitle("Auction Central - " + userInput);
+
+            		    	try {
+            					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContact.fxml"));
+            					Parent root = (Parent)fxmlLoader.load();
+            					NPContactGUI ctrlNPContactGUI = fxmlLoader.<NPContactGUI>getController();
+            					System.out.println(ctrlNPContactGUI);
+            					ctrlNPContactGUI.sendData(myStage, myData.getUsers(), myData.getCalendar());
+
+            					Scene scene = new Scene(root);
+            					myStage.setScene(scene);
+            					myStage.show();
+            				} catch(Exception anException) {
+            					anException.printStackTrace();
+
+            				}
 
             			} else if (userType == BIDDER_USER_TYPE_ID) {
             				myStage.setTitle("Auction Central - " + userInput);
