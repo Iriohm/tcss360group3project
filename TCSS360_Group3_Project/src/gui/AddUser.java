@@ -155,6 +155,11 @@ public class AddUser {
                          return;
             		 }
             	 }
+            	 if (userID.equals("")) {
+            		 actiontarget.setFill(Color.FIREBRICK);
+                     actiontarget.setText("Enter UserID");
+                     return;
+            	 }
             	 //Create the correct type of user and add it to the user list
             	 User newUser;
             	 if (userType.equals("Staff")) {
