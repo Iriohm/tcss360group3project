@@ -1,20 +1,44 @@
 package gui;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import model.Auction;
 import model.Calendar;
 import model.NPContact;
 
 public class NPContactAuctionRequestFormGUI implements Initializable {
+	
+	private static final List<Integer> NUMBERS_1_THROUGH_12 = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+	
+	private static final int DEFAULT_NUM_VALUE = 1;
+	
+	private static final String DEFAULT_AM_PM_VALUE = "AM";
+	
+	private static final int YEAR_INDEX = 0;
+	
+	private static final int MONTH_INDEX = 1;
+	
+	private static final int DAY_INDEX = 2;
+	
 	@FXML
 	private Button mySubmitBtn;
 	
@@ -22,25 +46,45 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 	private TextField myAuctionName;
 	
 	@FXML
-	private TextField myAuctionDate;
+	private ChoiceBox<Integer> myNumChoice;
 	
 	@FXML
-	private TextField myAuctionTime;
+	private ChoiceBox<String> myAMPMChoice;
+	
+	@FXML
+	private Button myBackBtn;
+	
+	@FXML
+	private DatePicker myDatePicker;
 	
 	private Calendar myCalendar;
 	
 	private NPContact myNPContact;
+	
+	private Stage myParentStage;
+	
+	private Stage myStage;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		assert mySubmitBtn != null : "fx:id=\"mySubmitBtn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		assert myAuctionName != null : "fx:id=\"myAuctionName\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myAuctionDate != null : "fx:id=\"myAuctionDate\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myAuctionTime != null : "fx:id=\"myAuctionTime\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
+		assert myNumChoice != null : "fx:id=\"myNumChoice\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
+		assert myAMPMChoice != null : "fx:id=\"myAMPMChoice\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
+		assert myDatePicker != null : "fx:id=\"myDatePicker\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
+		assert myBackBtn != null : "fx:id=\"myBackBtn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 
+		
+		myNumChoice.setValue(DEFAULT_NUM_VALUE);
+		myNumChoice.setItems(FXCollections.observableList(NUMBERS_1_THROUGH_12));
+		
+		myAMPMChoice.setValue(DEFAULT_AM_PM_VALUE);
+		myAMPMChoice.setItems(FXCollections.observableArrayList("AM", "PM"));
 	}
 	
-	public void initVariables(Calendar theCalendar, NPContact theNPContact) {
+	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact) {
+		myParentStage = theParentStage;
+		myStage = theStage;
 		myCalendar = theCalendar;
 		myNPContact = theNPContact;
 		
@@ -50,38 +94,47 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 				GregorianCalendar auctionDateGregCalendar = new GregorianCalendar();
 				
 				String auctionName = myAuctionName.getText();
-				String auctionDate = myAuctionDate.getText();
-				String auctionTime = myAuctionTime.getText();
+				String auctionDate = myDatePicker.getValue().toString();
+				int auctionHour = myNumChoice.getValue();
+				String auctionAMPM = myAMPMChoice.getValue();
 				
-				//test valid date
-				//test valid time.
-				String[] date = auctionDate.split("/");
-				String[] time = auctionTime.split(" ");
+				String[] date = auctionDate.split("-");
 				
-				int hour = 0;
-				try {
-					hour = Integer.parseInt(time[0]);
-				} catch (NumberFormatException e) {
-					System.out.println("We encountered an error with your time input, and must restart auction date input.\n");
-					//alert
-					return;
-				}
-
-				if (time[1].equals("PM")) {
-					hour += 12;
+				if (auctionAMPM.equals("PM")) {
+					auctionHour += 12;
 				}
 				
-				int year = Integer.parseInt(date[2]);
-				int month = Integer.parseInt(date[1]);
-				int day = Integer.parseInt(date[0]);
+				int year = Integer.parseInt(date[YEAR_INDEX]);
+				int month = Integer.parseInt(date[MONTH_INDEX]);
+				int day = Integer.parseInt(date[DAY_INDEX]);
 				System.out.println(year + " " + month + " " + day);
-				auctionDateGregCalendar.set(year, month, day, hour, 0, 0);
-				//I have no idea why
+				auctionDateGregCalendar.set(year, month, day, auctionHour, 0, 0);
 				auctionDateGregCalendar.add(GregorianCalendar.MONTH, -1);
 				
 				Auction auctionRequest = new Auction(auctionDateGregCalendar, auctionName);
 				myCalendar.addAuction(auctionRequest);
 				myNPContact.addAuction(auctionRequest);
+			}
+		});
+		
+		myBackBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Alert alert = new Alert(AlertType.CONFIRMATION);
+				alert.setTitle("Auction Central");
+				alert.setHeaderText("Unsaved Information");
+				alert.setContentText("Are you sure you would like to go back?\nYour input has not be saved.");
+				
+				ButtonType yesBtn = new ButtonType("Yes");
+				ButtonType noBtn = new ButtonType("No");
+
+				alert.getButtonTypes().setAll(yesBtn, noBtn);
+
+				Optional<ButtonType> result = alert.showAndWait();
+				if (result.get() == yesBtn){
+					myStage.hide();
+					myParentStage.show();
+				}
 			}
 		});
 	}

@@ -73,10 +73,11 @@ public class NPContactGUI implements Initializable {
 					Parent root = (Parent)fxmlLoader.load();
 					NPContactAuctionRequestFormGUI ctrlAuctionRequestFormGUI = fxmlLoader.<NPContactAuctionRequestFormGUI>getController();
 
-					ctrlAuctionRequestFormGUI.initVariables(myCalendar, myNPContact);
+					ctrlAuctionRequestFormGUI.initVariables(myStage, auctionRequestStage, myCalendar, myNPContact);
 
 					Scene scene = new Scene(root);
 					auctionRequestStage.setScene(scene);
+					myStage.hide();
 					auctionRequestStage.show();
 				} catch(Exception anException) {
 					anException.printStackTrace();
