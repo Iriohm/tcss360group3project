@@ -49,15 +49,12 @@ public class StaffGUI {
 		myUser = theUser;
 		myData = theData;
 		myCalendar = myData.getCalendar();
-		
-		if (myCalendar == null) {
-			myCalendar = new Calendar();
-		}
 		setUpStaffGUI(theStage);
 	}
 	
 
 	public static void setUpStaffGUI(Stage primaryStage) {
+		primaryStage.setTitle("Auction Central - Staff");
 		GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -138,9 +135,30 @@ public class StaffGUI {
       	  */
           @Override
           public void handle(ActionEvent e) {
-        	  ViewCalendarGUI.viewCalendar(primaryStage, myData);
+        	  ViewCalendarGUI.viewCalendar(primaryStage, myData, myUser);
           }
  
       });
+
+	
+    Button backbtn = new Button("Log Out");
+    HBox backhbBtn = new HBox(10);
+    backhbBtn.setAlignment(Pos.TOP_LEFT);
+    backhbBtn.getChildren().add(backbtn);
+    grid.add(backhbBtn, 0, 7);
+    
+    
+    
+    backbtn.setOnAction(new EventHandler<ActionEvent>() {
+    	 /**
+    	  * Goes back to the authenticate scene
+    	  * 
+    	  * @param e The button press that will send the user back to authenticate
+    	  */
+        @Override
+        public void handle(ActionEvent e) {
+     	   Authenticate.setupAuthenticate(primaryStage);
+        }             
+    });
 	}
 }

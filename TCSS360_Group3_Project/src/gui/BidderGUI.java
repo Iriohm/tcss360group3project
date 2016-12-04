@@ -30,6 +30,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
 import model.*;
 
@@ -97,7 +98,9 @@ public class BidderGUI implements Initializable {
 	/** The Item currently being viewed. */
 	private Item myCurrentItem;
 
-
+	/** The Stage currently being viewed. */
+	private Stage myStage;
+	
 	/** A simple formatter for dates. */
 	private Format myDateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -157,7 +160,8 @@ public class BidderGUI implements Initializable {
 	 * This method must be called in addition to initialize() to fully initialize the Controller.
 	 * It must also be called only after setBidder(), or things will break.
 	 */
-	public void initAll() {
+	public void initAll(Stage theStage) {
+		myStage = theStage;
 		myUserNameDisplay.setText("Logged in as " + myBidder.getUsername());
 		initLogOutButton();
 		initBidAmountField();
@@ -177,10 +181,7 @@ public class BidderGUI implements Initializable {
 
 			@Override
 			public void handle(ActionEvent event) {
-				/*
-				 * JUSTIN
-				 * PUT CODE HERE FOR LOGGING OUT
-				 */
+				 Authenticate.setupAuthenticate(myStage);
 
 			}
 

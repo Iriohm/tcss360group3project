@@ -159,6 +159,10 @@ public class Authenticate extends Application {
             public void handle(ActionEvent e) {
             	actiontarget.setText("");
             	String userInput = userTextField.getText();
+            	if (myListUser.size() == 0) {
+                    actiontarget.setFill(Color.FIREBRICK);
+                    actiontarget.setText("Invalid Login");
+            	}
             	for (int i = 0; i < myListUser.size(); i++) {
             		if (userInput.equals(myListUser.get(i).getUsername())) {
             			int userType = myListUser.get(i).getType();
@@ -178,7 +182,7 @@ public class Authenticate extends Application {
 
             					ctrlBidderGUI.feedData((Bidder) myListUser.get(i), myData);
 
-            					ctrlBidderGUI.initAll();
+            					ctrlBidderGUI.initAll(myStage);
 
             					Scene scene = new Scene(root);
             					scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
