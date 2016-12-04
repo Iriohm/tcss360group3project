@@ -12,7 +12,7 @@
       <Pane prefHeight="329.0" prefWidth="324.0">
          <children>
             <Button fx:id="mySubmitAuctionRequestBtn" layoutX="85.0" layoutY="121.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="148.0" text="Submit auction request" />
-            <Button fx:id="myAddItemBtn" layoutX="85.0" layoutY="170.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="148.0" text="Add item" />
+            <Button fx:id="myViewAuctionsBtn" layoutX="85.0" layoutY="170.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="148.0" text="View my auctions" />
             <Button fx:id="myItemInvBtn" layoutX="85.0" layoutY="219.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="148.0" text="Item Inventory" />
             <Button fx:id="myLogoutBtn" layoutX="85.0" layoutY="266.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="148.0" text="Logout" />
             <ImageView fitHeight="70.0" fitWidth="259.0" layoutX="33.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">

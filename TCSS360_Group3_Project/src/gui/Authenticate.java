@@ -177,7 +177,7 @@ public class Authenticate extends Application {
             					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContact.fxml"));
             					Parent root = (Parent)fxmlLoader.load();
             					NPContactGUI ctrlNPContactGUI = fxmlLoader.<NPContactGUI>getController();
-
+            					System.out.println(ctrlNPContactGUI);
             					ctrlNPContactGUI.sendData(myStage, myData.getUsers(), myData.getCalendar());
 
             					Scene scene = new Scene(root);
