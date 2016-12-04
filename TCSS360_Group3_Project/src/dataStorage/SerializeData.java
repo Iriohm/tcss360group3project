@@ -16,12 +16,34 @@ import model.User;
 
 public class SerializeData {
 
-	public static String myCalendarFile = "testCalendar.ser";
+	/**
+	 * The String that contains the location of the calendar config file
+	 */
+	public final String CALENDAR_CONFIG = "CalendarFileName";
 	
-	public static String myUserFile = "testUserList.ser";
+	/**
+	 * The String that contains the location of the user config file
+	 */
+	public final String USER_CONFIG = "UserFileName";
 	
+	/**
+	 * The String that contains the location of the calendar .ser file
+	 */
+	private static String myCalendarFile;
+	
+	/**
+	 * The String that contains the location of the user .ser file
+	 */
+	private static String myUserFile;
+	
+	/**
+	 * The Calendar created from the .ser file
+	 */
 	private Calendar myCalendar;
 	
+	/**
+	 * The List<User created from the .ser file
+	 */
 	private List<User> myUserList;
 
 	/**
@@ -45,17 +67,28 @@ public class SerializeData {
 				
 	}
 	
-	
+	/**
+	 * Gets the Calendar
+	 * @return the Calendar
+	 */
 	public Calendar getCalendar() {
 		return myCalendar;
 	}
 	
+	/**
+	 * Gets the List of users
+	 * @return List of users
+	 */
 	public List<User> getUsers() {
 		return myUserList;
 	}
 	
+	/**
+	 * Reads in the desired .ser file names from the two config files. Names of the config files
+	 * must remain true to CALENDAR_CONFIG and USER_CONFIG
+	 */
 	private void getFileNames() {
-		 File file = new File("CalendarFileName");
+		 File file = new File(CALENDAR_CONFIG);
 
 		    try {
 
@@ -70,7 +103,7 @@ public class SerializeData {
 		        e.printStackTrace();
 		    }
 		    
-		    file = new File("UserFileName");
+		    file = new File(USER_CONFIG);
 
 		    try {
 
@@ -87,7 +120,7 @@ public class SerializeData {
 	}
 	
 	/*
-	 * how we write out the calendar as a serialization object.
+	 * this is how we write out the calendar as a serialization object.
 	 */
 	public void writeOutCalendar() {
 
@@ -133,6 +166,7 @@ public class SerializeData {
     /**
      * Reads in the list of users from the .ser file
      */
+	@SuppressWarnings("unchecked")
 	private void readUser() {
 		try
 	      {

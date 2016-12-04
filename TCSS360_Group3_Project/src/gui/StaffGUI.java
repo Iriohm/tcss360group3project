@@ -1,8 +1,5 @@
 package gui;
 
-import java.util.GregorianCalendar;
-import java.util.List;
-
 import dataStorage.SerializeData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -22,7 +18,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.Auction;
 import model.Calendar;
 import model.User;
 
@@ -38,21 +33,34 @@ import model.User;
 public class StaffGUI {
 	
 
-	    
+	/**
+	 * Current user
+	 */
 	private static User myUser;
 	
+	/**
+	 * Calendar and User Data
+	 */
 	private static SerializeData myData;
 	
-	private static Calendar myCalendar;
-	
+
+	/**
+	 * Sets up the fields and calls the StaffGUI set up
+	 * 
+	 * @param theStage The current open window
+	 * @param theUser The current user
+	 * @param theData Calendar and User Data
+	 */
 	public static void startStaffGUI(Stage theStage, User theUser, SerializeData theData) {
 		myUser = theUser;
 		myData = theData;
-		myCalendar = myData.getCalendar();
 		setUpStaffGUI(theStage);
 	}
 	
-
+/**
+ * Builds the Staff GUI and it's functionality
+ * @param primaryStage The current open window
+ */
 	public static void setUpStaffGUI(Stage primaryStage) {
 		primaryStage.setTitle("Auction Central - Staff");
 		GridPane grid = new GridPane();
@@ -65,7 +73,7 @@ public class StaffGUI {
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        Text scenetitle = new Text("Welcome " + myUser.getUsername() + ", Current Upcoming Auctions: " + myCalendar.getUpcomingAuctionsNumber());
+        Text scenetitle = new Text("Welcome " + myUser.getUsername() + ", Current Upcoming Auctions: " + myData.getCalendar().getUpcomingAuctionsNumber());
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 2, 1);
 
@@ -79,7 +87,7 @@ public class StaffGUI {
         }
        
  	    final ComboBox<Integer> maxAuctionsBox = new ComboBox<Integer>(options);
- 	    maxAuctionsBox.setValue(myCalendar.getMaxAuctionsLimit());
+ 	    maxAuctionsBox.setValue(myData.getCalendar().getMaxAuctionsLimit());
 
  	    HBox maxAuctionsbx = new HBox(10);
  	    maxAuctionsbx.setAlignment(Pos.BOTTOM_RIGHT);
@@ -97,6 +105,9 @@ public class StaffGUI {
        final Text actiontarget = new Text();
        grid.add(actiontarget, 1, 6);
        
+       /**
+        * Attempts to set the new number of max auctions
+        */
        submitMaxAuctions.setOnAction(new EventHandler<ActionEvent>() {
       	 /**
       	  * Attempts to set the new number of max auctions
@@ -106,7 +117,7 @@ public class StaffGUI {
           @Override
           public void handle(ActionEvent e) {
         	  int newMaxAuctions = maxAuctionsBox.getValue();
-        	  if (myCalendar.setMaxAuctionsLimit(newMaxAuctions) == 0) {
+        	  if (myData.getCalendar().setMaxAuctionsLimit(newMaxAuctions) == 0) {
         		  actiontarget.setFill(Color.GREEN);
                   actiontarget.setText("Succesfully updated");
                   //Serialize?
@@ -114,7 +125,7 @@ public class StaffGUI {
                 
         	  } else {
         		  actiontarget.setFill(Color.FIREBRICK);
-                  actiontarget.setText("You already have " + myCalendar.getUpcomingAuctionsNumber() + " schduled");
+                  actiontarget.setText("You already have " + myData.getCalendar().getUpcomingAuctionsNumber() + " schduled");
         	  }
           }
  
@@ -126,6 +137,10 @@ public class StaffGUI {
        viewCalendarhbx.getChildren().add(viewCalendarbtn);
        grid.add(viewCalendarhbx, 1, 7);
        
+     /**
+    	 * Chanegs the GUI to view upcoming auctions
+      * 
+      */
        
        viewCalendarbtn.setOnAction(new EventHandler<ActionEvent>() {
       	 /**
@@ -147,7 +162,10 @@ public class StaffGUI {
     backhbBtn.getChildren().add(backbtn);
     grid.add(backhbBtn, 0, 7);
     
-    
+	 /**
+	  * Goes back to the authenticate scene, essentially logs you out 
+	  * 
+	  */
     
     backbtn.setOnAction(new EventHandler<ActionEvent>() {
     	 /**
