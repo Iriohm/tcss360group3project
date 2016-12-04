@@ -259,18 +259,33 @@ public class ViewCalendarGUI {
                   Scene scene = new Scene(grid, 500, 275);
                   auctionView.setScene(scene);
             	  auctionView.show();
+            	  Text scenetitle = new Text(theAuctionsOnDay.get(0).getDate().get(GregorianCalendar.DAY_OF_MONTH) + "/" 
+                		  + (theAuctionsOnDay.get(0).getDate().get(GregorianCalendar.MONTH) + 1) + "/" 
+                		  + theAuctionsOnDay.get(0).getDate().get(GregorianCalendar.YEAR));
+                  scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+                  grid.add(scenetitle, 0, 0, 2, 1);
                   for (int i = 0; i < theAuctionsOnDay.size(); i++) {
 
                 	  Auction temp = theAuctionsOnDay.get(i);
-             
+                	  String ampm;
+                	  if (temp.getDate().get(GregorianCalendar.AM_PM) == GregorianCalendar.AM) {
+                		  ampm = "AM";
+                	  } else {
+                		  ampm = "PM";
+                	  }
                       ScrollPane auctionInfo = new ScrollPane();
-                      Text text = new Text(temp.getAuctionName() + "\n" + temp.getDate().getTime() 
+                      Text text = new Text(temp.getAuctionName() +
+                    		  "\n" + temp.getDate().get(GregorianCalendar.DAY_OF_MONTH) + "/" 
+                    		  + (temp.getDate().get(GregorianCalendar.MONTH) + 1) + "/" 
+                    		  + temp.getDate().get(GregorianCalendar.YEAR) + "  "
+                    		  +  (temp.getDate().get(GregorianCalendar.HOUR) + 1) + " "
+                    		  + ampm
                     		  + "\nEstimated Items: " + temp.getEstimatedItems()
                     		  + "\n" + temp.getComments());
                       text.wrappingWidthProperty().bind(scene.widthProperty());
                       auctionInfo.setFitToWidth(true);
                       auctionInfo.setContent(text);
-                      grid.add(auctionInfo, 0, i);
+                      grid.add(auctionInfo, 0, i + 1);
                   }
               }
 
