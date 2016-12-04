@@ -22,7 +22,7 @@
                <font>
                   <Font size="16.0" />
                </font></Text>
-            <Label layoutX="3.0" layoutY="308.0" text="logged in as: filler" />
+            <Label fx:id="myUsernameLabel" layoutX="1.0" layoutY="309.0" text="logged in as: filler" />
             <Line endX="115.0" layoutX="197.0" layoutY="308.0" startX="-200.0" />
             <Text layoutX="17.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Auction Name: " />
             <Text layoutX="17.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Auction Date:" />

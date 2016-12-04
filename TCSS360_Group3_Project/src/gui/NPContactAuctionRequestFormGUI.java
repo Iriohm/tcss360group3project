@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Auction;
@@ -57,6 +58,9 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 	@FXML
 	private DatePicker myDatePicker;
 	
+	@FXML
+	private Label myUsernameLabel;
+	
 	private Calendar myCalendar;
 	
 	private NPContact myNPContact;
@@ -73,7 +77,7 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 		assert myAMPMChoice != null : "fx:id=\"myAMPMChoice\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		assert myDatePicker != null : "fx:id=\"myDatePicker\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		assert myBackBtn != null : "fx:id=\"myBackBtn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-
+		assert myUsernameLabel != null : "fx:id=\"myUsernameLabel\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		
 		myNumChoice.setValue(DEFAULT_NUM_VALUE);
 		myNumChoice.setItems(FXCollections.observableList(NUMBERS_1_THROUGH_12));
@@ -87,6 +91,8 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 		myStage = theStage;
 		myCalendar = theCalendar;
 		myNPContact = theNPContact;
+		
+		myUsernameLabel.setText("Logged in as: " + myNPContact.getUsername());
 		
 		mySubmitBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
