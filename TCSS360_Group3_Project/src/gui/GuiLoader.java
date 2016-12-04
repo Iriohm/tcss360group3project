@@ -26,7 +26,7 @@ public class GuiLoader extends Application {
 			// Insert master Calendar here.
 			ctrlBidderGUI.setBidder(new Bidder("Iriohm", myCalendar));
 
-			ctrlBidderGUI.initAll();
+			ctrlBidderGUI.initAll(primaryStage);
 
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
