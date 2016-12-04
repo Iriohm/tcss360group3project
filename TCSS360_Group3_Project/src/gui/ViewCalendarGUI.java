@@ -155,16 +155,18 @@ public class ViewCalendarGUI {
 	    	calendarGrid.add(dayLabel, c, 0);
 	    }
 
-	    List<Auction> auctionsOnDay = new ArrayList<Auction>();
+	   
 	    //Adds first row of calendar buttons and labels
 	    GregorianCalendar tempDate;
 	    int daysWithButtons = 0;
 	    for (int c = 0; c < days.length; c++) {
+	    	List<Auction> auctionsOnDay = new ArrayList<Auction>();
 	    	//Equation accounts for the current row and column against the current date 
 	    	tempDate = (GregorianCalendar)currentDate.clone();
 	    	tempDate.add(GregorianCalendar.DAY_OF_MONTH, (c + 1 - currentDate.get(GregorianCalendar.DAY_OF_WEEK)));
 	    	//Counts the number of auctions on the current day
-			for (int i = 0; i < currentAuctions.size(); i++) {
+			auctionsOnDay.clear();
+	    	for (int i = 0; i < currentAuctions.size(); i++) {
 				if (tempDate.get(GregorianCalendar.DAY_OF_YEAR) == currentAuctions.get(i).getDate().get(GregorianCalendar.DAY_OF_YEAR)) {
 					auctionsOnDay.add(currentAuctions.get(i));
 
@@ -192,11 +194,13 @@ public class ViewCalendarGUI {
 	    //Adds the remaining buttons to the calendar
 	    for (int r = 2; r < NUM_BUTTON_LINES + 1; r++) {
 	    	for (int c = 0; c < BUTTONS_PER_LINE; c++) {
+	    		List<Auction> auctionsOnDay = new ArrayList<Auction>();
 	    		tempDate = (GregorianCalendar)currentDate.clone();
     			//Equation accounts for the current row and column against the current date 
     			tempDate.add(GregorianCalendar.DAY_OF_MONTH, (int)((r - 1) * BUTTONS_PER_LINE + c + 1 - currentDate.get(GregorianCalendar.DAY_OF_WEEK)));
 	    		
     	    	//Counts the number of auctions on the current day
+    			auctionsOnDay.clear();
     			for (int i = 0; i < currentAuctions.size(); i++) {
     				if (tempDate.get(GregorianCalendar.DAY_OF_YEAR) == currentAuctions.get(i).getDate().get(GregorianCalendar.DAY_OF_YEAR)) {
     					auctionsOnDay.add(currentAuctions.get(i));
@@ -256,7 +260,9 @@ public class ViewCalendarGUI {
                   auctionView.setScene(scene);
             	  auctionView.show();
                   for (int i = 0; i < theAuctionsOnDay.size(); i++) {
+
                 	  Auction temp = theAuctionsOnDay.get(i);
+             
                       ScrollPane auctionInfo = new ScrollPane();
                       Text text = new Text(temp.getAuctionName() + "\n" + temp.getDate().getTime() 
                     		  + "\nEstimated Items: " + temp.getEstimatedItems()
