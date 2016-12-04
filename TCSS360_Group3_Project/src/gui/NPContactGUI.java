@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -40,6 +41,9 @@ public class NPContactGUI implements Initializable {
 	@FXML
 	private Button myLogoutBtn;
 	
+	@FXML
+	private Label myUsernameLabel;
+	
 	private Calendar myCalendar;
 	
 	private Stage myStage;
@@ -53,6 +57,7 @@ public class NPContactGUI implements Initializable {
 		assert myViewAuctionsBtn != null : "fx:id=\"myViewAuctionsBtn\" was not injected: check your FXML file 'NPContactAuctionRequestForm.fxml'.";
 		assert myItemInvBtn != null : "fx:id=\"myItemInvBtn\" was not injected: check your FXML file 'NPContactAuctionRequestForm.fxml'.";
 		assert myLogoutBtn != null : "fx:id=\"myLogoutBtn\" was not injected: check your FXML file 'NPContactAuctionRequestForm.fxml'.";
+		assert myUsernameLabel != null : "fx:id=\"myUsernameLabel\" was not injected: check your FXML file 'NPContactAuctionRequestForm.fxml'.";
 	}
 	
 	//My constructor...
@@ -60,6 +65,8 @@ public class NPContactGUI implements Initializable {
 		myStage = theStage;
 		myNPContact = theNPContact;
 		myCalendar = theCalendar;
+		
+		myUsernameLabel.setText("Logged in as: " + myNPContact.getUsername());
 		initalizeBtns();
 	}
 	
@@ -101,6 +108,27 @@ public class NPContactGUI implements Initializable {
 				alert.setContentText(auctions.toString());
 
 				alert.showAndWait();
+			}
+		});
+		
+		myItemInvBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				final Stage itemInventoryStage = new Stage();
+				try {
+					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContactItemInventoryGUI.fxml"));
+					Parent root = (Parent)fxmlLoader.load();
+					NPContactItemInventoryGUI ctrlItemInventoryGUI = fxmlLoader.<NPContactItemInventoryGUI>getController();
+
+					ctrlItemInventoryGUI.initVariables(myStage, itemInventoryStage, myCalendar, myNPContact);
+
+					Scene scene = new Scene(root);
+					itemInventoryStage.setScene(scene);
+					myStage.hide();
+					itemInventoryStage.show();
+				} catch(Exception anException) {
+					anException.printStackTrace();
+				}
 			}
 		});
 		
