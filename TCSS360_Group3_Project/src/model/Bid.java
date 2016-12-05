@@ -180,16 +180,22 @@ public class Bid implements Serializable {
 	 * @return Returns true if Bid was found. Returns false otherwise.
 	 */
 	public boolean removeBid(String theBidder) {
+		// If there are no bids to search through, automatically return false.
 		if	(myNextBid == null) { return false; }
+
+		// If the bid we're looking for is the first down, and we have no need to iterate, return that bid.
 		else if (myNextBid.myBidderID.equals(theBidder)) {
 			myNextBid = myNextBid.myNextBid;
 			return true;
+
+		// Only now do we iterate through all bids.
 		} else {
 			Bid bidPrev = this;
 			Bid bidFocus = myNextBid;
 
 			while (bidFocus != null) {
 				if	(bidFocus.myBidderID.equals(theBidder)) {
+					// If the correct bid is found, remove it and attach the previous bid to the next bid.
 					bidPrev.myNextBid = bidFocus.myNextBid;
 					return true;
 
@@ -227,6 +233,7 @@ public class Bid implements Serializable {
 		Bid bidTemp;
 
 		while (true) {
+			// Search through the bid chain for the proper place to put this new bid.
 			if	(bidFocus.myNextBid != null) {
 				if	(theBid.myBidAmount >= bidFocus.myNextBid.myBidAmount) {
 					bidTemp = bidFocus.myNextBid;

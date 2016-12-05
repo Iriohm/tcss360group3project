@@ -44,6 +44,7 @@ public class Item implements Serializable {
 	/** The Auction this item is associated with. */
 	private Auction myAuction;
 
+
 	/**
 	 * A basic constructor for Items.
 	 *
