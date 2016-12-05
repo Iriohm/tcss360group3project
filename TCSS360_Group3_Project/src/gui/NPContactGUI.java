@@ -104,19 +104,21 @@ public class NPContactGUI implements Initializable {
 		myViewAuctionsBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Auction Central");
-				alert.setHeaderText("My Auctions");
-				
-				StringBuilder auctions = new StringBuilder();
-				List<Auction> usersAuctions = myNPContact.getMyAuctions();
-				for (int i = 0; i < usersAuctions.size(); i++) {
-					auctions.append(usersAuctions.get(i).getAuctionName() + "\n");
-				}
-				
-				alert.setContentText(auctions.toString());
+				final Stage viewAuctionsStage = new Stage();
+				try {
+					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContactViewAuctionsGUI.fxml"));
+					Parent root = (Parent)fxmlLoader.load();
+					NPContactViewAuctionsGUI ctrlViewAuctionsGUI = fxmlLoader.<NPContactViewAuctionsGUI>getController();
 
-				alert.showAndWait();
+					ctrlViewAuctionsGUI.initVariables(myStage, viewAuctionsStage, myCalendar, myNPContact);
+
+					Scene scene = new Scene(root);
+					viewAuctionsStage.setScene(scene);
+					myStage.hide();
+					viewAuctionsStage.show();
+				} catch(Exception anException) {
+					anException.printStackTrace();
+				}
 			}
 		});
 		
