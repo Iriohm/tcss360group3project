@@ -68,6 +68,8 @@ public class NPContactViewAuctionsGUI implements Initializable {
 	
 	private NPContact myNPContact;
 	
+	private Button myItemInvBtn;
+	
 	private Stage myParentStage;
 	
 	private Stage myStage;
@@ -85,17 +87,18 @@ public class NPContactViewAuctionsGUI implements Initializable {
 		assert myTimeColumn != null : "fx:id=\"myTimeColumn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		assert myLogoImageView != null : "fx:id=\"myLogoImageView\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		
-		myAuctionTable.setPlaceholder(new Label("There are currently no auctions associated with your account."));
+		myAuctionTable.setPlaceholder(new Label("There are currently no auctions\n associated with your account."));
 		
 		Image logo = new Image("file:logo2_v3.png");
 		myLogoImageView.setImage(logo);
 	}
 
-	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact) {
+	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact, Button theItemInvBtn) {
 		myParentStage = theParentStage;
 		myStage = theStage;
 		myCalendar = theCalendar;
 		myNPContact = theNPContact;
+		myItemInvBtn = theItemInvBtn;
 		
 		if (!myNPContact.hasAuctionUpcomingOrLastYear()) {
 			myCancelAuctionBtn.setDisable(true);
@@ -134,11 +137,10 @@ public class NPContactViewAuctionsGUI implements Initializable {
 					updateAuctionTable();
 				}
 				*/
-				System.out.println(myNPContact.removeMyAuction(myCalendar, auctionToRemove));
-				updateAuctionTable();
-				for (Auction s : myNPContact.getMyAuctions()) {
-					   System.out.println("Auction = " + s.getAuctionName());
-					   }  
+				if (myNPContact.removeMyAuction(myCalendar, auctionToRemove) == 0) {
+					updateAuctionTable();
+					myItemInvBtn.setDisable(true);
+				}
 			}
 		});
 		
@@ -162,7 +164,6 @@ public class NPContactViewAuctionsGUI implements Initializable {
 			for (int i = theAuctions.size() - 1; i >= 0; i--) {
 				String auctionName = theAuctions.get(i).getAuctionName();
 				GregorianCalendar temp = theAuctions.get(i).getDate();
-				Date auctionDate = temp.getTime();
 				String filler = "";
 				int month = temp.get(java.util.Calendar.MONTH) + 1;
 				int day = temp.get(java.util.Calendar.DAY_OF_MONTH);
@@ -174,13 +175,14 @@ public class NPContactViewAuctionsGUI implements Initializable {
 				int AMPMCheck = temp.get(java.util.Calendar.AM_PM);
 				String hourFiller = "";
 				String AMPM = "AM";
-				if (hour < NEED_PRECEDING_ZERO)
-					hourFiller = "0";
 				
 				if (AMPMCheck == 1) {
 					AMPM = "PM";
 					hour -= 12;
 				}
+				if (hour < NEED_PRECEDING_ZERO)
+					hourFiller = "0";
+				
 				auctionInfo[theAuctions.size() - 1 - i] = new AuctionCell(auctionName, month + "/" + filler + day + "/" + year, hourFiller + hour + " " + AMPM);
 			}
 		}

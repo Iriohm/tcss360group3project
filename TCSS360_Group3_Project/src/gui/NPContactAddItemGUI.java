@@ -22,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Auction;
 import model.Calendar;
@@ -49,6 +50,9 @@ public class NPContactAddItemGUI implements Initializable {
 	private TextField myQuantityBox;
 	
 	@FXML
+	private TextField mySizeBox;
+	
+	@FXML
 	private TextField myDescriptionBox;
 	
 	@FXML
@@ -56,6 +60,9 @@ public class NPContactAddItemGUI implements Initializable {
 	
 	@FXML
 	private ImageView myLogoImageView;
+	
+	@FXML
+	private Text myHeaderText;
 	
 	private NPContact myNPContact;
 	
@@ -75,16 +82,18 @@ public class NPContactAddItemGUI implements Initializable {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		assert mySubmitBtn != null : "fx:id=\"mySubmitBtn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myBackBtn != null : "fx:id=\"myBackBtn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myNameBox != null : "fx:id=\"myNameBox\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myConditionBox != null : "fx:id=\"myConditionBox\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myMinBidBox != null : "fx:id=\"myMinBidBox\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myQuantityBox != null : "fx:id=\"myQuantityBox\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myDescriptionBox != null : "fx:id=\"myDescriptionBox\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myUsernameLabel != null : "fx:id=\"myDescriptionBox\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myLogoImageView != null : "fx:id=\"myDescriptionBox\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-
+		assert mySubmitBtn != null : "fx:id=\"mySubmitBtn\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
+		assert myBackBtn != null : "fx:id=\"myBackBtn\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
+		assert myNameBox != null : "fx:id=\"myNameBox\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
+		assert myConditionBox != null : "fx:id=\"myConditionBox\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
+		assert myMinBidBox != null : "fx:id=\"myMinBidBox\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
+		assert myQuantityBox != null : "fx:id=\"myQuantityBox\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
+		assert mySizeBox != null : "fx:id=\"mySizeBox\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
+		assert myDescriptionBox != null : "fx:id=\"myDescriptionBox\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
+		assert myUsernameLabel != null : "fx:id=\"myUsernameLabel\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
+		assert myLogoImageView != null : "fx:id=\"myLogoImageView\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
+		assert myHeaderText != null : "fx:id=\"myHeaderText\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
+		
 		Image logo = new Image("file:logo2_v3.png");
 		myLogoImageView.setImage(logo);
 	}
@@ -101,18 +110,48 @@ public class NPContactAddItemGUI implements Initializable {
 		myItemChoice = theItemChoice;
 		
 		myUsernameLabel.setText("Logged in as: " + myNPContact.getUsername());
+		myHeaderText.setText("Adding Item to Auction: " + myAuction.getAuctionName());
 		
 		mySubmitBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				String itemName = myNameBox.getText();	
-				String condition = myConditionBox.getText();	
-				//String size = mySizeBox.getText();
-				double minBid = Double.parseDouble(myMinBidBox.getText());
-				int quantity =  Integer.parseInt(myQuantityBox.getText());
+				String condition = myConditionBox.getText();
+				String size = mySizeBox.getText();
 				String description = myDescriptionBox.getText();
 				
-				Item itemToAdd = new Item(myCalendar.getNextItemID() + "", itemName, description, "size", minBid, quantity, condition);
+				if (itemName.equals("") || condition.equals("") || size.equals("") || description.equals("") || myMinBidBox.getText().equals("") || myQuantityBox.getText().equals("")) {
+					showErrorMessage("Please be sure to fill out all of the fields.");
+					return;
+				}
+				
+				double minBid = 0;
+				try {
+					minBid = Double.parseDouble(myMinBidBox.getText());
+				} catch (NumberFormatException e) {
+					showErrorMessage("Please make sure that your minimum bid amount is a valid number. NOTE: Do not include the $ sign with your amount.");
+					return;
+				}
+				
+				if (minBid <= 0.0) {
+					showErrorMessage("Please make sure that your minimum bid amount is greater than $0.00");
+					return;
+				}
+				
+				int quantity =  0;
+				try {
+					quantity = Integer.parseInt(myQuantityBox.getText());
+				} catch (NumberFormatException e) {
+					showErrorMessage("Please make sure that the item quantity is a valid number.");
+					return;
+				}
+				
+				if (quantity <= 0) {
+					showErrorMessage("Please make sure that the item quantity is greater than 0.");
+					return;
+				}
+				
+				Item itemToAdd = new Item(myCalendar.getNextItemID() + "", itemName, description, size, minBid, quantity, condition);
 				
 				myNPContact.addItem(myAuction, itemToAdd);
 				myAuction.addItem(itemToAdd);
@@ -161,7 +200,7 @@ public class NPContactAddItemGUI implements Initializable {
 		for (int i = 0; i < itemsInAuction.size(); i++) {
 			Item currentItem = itemsInAuction.get(i);
 			itemIDs[i] = currentItem.getID();
-			itemInfo[i] = new NPContactItemInventoryGUI.ItemCell(currentItem.getID(), currentItem.getName(), currentItem.getMinBid(), currentItem.getQuantity(), currentItem.getCondition(), currentItem.getDescription());
+			itemInfo[i] = new NPContactItemInventoryGUI.ItemCell(currentItem.getID(), currentItem.getName(), currentItem.getMinBid(), currentItem.getQuantity(), currentItem.getCondition(), currentItem.getSize(), currentItem.getDescription());
 		}
 		myItemTableView.setItems(FXCollections.observableList(Arrays.asList(itemInfo)));
 		
@@ -177,5 +216,13 @@ public class NPContactAddItemGUI implements Initializable {
 		}
 
 	}
-
+	
+	private void showErrorMessage(String errorMessage) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Auction Central");
+		alert.setHeaderText("Input Error");
+		alert.setContentText(errorMessage);
+		
+		alert.showAndWait();
+	}
 }

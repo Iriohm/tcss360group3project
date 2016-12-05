@@ -75,6 +75,12 @@ public class NPContactGUI implements Initializable {
 		myNPContact = theNPContact;
 		myCalendar = theCalendar;
 		
+		if (myNPContact.hasAuctionUpcomingOrLastYear()) {
+			mySubmitAuctionRequestBtn.setDisable(true);
+		} else {
+			myItemInvBtn.setDisable(true);
+		}
+		
 		myUsernameLabel.setText("Logged in as: " + myNPContact.getUsername());
 		initalizeBtns();
 	}
@@ -89,7 +95,7 @@ public class NPContactGUI implements Initializable {
 					Parent root = (Parent)fxmlLoader.load();
 					NPContactAuctionRequestFormGUI ctrlAuctionRequestFormGUI = fxmlLoader.<NPContactAuctionRequestFormGUI>getController();
 
-					ctrlAuctionRequestFormGUI.initVariables(myStage, auctionRequestStage, myCalendar, myNPContact);
+					ctrlAuctionRequestFormGUI.initVariables(myStage, auctionRequestStage, myCalendar, myNPContact, mySubmitAuctionRequestBtn , myItemInvBtn);
 
 					Scene scene = new Scene(root);
 					auctionRequestStage.setScene(scene);
@@ -110,7 +116,7 @@ public class NPContactGUI implements Initializable {
 					Parent root = (Parent)fxmlLoader.load();
 					NPContactViewAuctionsGUI ctrlViewAuctionsGUI = fxmlLoader.<NPContactViewAuctionsGUI>getController();
 
-					ctrlViewAuctionsGUI.initVariables(myStage, viewAuctionsStage, myCalendar, myNPContact);
+					ctrlViewAuctionsGUI.initVariables(myStage, viewAuctionsStage, myCalendar, myNPContact, myItemInvBtn);
 
 					Scene scene = new Scene(root);
 					viewAuctionsStage.setScene(scene);

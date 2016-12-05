@@ -68,6 +68,10 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 	
 	private Calendar myCalendar;
 	
+	private Button myItemInvBtn;
+	
+	private Button myAuctionRequestBtn;
+	
 	private NPContact myNPContact;
 	
 	private Stage myParentStage;
@@ -95,11 +99,13 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 		myLogoImageView.setImage(logo);
 	}
 	
-	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact) {
+	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact, Button theRequestBtn, Button theItemInvBtn) {
 		myParentStage = theParentStage;
 		myStage = theStage;
 		myCalendar = theCalendar;
 		myNPContact = theNPContact;
+		myItemInvBtn = theItemInvBtn;
+		myAuctionRequestBtn = theRequestBtn;
 		
 		myUsernameLabel.setText("Logged in as: " + myNPContact.getUsername());
 		
@@ -109,7 +115,19 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 				GregorianCalendar auctionDateGregCalendar = new GregorianCalendar();
 				
 				String auctionName = myAuctionName.getText();
-				String auctionDate = myDatePicker.getValue().toString();
+				String auctionDate = "MM-DD-YYYY";
+				
+				if (auctionName.length() == 0) {
+					showErrorMessage("Please enter an auction name.");
+					return;
+				}
+				
+				try {
+					auctionDate = myDatePicker.getValue().toString();
+				} catch (NullPointerException e) {
+					showErrorMessage("There was an error with your proposed auction date. Please select a valid date and try again.");
+					return;
+				}
 				int auctionHour = myNumChoice.getValue();
 				String auctionAMPM = myAMPMChoice.getValue();
 				
@@ -125,9 +143,26 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 				auctionDateGregCalendar.set(year, month, day, auctionHour, 0, 0);
 				auctionDateGregCalendar.add(GregorianCalendar.MONTH, -1);
 				
+				int responseCode = myCalendar.validateAuctionRequest(auctionDateGregCalendar);
+				
+				switch(responseCode) {
+				case -1:
+					showErrorMessage("There are already two auctions scheduled on this day, please choose another.\n");
+					return;
+				case -3:
+					showErrorMessage("We are only allowed to schedule auctions within one month into the future. Please choose a closer date.\n");
+					return;
+				case -4:
+					showErrorMessage("Please choose a date that is AT LEAST one week into the future.");
+					return;
+				}
+				
 				Auction auctionRequest = new Auction(auctionDateGregCalendar, auctionName);
 				myCalendar.addAuction(auctionRequest);
 				myNPContact.addAuction(auctionRequest);
+				
+				myItemInvBtn.setDisable(false);
+				myAuctionRequestBtn.setDisable(true);
 				
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Auction Central");
@@ -162,6 +197,15 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 				}
 			}
 		});
+	}
+	
+	private void showErrorMessage(String errorMessage) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle("Auction Central");
+		alert.setHeaderText("Input Error");
+		alert.setContentText(errorMessage);
+		
+		alert.showAndWait();
 	}
 
 }

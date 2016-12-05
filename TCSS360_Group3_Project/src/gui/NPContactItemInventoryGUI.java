@@ -71,6 +71,9 @@ public class NPContactItemInventoryGUI implements Initializable {
 	private TableColumn<ItemCell, String> myConditionColumn;
 	
 	@FXML
+	private TableColumn<ItemCell, String> mySizeColumn;
+	
+	@FXML
 	private TableColumn<ItemCell, String> myDescriptionColumn;
 	
 	@FXML
@@ -99,6 +102,7 @@ public class NPContactItemInventoryGUI implements Initializable {
 		assert myMinBidColumn != null : "fx:id=\"myMinBidColumn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		assert myQuantityColumn != null : "fx:id=\"myQuantityColumn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		assert myConditionColumn != null : "fx:id=\"myConditionColumn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
+		assert mySizeColumn != null : "fx:id=\"mySizeColumn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		assert myDescriptionColumn != null : "fx:id=\"myDescriptionColumn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		assert myHeaderText != null : "fx:id=\"myHeaderText\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		assert myLogoImageView != null : "fx:id=\"myLogoImageView\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
@@ -119,12 +123,14 @@ public class NPContactItemInventoryGUI implements Initializable {
 		myMinBidColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myMinBid"));
 		myQuantityColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myQuantity"));
 		myConditionColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myCondition"));
+		mySizeColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("mySize"));
 		myDescriptionColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myDescription"));
 		myIDColumn.setStyle( "-fx-alignment: CENTER;");
 		myNameColumn.setStyle( "-fx-alignment: CENTER;");
 		myMinBidColumn.setStyle( "-fx-alignment: CENTER;");
 		myQuantityColumn.setStyle( "-fx-alignment: CENTER;");
 		myConditionColumn.setStyle( "-fx-alignment: CENTER;");
+		mySizeColumn.setStyle( "-fx-alignment: CENTER;");
 		myDescriptionColumn.setStyle( "-fx-alignment: CENTER;");
 		
 		updateItemsInTable();
@@ -197,9 +203,8 @@ public class NPContactItemInventoryGUI implements Initializable {
 		
 		for (int i = 0; i < itemsInAuction.size(); i++) {
 			Item currentItem = itemsInAuction.get(i);
-			System.out.println(currentItem.getDescription());
 			itemIDs[i] = currentItem.getID();
-			itemInfo[i] = new ItemCell(currentItem.getID(), currentItem.getName(), currentItem.getMinBid(), currentItem.getQuantity(), currentItem.getCondition(), currentItem.getDescription());
+			itemInfo[i] = new ItemCell(currentItem.getID(), currentItem.getName(), currentItem.getMinBid(), currentItem.getQuantity(), currentItem.getCondition(), currentItem.getSize(), currentItem.getDescription());
 		}
 		myItemTableView.setItems(FXCollections.observableList(Arrays.asList(itemInfo)));
 		
@@ -221,14 +226,16 @@ public class NPContactItemInventoryGUI implements Initializable {
 		private final SimpleStringProperty myMinBid;
 		private final SimpleStringProperty myQuantity;
 		private final SimpleStringProperty myCondition;
+		private final SimpleStringProperty mySize;
 		private final SimpleStringProperty myDescription;
 		
-		public ItemCell(String theID, String theName, double theMinBid, int theQuantity, String theCondition, String theDescription) {
+		public ItemCell(String theID, String theName, double theMinBid, int theQuantity, String theCondition, String theSize, String theDescription) {
 			myID = new SimpleStringProperty(theID);
 			myName = new SimpleStringProperty(theName);
 			myMinBid = new SimpleStringProperty("$" + String.format( "%.2f", theMinBid ));
 			myQuantity = new SimpleStringProperty(Integer.toString(theQuantity));
 			myCondition = new SimpleStringProperty(theCondition);
+			mySize = new SimpleStringProperty(theSize);
 			myDescription = new SimpleStringProperty(theDescription);
 		}
 		
@@ -250,6 +257,10 @@ public class NPContactItemInventoryGUI implements Initializable {
         
         public String getMyCondition() {
             return myCondition.get();
+        }
+        
+        public String getMySize() {
+            return mySize.get();
         }
         
         public String getMyDescription() {
