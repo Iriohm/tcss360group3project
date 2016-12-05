@@ -332,7 +332,7 @@ public class BidderGUI implements Initializable {
 					Optional<ButtonType> osResult = alertConfirmCancel.showAndWait();
 
 					if	(osResult.get() == ButtonType.OK) {
-						myBidder.cancelBid(myCurrentItem, myBidder);
+						myBidder.cancelBid(myCurrentItem);
 						updateItemsInList();
 						updateItemDescription();
 

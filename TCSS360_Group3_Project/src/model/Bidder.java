@@ -48,7 +48,7 @@ public class Bidder extends User {
 	 * @author "Robert Hinds", "Iriohm"
 	 * @return true if bid was removed, false otherwise.
 	 */
-	public boolean cancelBid(Item theItemToCancelBidOn, Bidder theBidder) {
+	public boolean cancelBid(Item theItemToCancelBidOn) {
 		// Heavily altered to implement new test, which in turn implements
 		// new Item functionality (pointer to parent Auction).
 		if	(hasAuctionPassedTwoDayCutoffPoint(theItemToCancelBidOn)) {

@@ -92,6 +92,7 @@ public class BidderCancelMyBidAcceptanceTests {
     	myAuctionOnDateTenDaysInFuture.addItem(myTestItem8);
      	myTestBidder.placeBid(myTestItem8, 8.00);
 
+     	myAuctionOnDateTenDaysInFuture.addItem(myTestItem9);
      	myAuctionOnDateTenDaysInFuture.addItem(myTestItem10);
      	myTestBidder.placeBid(myTestItem10, 35.00);
      	myAuctionOnDateTenDaysInFuture.addItem(myTestItem11);
@@ -151,7 +152,7 @@ public class BidderCancelMyBidAcceptanceTests {
     @Test
     public void testCanelBidCancelledWithoutBidPlace(){
     	//Cancelling a bid without having a prior bid...NOT ALLOWED
-    	assertFalse(myTestBidder.cancelBid(myTestItem9, myTestBidder));
+    	assertFalse(myTestBidder.cancelBid(myTestItem9));
     }
 
     /**
@@ -162,10 +163,12 @@ public class BidderCancelMyBidAcceptanceTests {
     @Test
     public void testCancelBid(){
     	//Cancelling the correct bid... ALLOWED
-    	assertTrue(myTestBidder.cancelBid(myTestItem10, myTestBidder));
+    	assertTrue(myTestBidder.cancelBid(myTestItem10));
 
     	//Cancel bid. Bid not canceled...NOT ALLOWED
-    	assertFalse(myTestBidder.cancelBid(myTestItem11, myTestBidder));
+    	myTestBidder.cancelBid(myTestItem11);
+
+    	assertFalse(myTestItem11.isBeingBidOnBy(myTestBidder.getUsername()));
 
     }
 
@@ -176,13 +179,12 @@ public class BidderCancelMyBidAcceptanceTests {
      */
     @Test
     public void testCancelBidToShowCancelBidDidNotRemoveOtherBids(){
-    	//
-
     	//Cancelling the correct bid did not cancel different bid in same auction...Allowed
     	assertEquals(myTestBidder.getUsername(), myTestItem8.getBidOf(myTestBidder.getUsername()).getBidder());
 
     	//Cancelling the correct bid did not cancel different bid in another auction...Allowed
     	assertEquals(myTestBidder.getUsername(), myTestItem2.getBidOf(myTestBidder.getUsername()).getBidder());
+
     }
 
 }

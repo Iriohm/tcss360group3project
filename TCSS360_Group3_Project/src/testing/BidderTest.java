@@ -100,7 +100,7 @@ public class BidderTest extends TestCase {
 
     /**
      * Test method for placeBid().
-     * 
+     *
      * @author Vlad Kaganyuk
      */
     @Test
@@ -111,14 +111,14 @@ public class BidderTest extends TestCase {
 
     /**
      * Test method for placeBid().
-     * 
+     *
      * @author Vlad Kaganyuk
      */
     @Test
     public void testPlaceBidTryingToPlaceAnotherValidBid() {
     	//Placing a valid bid on myTestItem.
     	myTestBidder.placeBid(myTestItem, 6.00);
-    	
+
     	//Placing another bid on myTestItem...NOT ALLOWED
     	assertFalse(myTestBidder.placeBid(myTestItem, 7.00));
     }
@@ -174,7 +174,7 @@ public class BidderTest extends TestCase {
     @Test
     public void testCanelBidCancelledWithoutBidPlace(){
     	//Cancelling a bid without having a prior bid...NOT ALLOWED
-    	assertFalse(myTestBidder.cancelBid(myTestItem9, myTestBidder));
+    	assertFalse(myTestBidder.cancelBid(myTestItem9));
     }
 
     /**
@@ -185,10 +185,10 @@ public class BidderTest extends TestCase {
     @Test
     public void testCancelBid(){
     	//Cancelling the correct bid... ALLOWED
-    	assertTrue(myTestBidder.cancelBid(myTestItem10, myTestBidder));
+    	assertTrue(myTestBidder.cancelBid(myTestItem10));
 
     	//Cancel bid. Bid not canceled...NOT ALLOWED
-    	assertFalse(myTestBidder.cancelBid(myTestItem11, myTestBidder));
+    	assertFalse(myTestBidder.cancelBid(myTestItem11));
 
     }
 
