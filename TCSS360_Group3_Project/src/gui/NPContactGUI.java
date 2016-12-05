@@ -13,6 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -44,6 +46,9 @@ public class NPContactGUI implements Initializable {
 	@FXML
 	private Label myUsernameLabel;
 	
+	@FXML
+	private ImageView myLogoImageView;
+	
 	private Calendar myCalendar;
 	
 	private Stage myStage;
@@ -58,6 +63,10 @@ public class NPContactGUI implements Initializable {
 		assert myItemInvBtn != null : "fx:id=\"myItemInvBtn\" was not injected: check your FXML file 'NPContactAuctionRequestForm.fxml'.";
 		assert myLogoutBtn != null : "fx:id=\"myLogoutBtn\" was not injected: check your FXML file 'NPContactAuctionRequestForm.fxml'.";
 		assert myUsernameLabel != null : "fx:id=\"myUsernameLabel\" was not injected: check your FXML file 'NPContactAuctionRequestForm.fxml'.";
+		assert myLogoImageView != null : "fx:id=\"myLogoImageView\" was not injected: check your FXML file 'NPContactAuctionRequestForm.fxml'.";
+
+		Image logo = new Image("file:logo2_v3.png");
+		myLogoImageView.setImage(logo);
 	}
 	
 	//My constructor...

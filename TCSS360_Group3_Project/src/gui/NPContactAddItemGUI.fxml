@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.NPContactAddItemGUI">
+   <children>
+      <Pane layoutX="7.0" layoutY="6.0" prefHeight="323.0" prefWidth="274.0">
+         <children>
+            <Text fx:id="myHeaderText" layoutX="14.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adding Item to Auction:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Label layoutX="14.0" layoutY="101.0" text="Item Name: " />
+            <ImageView fx:id="myLogoImageView" fitHeight="69.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../logo23.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="14.0" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Condition: " />
+            <Text layoutX="14.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minimum Bid: $" />
+            <Text layoutX="14.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantity: " />
+            <Text layoutX="14.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description: " />
+            <TextField fx:id="myNameBox" layoutX="80.0" layoutY="97.0" prefHeight="25.0" prefWidth="167.0" />
+            <TextField fx:id="myConditionBox" layoutX="75.0" layoutY="126.0" prefHeight="25.0" prefWidth="173.0" />
+            <TextField fx:id="myMinBidBox" layoutX="99.0" layoutY="156.0" />
+            <TextField fx:id="myQuantityBox" layoutX="66.0" layoutY="188.0" prefHeight="25.0" prefWidth="181.0" />
+            <TextField fx:id="myDescriptionBox" layoutX="80.0" layoutY="223.0" prefHeight="25.0" prefWidth="167.0" />
+            <Button fx:id="mySubmitBtn" layoutX="135.0" layoutY="269.0" mnemonicParsing="false" text="Submit" />
+            <Button fx:id="myBackBtn" layoutX="81.0" layoutY="269.0" mnemonicParsing="false" text="Back" />
+            <Line endX="186.0" layoutX="91.0" layoutY="307.0" startX="-100.0" />
+            <Label fx:id="myUsernameLabel" layoutX="-6.0" layoutY="307.0" text="Logged in as: " />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

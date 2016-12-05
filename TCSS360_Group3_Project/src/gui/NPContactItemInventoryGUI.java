@@ -25,6 +25,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import model.Auction;
@@ -70,6 +73,12 @@ public class NPContactItemInventoryGUI implements Initializable {
 	@FXML
 	private TableColumn<ItemCell, String> myDescriptionColumn;
 	
+	@FXML
+	private Text myHeaderText;
+	
+	@FXML
+	private ImageView myLogoImageView;
+	
 	private Calendar myCalendar;
 	
 	private NPContact myNPContact;
@@ -91,7 +100,12 @@ public class NPContactItemInventoryGUI implements Initializable {
 		assert myQuantityColumn != null : "fx:id=\"myQuantityColumn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		assert myConditionColumn != null : "fx:id=\"myConditionColumn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		assert myDescriptionColumn != null : "fx:id=\"myDescriptionColumn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
+		assert myHeaderText != null : "fx:id=\"myHeaderText\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
+		assert myLogoImageView != null : "fx:id=\"myLogoImageView\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 
+		myItemTableView.setPlaceholder(new Label("There are currently no items in this auction."));
+		Image logo = new Image("file:logo2_v3.png");
+		myLogoImageView.setImage(logo);
 	}
 	
 	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact) {
@@ -106,38 +120,36 @@ public class NPContactItemInventoryGUI implements Initializable {
 		myQuantityColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myQuantity"));
 		myConditionColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myCondition"));
 		myDescriptionColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myDescription"));
+		myIDColumn.setStyle( "-fx-alignment: CENTER;");
+		myNameColumn.setStyle( "-fx-alignment: CENTER;");
+		myMinBidColumn.setStyle( "-fx-alignment: CENTER;");
+		myQuantityColumn.setStyle( "-fx-alignment: CENTER;");
+		myConditionColumn.setStyle( "-fx-alignment: CENTER;");
+		myDescriptionColumn.setStyle( "-fx-alignment: CENTER;");
 		
 		updateItemsInTable();
 		
-		//myItemTableView.setItems(FXCollections.observableList(itemsInAuction));
-		
+		myHeaderText.setText("Item Inventory for Auction: " + myNPContact.getLatestAuction().getAuctionName());
 		myUsernameLabel.setText("Logged in as: " + myNPContact.getUsername());
 		
 		myAddItemBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				Auction yo = myNPContact.getLatestAuction();
-				yo.addItem(new Item("2", "Yo-yo", "Brand-new", "Small", 10.00, 1, "New"));
-				
-				updateItemsInTable();
-				return;
-				
-				/**final Stage itemInventoryStage = new Stage();
+				final Stage addItemStage = new Stage();
 				try {
-					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContactItemInventoryGUI.fxml"));
+					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContactAddItemGUI.fxml"));
 					Parent root = (Parent)fxmlLoader.load();
-					NPContactItemInventoryGUI ctrlItemInventoryGUI = fxmlLoader.<NPContactItemInventoryGUI>getController();
+					NPContactAddItemGUI ctrlAddItemGUI = fxmlLoader.<NPContactAddItemGUI>getController();
 
-					//ctrlItemInventoryGUI.initVariables(myStage, auctionRequestStage, myCalendar, myNPContact);
+					ctrlAddItemGUI.initVariables(myStage, addItemStage, myCalendar, myNPContact, myItemTableView, myRemoveItemBtn, myItemChoice);
 
 					Scene scene = new Scene(root);
-					itemInventoryStage.setScene(scene);
+					addItemStage.setScene(scene);
 					myStage.hide();
-					itemInventoryStage.show();
+					addItemStage.show();
 				} catch(Exception anException) {
 					anException.printStackTrace();
 				}
-				**/
 			}
 		});
 		
@@ -147,19 +159,14 @@ public class NPContactItemInventoryGUI implements Initializable {
 				Auction theAuction = myNPContact.getLatestAuction();
 				List<Item> itemsInAuction = myNPContact.getLatestAuction().getItems();
 				int itemToRemoveIndex = myItemChoice.getSelectionModel().getSelectedIndex();
+				Item itemToRemove = itemsInAuction.get(itemToRemoveIndex);
 				
-				theAuction.removeItem(itemsInAuction.get(itemToRemoveIndex));
-				updateItemsInTable();
-			}
-		});
-		
-		myBackBtn.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Auction Central");
-				alert.setHeaderText("Unsaved Information");
-				alert.setContentText("Are you sure you would like to go back?\nYour input has not be saved.");
+				alert.setHeaderText("Removing Item");
+				alert.setContentText("Are you sure you would like to remove the following item? You will not be able to undo this action.\n\nItem Name: " + itemToRemove.getName()
+						+ "\nCondition: " + itemToRemove.getCondition() + "\nMinimum Bid: $" + String.format( "%.2f", itemToRemove.getMinBid() ) + "\nQuantity: " + itemToRemove.getQuantity()
+						+ "\nDescription: " + itemToRemove.getDescription() + "\n ");
 				
 				ButtonType yesBtn = new ButtonType("Yes");
 				ButtonType noBtn = new ButtonType("No");
@@ -168,9 +175,17 @@ public class NPContactItemInventoryGUI implements Initializable {
 
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == yesBtn){
-					myParentStage.show();
-					myStage.hide();
+					theAuction.removeItem(itemToRemove);
+					updateItemsInTable();
 				}
+			}
+		});
+		
+		myBackBtn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				myParentStage.show();
+				myStage.hide();
 			}
 		});
 	}
@@ -182,6 +197,7 @@ public class NPContactItemInventoryGUI implements Initializable {
 		
 		for (int i = 0; i < itemsInAuction.size(); i++) {
 			Item currentItem = itemsInAuction.get(i);
+			System.out.println(currentItem.getDescription());
 			itemIDs[i] = currentItem.getID();
 			itemInfo[i] = new ItemCell(currentItem.getID(), currentItem.getName(), currentItem.getMinBid(), currentItem.getQuantity(), currentItem.getCondition(), currentItem.getDescription());
 		}
@@ -199,7 +215,7 @@ public class NPContactItemInventoryGUI implements Initializable {
 		}
 	}
 	
-	public class ItemCell {
+	public static class ItemCell {
 		private final SimpleStringProperty myID;
 		private final SimpleStringProperty myName;
 		private final SimpleStringProperty myMinBid;
@@ -210,7 +226,7 @@ public class NPContactItemInventoryGUI implements Initializable {
 		public ItemCell(String theID, String theName, double theMinBid, int theQuantity, String theCondition, String theDescription) {
 			myID = new SimpleStringProperty(theID);
 			myName = new SimpleStringProperty(theName);
-			myMinBid = new SimpleStringProperty("$" + Double.toString(theMinBid));
+			myMinBid = new SimpleStringProperty("$" + String.format( "%.2f", theMinBid ));
 			myQuantity = new SimpleStringProperty(Integer.toString(theQuantity));
 			myCondition = new SimpleStringProperty(theCondition);
 			myDescription = new SimpleStringProperty(theDescription);

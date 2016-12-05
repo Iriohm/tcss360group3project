@@ -15,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
@@ -61,6 +63,9 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 	@FXML
 	private Label myUsernameLabel;
 	
+	@FXML
+	private ImageView myLogoImageView;
+	
 	private Calendar myCalendar;
 	
 	private NPContact myNPContact;
@@ -78,12 +83,16 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 		assert myDatePicker != null : "fx:id=\"myDatePicker\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		assert myBackBtn != null : "fx:id=\"myBackBtn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
 		assert myUsernameLabel != null : "fx:id=\"myUsernameLabel\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		
+		assert myLogoImageView != null : "fx:id=\"myLogoImageView\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
+
 		myNumChoice.setValue(DEFAULT_NUM_VALUE);
 		myNumChoice.setItems(FXCollections.observableList(NUMBERS_1_THROUGH_12));
 		
 		myAMPMChoice.setValue(DEFAULT_AM_PM_VALUE);
 		myAMPMChoice.setItems(FXCollections.observableArrayList("AM", "PM"));
+		
+		Image logo = new Image("file:logo2_v3.png");
+		myLogoImageView.setImage(logo);
 	}
 	
 	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact) {

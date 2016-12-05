@@ -31,9 +31,9 @@
             <DatePicker fx:id="myDatePicker" layoutX="100.0" layoutY="153.0" prefHeight="25.0" prefWidth="179.0" promptText="Select your auction's date." />
             <ChoiceBox fx:id="myAMPMChoice" layoutX="152.0" layoutY="191.0" prefHeight="25.0" prefWidth="54.0" />
             <ChoiceBox fx:id="myNumChoice" layoutX="100.0" layoutY="191.0" prefHeight="25.0" prefWidth="46.0" />
-            <ImageView fitHeight="76.0" fitWidth="309.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="myLogoImageView" fitHeight="76.0" fitWidth="309.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../logo23.png" />
+                  <Image url="@../../../logo2_v3.png" />
                </image>
             </ImageView>
             <Button fx:id="myBackBtn" layoutX="100.0" layoutY="260.0" mnemonicParsing="false" text="Back" />
