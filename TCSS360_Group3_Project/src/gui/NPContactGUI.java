@@ -116,7 +116,7 @@ public class NPContactGUI implements Initializable {
 					Parent root = (Parent)fxmlLoader.load();
 					NPContactViewAuctionsGUI ctrlViewAuctionsGUI = fxmlLoader.<NPContactViewAuctionsGUI>getController();
 
-					ctrlViewAuctionsGUI.initVariables(myStage, viewAuctionsStage, myCalendar, myNPContact, myItemInvBtn);
+					ctrlViewAuctionsGUI.initVariables(myStage, viewAuctionsStage, myCalendar, myNPContact, myItemInvBtn, mySubmitAuctionRequestBtn);
 
 					Scene scene = new Scene(root);
 					viewAuctionsStage.setScene(scene);

@@ -36,11 +36,11 @@ import model.NPContact;
 
 public class NPContactViewAuctionsGUI implements Initializable {
 	
-	private static final int MAX_NAME_LENGTH = 32;
-	
-	private static final int ELLIPSIS_LENGTH = 3;
-	
 	private static final int NEED_PRECEDING_ZERO = 10;
+	
+	private static final int SUCCESSFUL_REMOVAL = 0;
+	
+	private static final int ERROR_LOCATING_AUCTION = -2;
 
 	@FXML
 	private Button myCancelAuctionBtn;
@@ -70,6 +70,8 @@ public class NPContactViewAuctionsGUI implements Initializable {
 	
 	private Button myItemInvBtn;
 	
+	private Button mySubmitRequestBtn;
+	
 	private Stage myParentStage;
 	
 	private Stage myStage;
@@ -93,12 +95,13 @@ public class NPContactViewAuctionsGUI implements Initializable {
 		myLogoImageView.setImage(logo);
 	}
 
-	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact, Button theItemInvBtn) {
+	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact, Button theItemInvBtn, Button theSubmitRequestsBtn) {
 		myParentStage = theParentStage;
 		myStage = theStage;
 		myCalendar = theCalendar;
 		myNPContact = theNPContact;
 		myItemInvBtn = theItemInvBtn;
+		mySubmitRequestBtn = theSubmitRequestsBtn;
 		
 		if (!myNPContact.hasAuctionUpcomingOrLastYear()) {
 			myCancelAuctionBtn.setDisable(true);
@@ -137,9 +140,17 @@ public class NPContactViewAuctionsGUI implements Initializable {
 					updateAuctionTable();
 				}
 				*/
-				if (myNPContact.removeMyAuction(myCalendar, auctionToRemove) == 0) {
+				int responseCode = myNPContact.removeMyAuction(myCalendar, auctionToRemove);
+				if (responseCode == SUCCESSFUL_REMOVAL) {
 					updateAuctionTable();
 					myItemInvBtn.setDisable(true);
+				} else if (responseCode == ERROR_LOCATING_AUCTION) {
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("Auction Central");
+					alert.setHeaderText("Removal Error");
+					alert.setContentText("Sorry, but your auction is less than 2 days from the date on which it occurs, and therefore cannot be cancelled.");
+					
+					alert.showAndWait();
 				}
 			}
 		});
@@ -158,8 +169,9 @@ public class NPContactViewAuctionsGUI implements Initializable {
 		
 		AuctionCell[] auctionInfo = new AuctionCell[theAuctions.size()];
 		
-		if (theAuctions.size() == 0) {
+		if (theAuctions.size() == 0 || !myNPContact.hasAuctionUpcomingOrLastYear()) {
 			myCancelAuctionBtn.setDisable(true);
+			mySubmitRequestBtn.setDisable(false);
 		} else {
 			for (int i = theAuctions.size() - 1; i >= 0; i--) {
 				String auctionName = theAuctions.get(i).getAuctionName();

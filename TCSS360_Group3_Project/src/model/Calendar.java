@@ -17,6 +17,22 @@ public class Calendar implements Serializable {
 	 * Based on 31 days of 2 auctions per day
 	 */
 	public static final int MAX_POSSIBLE_AUCTIONS = 62;
+	
+	/**
+	 * Error code to signify that there are no upcoming auctions, and so no auctions could be removed.
+	 */
+	private static final int NO_UPCOMING_AUCTIONS = -1;
+	
+	/**
+	 * Code to signify that an auction was successfully removed.
+	 */
+	private static final int SUCCESSFUL_REMOVAL = 0;
+	
+	/**
+	 * Error code to signify that the specified auction was not located, and hence was not removed.
+	 */
+	private static final int AUCTION_NOT_LOCATED = -2;
+	
 	/**
 	 * Default global needed by Serializable
 	 */
@@ -331,7 +347,7 @@ public class Calendar implements Serializable {
 	 * this get all the auction after two day way
 	 * @return the auction after two days
 	 */
-	public List<Auction> getAuctionsTwoDayhAead() {
+	public List<Auction> getAuctionsTwoDayAhead() {
 		final int DAY_TO_CANCEL_AUCTION = 2;
 		GregorianCalendar twoDayForrowed = (GregorianCalendar) GregorianCalendar.getInstance();
 		twoDayForrowed.add(GregorianCalendar.DAY_OF_YEAR, DAY_TO_CANCEL_AUCTION);
@@ -339,7 +355,7 @@ public class Calendar implements Serializable {
 	}
 
 	/**
-	 * @author David Nowlin
+	 * @author David Nowlin, Vlad Kaganyuk
 	 * check in 3
 	 *
 	 * this look for a NP actions and remove it. return 0 if safely remove from the list. return -1 if no auction in the past two day.
@@ -350,20 +366,19 @@ public class Calendar implements Serializable {
 	 * return -2 if the NP auction can't be found.
 	 */
 	public int removeNPAuction(Auction theAuction) {
-		List<Auction> nextTwoDayAuction = getAuctionsTwoDayhAead();
-		GregorianCalendar twoDayForrowed = (GregorianCalendar) GregorianCalendar.getInstance();
-		twoDayForrowed.add(GregorianCalendar.DAY_OF_YEAR, 2);
-		List<Auction> nextTwoDayAuction1 = getAuctions(twoDayForrowed);
-//		System.out.println(theAuction.getAuctionName());
-//		System.out.println(nextTwoDayAuction.size());
-//		System.out.println(myAuctions.size());
-		if(nextTwoDayAuction1.isEmpty()){
-			return -1; // no auction past two days.
-		} else if(nextTwoDayAuction1.contains(theAuction)) {
-			myAuctions.remove(theAuction);
-			return 0; // found and remove the actions
+		List<Auction> nextTwoDayAuction = getAuctionsTwoDayAhead();
+		if(nextTwoDayAuction.isEmpty()){
+			return NO_UPCOMING_AUCTIONS; // no auction past two days.
+		} else {
+			String auctionToRemove = theAuction.getAuctionName();
+			for (int i = 0; i < nextTwoDayAuction.size(); i++) {
+				if (nextTwoDayAuction.get(i).getAuctionName().equals(auctionToRemove)) {
+					myAuctions.remove(i);
+					return SUCCESSFUL_REMOVAL; // found and remove the actions
+				}
+			}
 		}
-		return -2; // could not find there actions in the system
+		return AUCTION_NOT_LOCATED; // could not find there auctions in the system
 	}
 
 	/**
@@ -376,7 +391,7 @@ public class Calendar implements Serializable {
 	 * @return -1 if the auction list is empty. -2 if the None profit auction is not in the list. return what the remove item and 0 if there it work out.
 	 */
 	public int removeNPItemAuction(Auction theAuction, Item theItem) {
-		List<Auction> nextTwoDayAuction = getAuctionsTwoDayhAead();
+		List<Auction> nextTwoDayAuction = getAuctionsTwoDayAhead();
 		if(nextTwoDayAuction.isEmpty()){
 			return -1; // no auction past two days.
 		} else if(nextTwoDayAuction.contains(theAuction)) {
