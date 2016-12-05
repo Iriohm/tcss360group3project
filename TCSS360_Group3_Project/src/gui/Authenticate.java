@@ -184,7 +184,7 @@ public class Authenticate extends Application {
             				myStage.setTitle("Auction Central - " + userInput);
             				myStage.centerOnScreen();
             			} else if (userType == NPCONTACT_USER_TYPE_ID) {
-            				myStage.setTitle("Auction Central - " + userInput);
+            				myStage.setTitle("Auction Central");
 
             		    	try {
             					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContact.fxml"));

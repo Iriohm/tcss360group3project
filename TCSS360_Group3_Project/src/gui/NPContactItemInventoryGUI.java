@@ -142,6 +142,7 @@ public class NPContactItemInventoryGUI implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				final Stage addItemStage = new Stage();
+				addItemStage.setTitle("Auction Central");
 				try {
 					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContactAddItemGUI.fxml"));
 					Parent root = (Parent)fxmlLoader.load();
@@ -172,7 +173,7 @@ public class NPContactItemInventoryGUI implements Initializable {
 				alert.setHeaderText("Removing Item");
 				alert.setContentText("Are you sure you would like to remove the following item? You will not be able to undo this action.\n\nItem Name: " + itemToRemove.getName()
 						+ "\nCondition: " + itemToRemove.getCondition() + "\nMinimum Bid: $" + String.format( "%.2f", itemToRemove.getMinBid() ) + "\nQuantity: " + itemToRemove.getQuantity()
-						+ "\nDescription: " + itemToRemove.getDescription() + "\n ");
+						+ "\nSize: " + itemToRemove.getSize() + "\nDescription: " + itemToRemove.getDescription() + "\n ");
 				
 				ButtonType yesBtn = new ButtonType("Yes");
 				ButtonType noBtn = new ButtonType("No");

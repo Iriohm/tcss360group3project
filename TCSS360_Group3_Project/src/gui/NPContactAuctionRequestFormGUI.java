@@ -1,6 +1,7 @@
 package gui;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
@@ -9,6 +10,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,10 +22,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.Auction;
 import model.Calendar;
 import model.NPContact;
@@ -97,6 +101,34 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 		
 		Image logo = new Image("file:logo2_v3.png");
 		myLogoImageView.setImage(logo);
+		
+		LocalDate rightNow = LocalDate.now();
+		LocalDate weekAway = rightNow.plusWeeks(1);
+		LocalDate monthAway = rightNow.plusMonths(1);
+		
+		myDatePicker.setValue(weekAway);
+		
+		 final Callback<DatePicker, DateCell> dayCellFactory = 
+		            new Callback<DatePicker, DateCell>() {
+		                @Override
+		                public DateCell call(final DatePicker datePicker) {
+		                    return new DateCell() {
+		                        @Override
+		                        public void updateItem(LocalDate item, boolean empty) {
+		                		    super.updateItem(item, empty);
+		                		    
+		                		    LocalDate x = myDatePicker.getValue();
+
+		                		    if (item.isBefore(weekAway) || item.isAfter(monthAway)) {
+		                		            setDisable(true);
+		                		            setStyle("-fx-background-color: #ffc0cb;");
+		                		    }
+		                		}
+		                };
+		            }
+		        };
+		        myDatePicker.setDayCellFactory(dayCellFactory);
+		
 	}
 	
 	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact, Button theRequestBtn, Button theItemInvBtn) {
@@ -150,10 +182,10 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 					showErrorMessage("There are already two auctions scheduled on this day, please choose another.\n");
 					return;
 				case -3:
-					showErrorMessage("We are only allowed to schedule auctions within one month into the future. Please choose a closer date.\n");
+					showErrorMessage("Please select an earlier time (or date) for your auction, such that it's no more than exactly one month into the future.");
 					return;
 				case -4:
-					showErrorMessage("Please choose a date that is AT LEAST one week into the future.");
+					showErrorMessage("Please select a time for your auction such that your date is at least exactly one week into the future.");
 					return;
 				}
 				
@@ -208,4 +240,18 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 		alert.showAndWait();
 	}
 
+	public class DisabledRange {
+
+	    private final LocalDate initialDate;
+	    private final LocalDate endDate;
+
+	    public DisabledRange(LocalDate initialDate, LocalDate endDate){
+	        this.initialDate=initialDate;
+	        this.endDate = endDate;
+	    }
+
+	    public LocalDate getInitialDate() { return initialDate; }
+	    public LocalDate getEndDate() { return endDate; }
+
+	}
 }

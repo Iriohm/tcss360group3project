@@ -90,6 +90,7 @@ public class NPContactGUI implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				final Stage auctionRequestStage = new Stage();
+				auctionRequestStage.setTitle("Auction Central");
 				try {
 					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContactAuctionRequestForm.fxml"));
 					Parent root = (Parent)fxmlLoader.load();
@@ -111,6 +112,7 @@ public class NPContactGUI implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				final Stage viewAuctionsStage = new Stage();
+				viewAuctionsStage.setTitle("Auction Central");
 				try {
 					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContactViewAuctionsGUI.fxml"));
 					Parent root = (Parent)fxmlLoader.load();
@@ -132,6 +134,7 @@ public class NPContactGUI implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				final Stage itemInventoryStage = new Stage();
+				itemInventoryStage.setTitle("Auction Central");
 				try {
 					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContactItemInventoryGUI.fxml"));
 					Parent root = (Parent)fxmlLoader.load();

@@ -122,12 +122,12 @@ public class NPContactViewAuctionsGUI implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				Auction auctionToRemove = myNPContact.getLatestAuction();
-				/**
+
 				Alert alert = new Alert(AlertType.CONFIRMATION);
 				alert.setTitle("Auction Central");
 				alert.setHeaderText("Removing Auction");
 				alert.setContentText("Are you sure you would like to remove the following auction? You will not be able to undo this action.\n\nAuction Name: " + auctionToRemove.getAuctionName()
-						+ "\nDate: " + "\nTime: " + "\n ");
+						+ "\nDate: " + myDateColumn.getCellData(0) + "\nTime: " + myTimeColumn.getCellData(0)  + "\nItems in auction: " + auctionToRemove.getItems().size() + "\n ");
 				
 				ButtonType yesBtn = new ButtonType("Yes");
 				ButtonType noBtn = new ButtonType("No");
@@ -136,21 +136,18 @@ public class NPContactViewAuctionsGUI implements Initializable {
 
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == yesBtn){
-					myNPContact.removeMyAuction(myCalendar, auctionToRemove);
-					updateAuctionTable();
-				}
-				*/
-				int responseCode = myNPContact.removeMyAuction(myCalendar, auctionToRemove);
-				if (responseCode == SUCCESSFUL_REMOVAL) {
-					updateAuctionTable();
-					myItemInvBtn.setDisable(true);
-				} else if (responseCode == ERROR_LOCATING_AUCTION) {
-					Alert alert = new Alert(AlertType.ERROR);
-					alert.setTitle("Auction Central");
-					alert.setHeaderText("Removal Error");
-					alert.setContentText("Sorry, but your auction is less than 2 days from the date on which it occurs, and therefore cannot be cancelled.");
-					
-					alert.showAndWait();
+					int responseCode = myNPContact.removeMyAuction(myCalendar, auctionToRemove);
+					if (responseCode == SUCCESSFUL_REMOVAL) {
+						updateAuctionTable();
+						myItemInvBtn.setDisable(true);
+					} else if (responseCode == ERROR_LOCATING_AUCTION) {
+						Alert errorAlert = new Alert(AlertType.ERROR);
+						errorAlert.setTitle("Auction Central");
+						errorAlert.setHeaderText("Removal Error");
+						errorAlert.setContentText("Sorry, but your auction is less than 2 days from the date on which it occurs, and therefore cannot be cancelled.");
+						
+						errorAlert.showAndWait();
+					}
 				}
 			}
 		});
