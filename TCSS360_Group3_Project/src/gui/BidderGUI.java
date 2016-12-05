@@ -3,6 +3,8 @@ package gui;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.Format;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Formatter;
 import java.util.GregorianCalendar;
@@ -17,6 +19,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,6 +31,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -100,7 +104,7 @@ public class BidderGUI implements Initializable {
 
 	/** The Stage currently being viewed. */
 	private Stage myStage;
-	
+
 	/** A simple formatter for dates. */
 	private Format myDateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -216,7 +220,14 @@ public class BidderGUI implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				if	(!myBidAmountField.getText().isEmpty()) {
-					double dInput = Double.parseDouble(myBidAmountField.getText());
+					String sMoney = myBidAmountField.getText();
+
+					double dInput = 0.00;
+					try {
+						dInput = dfMoney.getNumberInstance(Locale.US).parse(sMoney).doubleValue();
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
 
 					// Maxi-business-rule Testing Time!!! ^_^
 					if	(biddingTests(dInput)) {
