@@ -31,6 +31,13 @@ import model.Auction;
 import model.Calendar;
 import model.NPContact;
 
+/**
+* This class is used to control the Auction Request Submission GUI for NPContact users.
+*
+* @author Vlad Kaganyuk
+* @version 5 Dec 2016
+*
+*/
 public class NPContactAuctionRequestFormGUI implements Initializable {
 	
 	/** A list of items 1-12. Used for the user's time. */

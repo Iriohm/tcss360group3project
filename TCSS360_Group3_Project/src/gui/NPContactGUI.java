@@ -20,6 +20,14 @@ import javafx.stage.Stage;
 import model.Calendar;
 import model.NPContact;
 
+/**
+* This class is used to control the main menu GUI for NPContact users 
+* right after they login.
+*
+* @author Vlad Kaganyuk
+* @version 5 Dec 2016
+*
+*/
 public class NPContactGUI implements Initializable {
 	
 	/** The "Submit auction request" button. */
