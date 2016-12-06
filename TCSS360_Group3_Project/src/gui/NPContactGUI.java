@@ -94,11 +94,11 @@ public class NPContactGUI implements Initializable {
 		myNPContact = theNPContact;
 		myCalendar = theCalendar;
 		
-		if (!myCalendar.getAuctions((GregorianCalendar) GregorianCalendar.getInstance()).isEmpty()) {
+		if (myNPContact.hasAuctionUpcomingOrLastYear())
 			mySubmitAuctionRequestBtn.setDisable(true);
-		} else {
+	
+		if (myNPContact.getLatestAuction() == null || !myNPContact.getLatestAuction().getDate().after((GregorianCalendar) GregorianCalendar.getInstance()))
 			myItemInvBtn.setDisable(true);
-		}
 		
 		myUsernameLabel.setText("Logged in as: " + myNPContact.getUsername());
 		initalizeBtns();

@@ -133,7 +133,9 @@ public class NPContactViewAuctionsGUI implements Initializable {
 		myItemInvBtn = theItemInvBtn;
 		mySubmitRequestBtn = theSubmitRequestsBtn;
 		
-		if (myCalendar.getAuctions((GregorianCalendar) GregorianCalendar.getInstance()).isEmpty())
+		GregorianCalendar today = ((GregorianCalendar) GregorianCalendar.getInstance());
+		
+		if (myNPContact.getLatestAuction() == null || !myNPContact.getLatestAuction().getDate().after(today))
 			myCancelAuctionBtn.setDisable(true);
 		
 		myUsernameLabel.setText(myNPContact.getUsername() + "'s Auctions: ");
@@ -163,8 +165,9 @@ public class NPContactViewAuctionsGUI implements Initializable {
 						updateAuctionTable();
 						myItemInvBtn.setDisable(true);
 						myCancelAuctionBtn.setDisable(true);
-						GregorianCalendar today = (GregorianCalendar) GregorianCalendar.getInstance();
-						if (myCalendar.getAuctions(today).isEmpty())
+						if (myNPContact.hasAuctionUpcomingOrLastYear())
+							mySubmitRequestBtn.setDisable(true);
+						else
 							mySubmitRequestBtn.setDisable(false);
 					}  else if (responseCode == Calendar.AUCTION_LESS_THAN_TWO_DAYS_AWAY) {
 						Alert errorAlert = new Alert(AlertType.ERROR);
@@ -255,6 +258,14 @@ public class NPContactViewAuctionsGUI implements Initializable {
 					AMPM = "PM";
 					hour -= 12;
 				}
+				if (hour == 0) {
+					hour = 12;
+					if (AMPM.equals("PM"))
+						AMPM = "AM";
+					else
+						AMPM = "PM";
+				}
+				
 				if (hour < NEED_PRECEDING_ZERO)
 					hourFiller = "0";
 				
