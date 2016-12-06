@@ -357,7 +357,7 @@ public class Calendar implements Serializable {
 	/**
 	 * @author David Nowlin, Vlad Kaganyuk
 	 *
-	 * Searches for a Non-profit contact's auction and removes the auction.
+	 * Searches for a Non-profit's auction and removes the auction.
 	 *
 	 * @param theAuction
 	 * @return Returns 0 if auction was safely removed. Returns -1 if auction is being held within the next two days.
@@ -382,11 +382,12 @@ public class Calendar implements Serializable {
 	/**
 	 * @author David Nowlin
 	 *
-	 * this will remove a item form the none Profit auction.
+	 * this will remove a item form the Non-Profit's auction.
 	 *
 	 * @param theAuction the NP Auction.
 	 * @param theItem want item to remove.
-	 * @return -1 if the auction list is empty. -2 if the None profit auction is not in the list. return what the remove item and 0 if there it work out.
+	 * @return -1 if the item to be removed belongs to an auction being held within the next two days or less. -2 if the Non-profit's auction is not in the list.
+	 * Returns 0 if the item was removed from the auction successfully.
 	 */
 	public int removeNPItemAuction(Auction theAuction, Item theItem) {
 		List<Auction> nextTwoDayAuction = getAuctionsTwoDayAhead();
@@ -397,9 +398,9 @@ public class Calendar implements Serializable {
 			if(removeSaft != 0) {
 				return removeSaft; // return the auction error
 			}
-			return 0; // found and remove the Item
+			return 0; // found and removed the Item
 		}
-		return -2; // could not find there actions in the system
+		return -2; // could not find the auctions in the system
 	}
 	
 	/**
