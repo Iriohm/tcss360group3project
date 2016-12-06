@@ -228,25 +228,27 @@ public class NPContactItemInventoryGUI implements Initializable {
 
 					ButtonType yesBtn = new ButtonType("Yes");
 					ButtonType noBtn = new ButtonType("No");
-
 					alert.getButtonTypes().setAll(yesBtn, noBtn);
 
 					Optional<ButtonType> result = alert.showAndWait();
 					if (result.get() == yesBtn){
 						myAuction.removeItem(itemToRemove);
 						updateItemsInTable();
-
 					}
 				} else {
-					Alert alertError = new Alert(AlertType.ERROR);
-					alertError.setTitle("Error");
-					alertError.setHeaderText("I'm sorry, but you cannot remove an item from an auction less than two days away.");
-					alertError.showAndWait();
-
+					showErrorPopup();
 				}
 
 			}
 		});
+	}
+	
+	private void showErrorPopup() {
+		Alert alertError = new Alert(AlertType.ERROR);
+		alertError.setTitle("Auction Central");
+		alertError.setHeaderText("Removal Error");
+		alertError.setContentText("I'm sorry, but you cannot remove an item from an auction less than two days away.");
+		alertError.showAndWait();
 	}
 
 	/**
