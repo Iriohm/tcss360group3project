@@ -133,7 +133,7 @@ public class NPContactViewAuctionsGUI implements Initializable {
 		myItemInvBtn = theItemInvBtn;
 		mySubmitRequestBtn = theSubmitRequestsBtn;
 		
-		if (!myNPContact.hasAuctionUpcomingOrLastYear())
+		if (myCalendar.getAuctions((GregorianCalendar) GregorianCalendar.getInstance()).isEmpty())
 			myCancelAuctionBtn.setDisable(true);
 		
 		myUsernameLabel.setText(myNPContact.getUsername() + "'s Auctions: ");
@@ -162,6 +162,10 @@ public class NPContactViewAuctionsGUI implements Initializable {
 						myCalendar.getAllAuctions().remove(auctionToRemove);
 						updateAuctionTable();
 						myItemInvBtn.setDisable(true);
+						myCancelAuctionBtn.setDisable(true);
+						GregorianCalendar today = (GregorianCalendar) GregorianCalendar.getInstance();
+						if (myCalendar.getAuctions(today).isEmpty())
+							mySubmitRequestBtn.setDisable(false);
 					}  else if (responseCode == Calendar.AUCTION_LESS_THAN_TWO_DAYS_AWAY) {
 						Alert errorAlert = new Alert(AlertType.ERROR);
 						errorAlert.setTitle("Auction Central");
