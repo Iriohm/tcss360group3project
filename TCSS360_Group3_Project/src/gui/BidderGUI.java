@@ -449,7 +449,7 @@ public class BidderGUI implements Initializable {
 			sbItemInfo.append(myCurrentItem.getCondition());
 
 			sbItemInfo.append("\nQuantity: ");
-			sbItemInfo.append(myCurrentItem.getCondition());
+			sbItemInfo.append(myCurrentItem.getQuantity());
 
 			sbItemInfo.append("\nSize: ");
 			sbItemInfo.append(myCurrentItem.getSize());
