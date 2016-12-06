@@ -39,7 +39,7 @@ import model.NPContact;
 public class NPContactAddItemGUI implements Initializable {
 	
 	/** Different size options allowed for an item. */
-	private static final String[] SIZE_OPTIONS = {"Small", "Medium", "Large"};
+	private static final String[] SIZE_OPTIONS = {"Small (no dimension is greater than one foot)", "Medium (at least one dimension is greater than one foot but no dimension is greater than three feet)", "Large (at least one dimension is greater than three feet)"};
 
 	/** Error code to signify there was an error with the item quantity. */
 	private static final int QUANTITY_ERROR = -1;
