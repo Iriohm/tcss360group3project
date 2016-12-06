@@ -67,8 +67,10 @@ public class SerializeData {
 			myUserList = new ArrayList<User>();
 			System.err.println("No current list of Users");
 		}
+		/*myUserList = new ArrayList<User>();
+		myCalendar = new Calendar();
 		//add a auction tomorrow
-		/*	NPContact testNP = new NPContact("testnp", myCalendar);
+		NPContact testNP = new NPContact("testnp", myCalendar);
 		myUserList.add(testNP);
 		GregorianCalendar cal = (GregorianCalendar)GregorianCalendar.getInstance();
 		cal.add(GregorianCalendar.DAY_OF_YEAR, 1);

@@ -144,7 +144,9 @@ public class NPContactViewAuctionsGUI implements Initializable {
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == yesBtn){
 					int responseCode = myNPContact.removeMyAuction(myCalendar, auctionToRemove);
+					
 					if (responseCode == SUCCESSFUL_REMOVAL) {
+						myCalendar.getAllAuctions().remove(auctionToRemove);
 						updateAuctionTable();
 						myItemInvBtn.setDisable(true);
 					} else if (responseCode == ERROR_LOCATING_AUCTION) {
