@@ -2,13 +2,11 @@ package gui;
 
 import java.net.URL;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import gui.NPContactItemInventoryGUI.ItemCell;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -18,12 +16,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -31,7 +26,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import model.Auction;
 import model.Calendar;
-import model.Item;
 import model.NPContact;
 
 /**
@@ -49,42 +43,61 @@ public class NPContactViewAuctionsGUI implements Initializable {
 	
 	private static final int ERROR_LOCATING_AUCTION = -2;
 
+	/** The cancel auction button on this GUI. */
 	@FXML
 	private Button myCancelAuctionBtn;
 	
+	/** The back button on this GUI. */
 	@FXML
 	private Button myBackBtn;
 	
+	/** The GUI label that will show "Logged in as: " and the user's username. */
 	@FXML
 	private Label myUsernameLabel;
 	
+	/** The GUI table that will hold all of the auction info. */
 	@FXML
 	private TableView<AuctionCell> myAuctionTable;
 	
+	/** The GUI table column that will hold all of the auction names. */
 	@FXML
 	private TableColumn<AuctionCell, String> myNameColumn;
 	
+	/** The GUI table column that will hold all of the auction dates. */
 	@FXML
 	private TableColumn<AuctionCell, String> myDateColumn;
 	
+	/** The GUI table column that will hold all of the auction times. */
 	@FXML
 	private TableColumn<AuctionCell, String> myTimeColumn;
 	
+	/** The GUI image box that will hold the logo. */
 	@FXML
 	private ImageView myLogoImageView;
 	
+	/** The current user. */
 	private NPContact myNPContact;
 	
+	/** The item inventory button on the main menu GUI. */
 	private Button myItemInvBtn;
 	
+	/** The submit auction request button on the main menu GUI. */
 	private Button mySubmitRequestBtn;
 	
+	/** The previous GUI window. */
 	private Stage myParentStage;
 	
+	/** The current GUI window. */
 	private Stage myStage;
 	
+	/** The Calendar where the auctions are stored. */
 	private Calendar myCalendar;
 	
+	/**
+	 * The constructor that is used by JavaFX.
+	 * 
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		assert myCancelAuctionBtn != null : "fx:id=\"myCancelAuctionBtn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
@@ -102,6 +115,16 @@ public class NPContactViewAuctionsGUI implements Initializable {
 		myLogoImageView.setImage(logo);
 	}
 
+	/**
+	 * Initializes all of the fields, works like a constructor.
+	 * 
+	 * @param theParentStage The previous GUI window.
+	 * @param theStage The current GUI window.
+	 * @param theCalendar The Calendar where the auctions are stored.
+	 * @param theNPContact The current user.
+	 * @param theItemInvBtn The item inventory button on the main menu GUI.
+	 * @param theSubmitRequestsBtn The submit auction request button on the main menu GUI.
+	 */
 	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact, Button theItemInvBtn, Button theSubmitRequestsBtn) {
 		myParentStage = theParentStage;
 		myStage = theStage;
@@ -110,38 +133,28 @@ public class NPContactViewAuctionsGUI implements Initializable {
 		myItemInvBtn = theItemInvBtn;
 		mySubmitRequestBtn = theSubmitRequestsBtn;
 		
-		if (!myNPContact.hasAuctionUpcomingOrLastYear()) {
+		if (!myNPContact.hasAuctionUpcomingOrLastYear())
 			myCancelAuctionBtn.setDisable(true);
-		}
 		
 		myUsernameLabel.setText(myNPContact.getUsername() + "'s Auctions: ");
 		
-		myNameColumn.setCellValueFactory(new PropertyValueFactory<AuctionCell, String>("myName"));
-		myDateColumn.setCellValueFactory(new PropertyValueFactory<AuctionCell, String>("myDate"));
-		myTimeColumn.setCellValueFactory(new PropertyValueFactory<AuctionCell, String>("myTime"));
-		myNameColumn.setStyle( "-fx-alignment: CENTER;");
-		myDateColumn.setStyle( "-fx-alignment: CENTER;");
-		myTimeColumn.setStyle( "-fx-alignment: CENTER;");
-		
+		setupTable();
 		updateAuctionTable();
-		
+		setupCancelAuctionBtn();
+		setupBackBtn();
+	}
+	
+	/**
+	 * Defines what the cancel auction button should do when it's clicked.
+	 */
+	private void setupCancelAuctionBtn() {
 		myCancelAuctionBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				Auction auctionToRemove = myNPContact.getLatestAuction();
 
-				Alert alert = new Alert(AlertType.CONFIRMATION);
-				alert.setTitle("Auction Central");
-				alert.setHeaderText("Removing Auction");
-				alert.setContentText("Are you sure you would like to remove the following auction? You will not be able to undo this action.\n\nAuction Name: " + auctionToRemove.getAuctionName()
-						+ "\nDate: " + myDateColumn.getCellData(0) + "\nTime: " + myTimeColumn.getCellData(0)  + "\nItems in auction: " + auctionToRemove.getItems().size() + "\n ");
-				
 				ButtonType yesBtn = new ButtonType("Yes");
-				ButtonType noBtn = new ButtonType("No");
-
-				alert.getButtonTypes().setAll(yesBtn, noBtn);
-
-				Optional<ButtonType> result = alert.showAndWait();
+				Optional<ButtonType> result = removeConfirmationDialog(auctionToRemove, yesBtn);
 				if (result.get() == yesBtn){
 					int responseCode = myNPContact.removeMyAuction(myCalendar, auctionToRemove);
 					if (responseCode == SUCCESSFUL_REMOVAL) {
@@ -158,7 +171,32 @@ public class NPContactViewAuctionsGUI implements Initializable {
 				}
 			}
 		});
+	}
+	
+	/**
+	 * Handles the remove confirmation dialog pop-up box.
+	 * 
+	 * @return Returns the user's result.
+	 */
+	private Optional<ButtonType> removeConfirmationDialog(Auction theAuctionToRemove, ButtonType theYesBtn) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Auction Central");
+		alert.setHeaderText("Removing Auction");
+		alert.setContentText("Are you sure you would like to remove the following auction? You will not be able to undo this action.\n\nAuction Name: " + theAuctionToRemove.getAuctionName()
+				+ "\nDate: " + myDateColumn.getCellData(0) + "\nTime: " + myTimeColumn.getCellData(0)  + "\nItems in auction: " + theAuctionToRemove.getItems().size() + "\n ");
 		
+		ButtonType noBtn = new ButtonType("No");
+
+		alert.getButtonTypes().setAll(theYesBtn, noBtn);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		return result;
+	}
+	
+	/**
+	 * Defines what the back button should do when it's clicked.
+	 */
+	private void setupBackBtn() {
 		myBackBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -168,6 +206,21 @@ public class NPContactViewAuctionsGUI implements Initializable {
 		});
 	}
 	
+	/**
+	 * Sets various values to assure that the table is properly setup.
+	 */
+	private void setupTable() {
+		myNameColumn.setCellValueFactory(new PropertyValueFactory<AuctionCell, String>("myName"));
+		myDateColumn.setCellValueFactory(new PropertyValueFactory<AuctionCell, String>("myDate"));
+		myTimeColumn.setCellValueFactory(new PropertyValueFactory<AuctionCell, String>("myTime"));
+		myNameColumn.setStyle( "-fx-alignment: CENTER;");
+		myDateColumn.setStyle( "-fx-alignment: CENTER;");
+		myTimeColumn.setStyle( "-fx-alignment: CENTER;");
+	}
+	
+	/**
+	 * This method updates the auction table on this GUI.
+	 */
 	private void updateAuctionTable() {
 		List<Auction> theAuctions =  myNPContact.getMyAuctions();
 		
@@ -205,25 +258,50 @@ public class NPContactViewAuctionsGUI implements Initializable {
 		myAuctionTable.setItems(FXCollections.observableList(Arrays.asList(auctionInfo)));
 	}
 	
+	/**
+	 * Object that is used by the JavaFX TableView to define what each cell should contain.
+	 * 
+	 * @author Vlad Kaganyuk
+	 * @version Dec 5, 2016
+	 */
 	public class AuctionCell {
 		private final SimpleStringProperty myName;
 		private final SimpleStringProperty myDate;
 		private final SimpleStringProperty myTime;
 		
+		/**
+		 * Initializes all the necessary fields.
+		 *  
+		 * @param theName The auction's name.
+		 * @param theDate The auction's date.
+		 * @param theTime The auction's time.
+		 */
 		public AuctionCell(String theName, String theDate, String theTime) {
 			myName = new SimpleStringProperty(theName);
 			myDate = new SimpleStringProperty(theDate);
 			myTime = new SimpleStringProperty(theTime);
 		}
 		
+		/**
+		 * Simple getter for myName.
+		 * @return Returns myName.
+		 */
 		public String getMyName() {
             return myName.get();
         }
  
+		/**
+		 * Simple getter for myDate.
+		 * @return Returns myDate.
+		 */
         public String getMyDate() {
             return myDate.get();
         }
  
+        /**
+		 * Simple getter for myTime.
+		 * @return Returns myTime.
+		 */
         public String getMyTime() {
             return myTime.get();
         }
