@@ -17,16 +17,72 @@ public class Calendar implements Serializable {
 	 * Based on 31 days of 2 auctions per day
 	 */
 	public static final int MAX_POSSIBLE_AUCTIONS = 62;
+	/**
+	 * Auction request successfully added.
+	 */
+	public static final int AUC_REQ_SUCCESS = 0;
 	
 	/**
-	 * Error code to signifing that the auction attempting to be removed is being held within the next two days.
+	 * Error code to signifying that the requested auctions's date already has reached the max amount of auctions that can be scheduled per day.
+	 * 
+	 */
+	public static final int AUC_REQ_TWO_PER_DAY_MAX = -1;
+	
+	/**
+	 * Error code to signifying that the system has reached the maximum auction limit currently able to be scheduled.
+	 * 
+	 */
+	public static final int AUC_REQ_MAX_AUC_LIMIT_REACHED = -2;
+	
+	/**
+	 * Error code to signifying that the requested auctions's date is greater than one month.
+	 * 
+	 */
+	public static final int AUC_REQ_DATE_GREATER_THAN_1_MONTH = -3;
+	
+	/**
+	 * Error code to signifying that the requested auctions's date is less than one week away.
+	 * 
+	 */
+	public static final int AUC_REQ_DATE_LESS_THAN_1_WEEK = -4;
+	
+	/**
+	 * Maximum auction limit currently able to be scheduled.
+	 */
+	public static final int MAX_AUCTION_LIMIT = 25;
+	
+	/**
+	* The minimum amount of days before auction start to be able to successfully cancel item
+	*/
+	public static final int DAY_TO_CANCEL_ITEM = 2;
+	/**
+	* The minimum amount of days before auction start to be able to successfully cancel the auction
+	*/
+	public static final int DAY_TO_CANCEL_AUCTION = 2;
+	/**
+	* Maximum auction daily limit
+	*/
+	public static final int MAX_AUCTION_DAY_LIMIT = 2;
+	
+	/**
+	 * Maximum auction limit successfully set.
+	 */
+	public static final int MAX_AUCTION_LIMIT_SUCCESS = 0;
+			
+	/**
+	 * Error code to signifying that the auction attempting to be removed is being held within the next two days.
 	 */
 	public static final int AUCTION_LESS_THAN_TWO_DAYS_AWAY = -1;
 	
 	/**
 	 * Code to signify that an auction was successfully removed.
 	 */
-	private static final int SUCCESSFUL_REMOVAL = 0;
+	private static final int AUCTION_SUCCESSFULLY_REMOVED = 0;
+	
+	/**
+	 * Code to signify that an auction was successfully removed.
+	 */
+	private static final int ITEM_SUCCESSFULLY_REMOVED = 0;
 	
 	/**
 	 * Error code to signify that the specified auction was not located, and hence was not removed.
@@ -34,10 +90,29 @@ public class Calendar implements Serializable {
 	private static final int AUCTION_NOT_LOCATED = -2;
 	
 	/**
+	 * Error code to signify that value inputed attempted to set the maximum auction limit to zero or less.
+	 */
+	public static final int MAX_AUCTION_LIMIT_SET_0_OR_LESS = -1;
+	
+	/**
+	 * Error code to signify that value inputed attempted to set the maximum auction limit less than
+	 * currently scheduled auction count.
+	 */
+	public static final int MAX_AUCTION_LIMIT_SET_LESS_CURR_AUCTION_COUNT = -2;
+	
+	/**
+	 * Error code to signify that value inputed attempted to set the maximum auction limit greater than
+	 * MAX_POSSIBLE_AUCTIONS.
+	 */
+	public static final int MAX_AUCTION_LIMIT_SET_MORE_THAN_MAX_POSSIBLE_AUCTIONS = -3;
+	
+	
+	
+	/**
 	 * Default global needed by Serializable
 	 */
 	private static final long serialVersionUID = 970230924874743054L;
-
+	
 	/**
 	 * The list of ALL of the Auctions
 	 */
@@ -66,7 +141,7 @@ public class Calendar implements Serializable {
 		myAuctions = new LinkedList<Auction>();
 		myNextItemID = 0;
 		myCurrentAuctions = 0;
-		myMaxAuctionsLimit = 25;
+		myMaxAuctionsLimit = MAX_AUCTION_LIMIT;
 	}
 	/**
 	 * Creates a Calendar with the given list of auctions for testing purposes
@@ -76,7 +151,7 @@ public class Calendar implements Serializable {
 		myAuctions = theAuctions;
 		myNextItemID = 0;
 		myCurrentAuctions = 0;
-		myMaxAuctionsLimit = 25;
+		myMaxAuctionsLimit = MAX_AUCTION_LIMIT;
 	}
 
 	/**
@@ -101,17 +176,17 @@ public class Calendar implements Serializable {
 	public int setMaxAuctionsLimit(int theMaxAuctions) {
 		int returnValue = 0;
 		if( theMaxAuctions <= 0){
-			returnValue = -1;
+			returnValue = MAX_AUCTION_LIMIT_SET_0_OR_LESS;
 		}
 		else if(theMaxAuctions < this.getUpcomingAuctionsNumber()){
-			returnValue = -2;
+			returnValue = MAX_AUCTION_LIMIT_SET_LESS_CURR_AUCTION_COUNT;
 		}
 		else if(theMaxAuctions > MAX_POSSIBLE_AUCTIONS){
-			return -3;
+			return MAX_AUCTION_LIMIT_SET_MORE_THAN_MAX_POSSIBLE_AUCTIONS;
 		}
 		else{
 		this.myMaxAuctionsLimit = theMaxAuctions;
-		returnValue = 0;
+		returnValue = MAX_AUCTION_LIMIT_SUCCESS;
 		}
 		return returnValue;
 	}
@@ -147,19 +222,19 @@ public class Calendar implements Serializable {
 	 */
 	public int validateAuctionRequest(GregorianCalendar theDate) {
 		if (!validateAuctionRequestTwoPerDay((GregorianCalendar)theDate.clone())) {
-			return -1;
+			return AUC_REQ_TWO_PER_DAY_MAX;
 		}
 		if (!validateAuctionRequestMaxAuctions()) {
-			return -2;
+			return AUC_REQ_MAX_AUC_LIMIT_REACHED;
 		}
 		if (!validateAuctionRequestAtMostOneMonthInFuture((GregorianCalendar)theDate.clone())) {
-			return -3;
+			return AUC_REQ_DATE_GREATER_THAN_1_MONTH;
 		}
 		if (!dateAtLeastOneWeekInFuture((GregorianCalendar)theDate.clone())) {
-			return -4;
+			return AUC_REQ_DATE_LESS_THAN_1_WEEK;
 		}
 
-		return 0;
+		return AUC_REQ_SUCCESS;
 	}
 
 	/**
@@ -180,7 +255,7 @@ public class Calendar implements Serializable {
 			}
 		}
 
-		if (auctionsOnDay >= 2) {
+		if (auctionsOnDay >= MAX_AUCTION_DAY_LIMIT) {
 			return false;
 		}
 		return true;
@@ -348,7 +423,7 @@ public class Calendar implements Serializable {
 	 * @return the auction after two days
 	 */
 	public List<Auction> getAuctionsTwoDayAhead() {
-		final int DAY_TO_CANCEL_AUCTION = 2;
+		//final int DAY_TO_CANCEL_AUCTION = 2;
 		GregorianCalendar twoDayForrowed = (GregorianCalendar) GregorianCalendar.getInstance();
 		twoDayForrowed.add(GregorianCalendar.DAY_OF_YEAR, DAY_TO_CANCEL_AUCTION);
 		return getAuctions(twoDayForrowed);
@@ -372,7 +447,7 @@ public class Calendar implements Serializable {
 			for (int i = 0; i < nextTwoDayAuction.size(); i++) {
 				if (nextTwoDayAuction.get(i).getAuctionName().equals(auctionToRemove)) {
 					myAuctions.remove(i);
-					return SUCCESSFUL_REMOVAL; // found and remove the actions
+					return AUCTION_SUCCESSFULLY_REMOVED; // found and remove the actions
 				}
 			}
 		}
@@ -392,15 +467,15 @@ public class Calendar implements Serializable {
 	public int removeNPItemAuction(Auction theAuction, Item theItem) {
 		List<Auction> nextTwoDayAuction = getAuctionsTwoDayAhead();
 		if(nextTwoDayAuction.isEmpty()){
-			return -1; // no auction past two days.
+			return AUCTION_LESS_THAN_TWO_DAYS_AWAY; // no auction past two days.
 		} else if(nextTwoDayAuction.contains(theAuction)) {
 			int  removeSaft = nextTwoDayAuction.get(nextTwoDayAuction.indexOf(theAuction)).removeItem(theItem);
 			if(removeSaft != 0) {
 				return removeSaft; // return the auction error
 			}
-			return 0; // found and removed the Item
+			return ITEM_SUCCESSFULLY_REMOVED; // found and removed the Item
 		}
-		return -2; // could not find the auctions in the system
+		return AUCTION_NOT_LOCATED; // could not find the auctions in the system
 	}
 	
 	/**
