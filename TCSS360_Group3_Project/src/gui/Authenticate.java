@@ -195,6 +195,7 @@ public class Authenticate extends Application {
 
             					Scene scene = new Scene(root);
             					myStage.setScene(scene);
+            					myStage.setResizable(false);
             					myStage.show();
             				} catch(Exception anException) {
             					anException.printStackTrace();

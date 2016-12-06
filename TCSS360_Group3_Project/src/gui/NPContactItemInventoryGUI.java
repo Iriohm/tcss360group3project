@@ -152,6 +152,7 @@ public class NPContactItemInventoryGUI implements Initializable {
 
 					Scene scene = new Scene(root);
 					addItemStage.setScene(scene);
+					addItemStage.setResizable(false);
 					myStage.hide();
 					addItemStage.show();
 				} catch(Exception anException) {
