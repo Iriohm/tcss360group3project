@@ -103,7 +103,7 @@ public class Calendar implements Serializable {
 		if( theMaxAuctions <= 0){
 			returnValue = -1;
 		}
-		else if(theMaxAuctions <= this.getUpcomingAuctionsNumber()){
+		else if(theMaxAuctions < this.getUpcomingAuctionsNumber()){
 			returnValue = -2;
 		}
 		else if(theMaxAuctions > MAX_POSSIBLE_AUCTIONS){
@@ -186,11 +186,11 @@ public class Calendar implements Serializable {
 		return true;
 	}
 
-	//TODO change 25 into myMaxAuctionsLimit and test. maybe make the limit number be grabbed from a properties file.
+
 	/**
-	 * Returns true if there are currently less than 25 auctions scheduled for the future
+	 * Returns true if there are currently less than the max number of auctions scheduled for the future
 	 *
-	 * @return True if there are less than 25 Auctions
+	 * @return True if there are less than the max number of auctions
 	 */
 	public boolean validateAuctionRequestMaxAuctions() {
 		if (getUpcomingAuctionsNumber() >= myMaxAuctionsLimit) {

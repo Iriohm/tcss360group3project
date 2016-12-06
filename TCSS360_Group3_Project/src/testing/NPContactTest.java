@@ -55,7 +55,6 @@ public class NPContactTest extends TestCase {
     public void testAddItem() {
     	Item aTestItem = new Item("theID", "Beanie Baby", "Brand-new Beanie Baby", "Small", 5.00, 1, "New in box");
     	Item aTestItem2 = new Item("ID2", "Seahawks shirt", "Seahawks shirt", "Small", 5.00, 1, "New");
-    	
     	Auction auctionToAddTo = new Auction(new GregorianCalendar(), "");
     	assertTrue(myTestContact.addItem(auctionToAddTo, aTestItem));
     	
