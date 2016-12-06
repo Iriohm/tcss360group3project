@@ -9,7 +9,15 @@ package model;
 *
 **/
 public class Staff  extends User{
-
+	
+	/**
+	 * Error code signifying that input to the changeMaxAuctionLimit function was not a number.
+	 */
+	public static final int MAX_AUCTION_LIMIT_INPUT_NOT_A_NUMBER = -100;
+	/**
+	 * Return signifying that maximum auction limit was changed successfully.
+	 */
+	public static final int MAX_AUCTION_LIMIT_CHANGE_SUCCESSFUL = 0;
 	private static final long serialVersionUID = 7526472274122776147L;
 	
 	/**
@@ -30,14 +38,14 @@ public class Staff  extends User{
 	 *@return 0 if maxiumum number of upcoming auctions is set. -1 if value given does not set the auction limit to zero, below zero. 
 	 * -2 if value given sets the auction limit less than the number of upcoming auctions.
 	 * -3 if value given sets the auction limit greater than the total maximum future auction limit based on max auctions per days and how many days in advance a auction can be scheduled.
-	 * -100 if value given is a non integer.
+	 * MAX_AUCTION_LIMIT_INPUT_NOT_A_NUMBER if value given is a non integer.
 	 */
 	public int changeMaxAuctionLimit(Staff theStaff, String theNumberToIncreaseMaxAuctionLimitBy) {
 		int returnValue = 0;
 		try{
 		returnValue = theStaff.getCalendar().setMaxAuctionsLimit(Integer.parseInt(theNumberToIncreaseMaxAuctionLimitBy));
 		}catch (NumberFormatException e){
-			returnValue = -100;
+			returnValue = MAX_AUCTION_LIMIT_INPUT_NOT_A_NUMBER;
 		}
 		 return returnValue;
 		
