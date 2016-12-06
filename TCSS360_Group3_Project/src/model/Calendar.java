@@ -403,4 +403,14 @@ public class Calendar implements Serializable {
 		}
 		return -2; // could not find there actions in the system
 	}
+	
+	/**
+	 * Adds an Auction to the Calendar. this is for testing only
+	 *
+	 * @param theAuction The auction to be added to the calendar
+	 */
+	public void addAuctionForTesting(Auction theAuction) {
+		myAuctions.add(theAuction);
+
+	}
 }

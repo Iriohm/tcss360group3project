@@ -53,8 +53,8 @@ public class NonProfitRemoveInventoryItemAcceptanceTests {
     	testAuction.addItem(aTestItem2);
     	testAuction.addItem(aTestItem);
     	myTestContact.addAuction(testAuction);
-    	aCalender.addAuction(testAuction);
-    	assertEquals(-1, myTestContact.removeMyItem(aCalender, testAuction,aTestItem));
+    	aCalender.addAuctionForTesting(testAuction);
+    	assertEquals(0, myTestContact.removeMyItem(aCalender, testAuction,aTestItem));
     }
     
     @Test

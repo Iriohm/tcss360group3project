@@ -49,8 +49,8 @@ public class NonProfitCancelAuctionRequestAcceptanceTests {
     	testAuction.addItem(aTestItem2);
     	testAuction.addItem(aTestItem);
     	myTestContact.addAuction(testAuction);
-    	aCalender.addAuction(testAuction);
-    	assertEquals(-1, myTestContact.removeMyAuction(aCalender, testAuction));
+    	aCalender.addAuctionForTesting(testAuction);
+    	assertEquals(0, myTestContact.removeMyAuction(aCalender, testAuction));
     }
     
     @Test
