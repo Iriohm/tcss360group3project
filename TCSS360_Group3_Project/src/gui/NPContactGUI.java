@@ -89,22 +89,31 @@ public class NPContactGUI implements Initializable {
 		mySubmitAuctionRequestBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				final Stage auctionRequestStage = new Stage();
-				auctionRequestStage.setTitle("Auction Central");
-				try {
-					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContactAuctionRequestForm.fxml"));
-					Parent root = (Parent)fxmlLoader.load();
-					NPContactAuctionRequestFormGUI ctrlAuctionRequestFormGUI = fxmlLoader.<NPContactAuctionRequestFormGUI>getController();
-
-					ctrlAuctionRequestFormGUI.initVariables(myStage, auctionRequestStage, myCalendar, myNPContact, mySubmitAuctionRequestBtn , myItemInvBtn);
-
-					Scene scene = new Scene(root);
-					auctionRequestStage.setScene(scene);
-					auctionRequestStage.setResizable(false);
-					myStage.hide();
-					auctionRequestStage.show();
-				} catch(Exception anException) {
-					anException.printStackTrace();
+				if (myCalendar.validateAuctionRequestMaxAuctions()) {
+					final Stage auctionRequestStage = new Stage();
+					auctionRequestStage.setTitle("Auction Central");
+					try {
+						FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContactAuctionRequestForm.fxml"));
+						Parent root = (Parent)fxmlLoader.load();
+						NPContactAuctionRequestFormGUI ctrlAuctionRequestFormGUI = fxmlLoader.<NPContactAuctionRequestFormGUI>getController();
+	
+						ctrlAuctionRequestFormGUI.initVariables(myStage, auctionRequestStage, myCalendar, myNPContact, mySubmitAuctionRequestBtn , myItemInvBtn);
+	
+						Scene scene = new Scene(root);
+						auctionRequestStage.setScene(scene);
+						auctionRequestStage.setResizable(false);
+						myStage.hide();
+						auctionRequestStage.show();
+					} catch(Exception anException) {
+						anException.printStackTrace();
+					}
+				} else {
+					Alert errorAlert = new Alert(AlertType.ERROR);
+					errorAlert.setTitle("Auction Central");
+					errorAlert.setHeaderText("Maximum Auctions Reached");
+					errorAlert.setContentText("Sorry, but we have reached our limit of " + myCalendar.getMaxAuctionsLimit() + " upcoming auctions in a month-long period. Please try again at a later date.");
+					
+					errorAlert.showAndWait();
 				}
 			}
 		});

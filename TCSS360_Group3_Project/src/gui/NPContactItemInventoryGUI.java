@@ -135,7 +135,7 @@ public class NPContactItemInventoryGUI implements Initializable {
 		
 		updateItemsInTable();
 		
-		myHeaderText.setText("Item Inventory for Auction: " + myNPContact.getLatestAuction().getAuctionName());
+		myHeaderText.setText("Item Inventory for Auction: " + myAuction.getAuctionName());
 		myUsernameLabel.setText("Logged in as: " + myNPContact.getUsername());
 		
 		myAddItemBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -164,8 +164,7 @@ public class NPContactItemInventoryGUI implements Initializable {
 		myRemoveItemBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				Auction theAuction = myNPContact.getLatestAuction();
-				List<Item> itemsInAuction = myNPContact.getLatestAuction().getItems();
+				List<Item> itemsInAuction = myAuction.getItems();
 				int itemToRemoveIndex = myItemChoice.getSelectionModel().getSelectedIndex();
 				Item itemToRemove = itemsInAuction.get(itemToRemoveIndex);
 				
@@ -183,7 +182,7 @@ public class NPContactItemInventoryGUI implements Initializable {
 
 				Optional<ButtonType> result = alert.showAndWait();
 				if (result.get() == yesBtn){
-					theAuction.removeItem(itemToRemove);
+					myAuction.removeItem(itemToRemove);
 					updateItemsInTable();
 				}
 			}

@@ -337,7 +337,7 @@ public class CalendarTest extends TestCase {
 			//adds 2 auctions a day until there are 25 auctions
 			aDate.add(GregorianCalendar.HOUR_OF_DAY, 12);
 			Auction temp = new Auction(aDate, "test");
-			assertTrue(testCalendar.validateAuctionRequestMax25Auctions());
+			assertTrue(testCalendar.validateAuctionRequestMaxAuctions());
 			assertTrue(testCalendar.addAuction(temp));
 
 		}
@@ -355,18 +355,18 @@ public class CalendarTest extends TestCase {
 			//adds 2 auctions a day until there are 25 auctions
 			aDate.add(GregorianCalendar.HOUR_OF_DAY, 12);
 			Auction temp = new Auction(aDate, "test");
-			assertTrue(testCalendar.validateAuctionRequestMax25Auctions());
+			assertTrue(testCalendar.validateAuctionRequestMaxAuctions());
 			assertTrue(testCalendar.addAuction(temp));
 		}
 		//tries to add 2 auctions over 25
 		aDate.add(GregorianCalendar.HOUR_OF_DAY, 12);
 		Auction temp = new Auction(aDate, "test");
-		assertFalse(testCalendar.validateAuctionRequestMax25Auctions());
+		assertFalse(testCalendar.validateAuctionRequestMaxAuctions());
 		assertFalse(testCalendar.addAuction(temp));
 		
 		aDate.add(GregorianCalendar.HOUR_OF_DAY, 12);
 		temp = new Auction(aDate, "test");
-		assertFalse(testCalendar.validateAuctionRequestMax25Auctions());
+		assertFalse(testCalendar.validateAuctionRequestMaxAuctions());
 		assertFalse(testCalendar.addAuction(temp));
 	}
 	
