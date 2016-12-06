@@ -9,6 +9,13 @@ import org.junit.runners.Suite.SuiteClasses;
 		NonProfitAddInventoryItemAcceptanceTests.class, NonProfitCancelAuctionRequestAcceptanceTests.class,
 		NonProfitRemoveInventoryItemAcceptanceTests.class, NonProfitSubmitAuctionRequstAcceptanceTests.class,
 		StaffChangeMaximumNumberAuctionsAcceptanceTests.class, StaffViewUpcomingAuctionsAcceptanceTests.class })
+
+/**
+ * this is a suite of all Acceptance test
+ *
+ * @author David Nowlin
+ * @version December 2016
+ */
 public class AllAcceptanceTestsSuite {
 
 }

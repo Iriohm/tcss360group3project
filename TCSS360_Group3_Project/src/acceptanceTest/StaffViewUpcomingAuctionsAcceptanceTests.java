@@ -12,6 +12,13 @@ import model.Calendar;
 import model.Item;
 import model.NPContact;
 
+
+/**
+ * JUnit Tests for the user stories StaffViewUpcomingAuctions
+ *
+ * @author David Nowlin
+ * @version December 2016
+ */
 public class StaffViewUpcomingAuctionsAcceptanceTests {
 
 	private Calendar aCalender;

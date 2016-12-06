@@ -194,7 +194,7 @@ public class CalendarTest extends TestCase {
 		Auction upcomingAuction3 = new Auction(aDate, "test");
 		calendarTest.addAuction(upcomingAuction3);
 		
-		assertEquals(3, calendarTest.getUpcomingAuctionsNumber());// 0 is first 1 is second 2 is threed.
+		assertEquals(3, calendarTest.getUpcomingAuctionsNumber());
 	}
 	
 	/**

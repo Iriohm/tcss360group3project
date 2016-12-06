@@ -12,6 +12,12 @@ import model.Calendar;
 import model.Item;
 import model.NPContact;
 
+/**
+ * JUnit Tests for the user stories NonProfitCancelAuctionRequest
+ *
+ * @author David Nowlin
+ * @version December 2016
+ */
 public class NonProfitCancelAuctionRequestAcceptanceTests {
 
 	private NPContact myTestContact;

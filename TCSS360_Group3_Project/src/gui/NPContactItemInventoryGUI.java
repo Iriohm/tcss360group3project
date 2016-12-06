@@ -90,6 +90,8 @@ public class NPContactItemInventoryGUI implements Initializable {
 	
 	private Stage myStage;
 	
+	private Auction myAuction;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		assert myBackBtn != null : "fx:id=\"myBackBtn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
@@ -133,6 +135,15 @@ public class NPContactItemInventoryGUI implements Initializable {
 		mySizeColumn.setStyle( "-fx-alignment: CENTER;");
 		myDescriptionColumn.setStyle( "-fx-alignment: CENTER;");
 		
+		String auctionName = myNPContact.getLatestAuction().getAuctionName();
+		List<Auction> allAuctions = myCalendar.getAllAuctions();
+		for (Auction currentAuction : allAuctions) {
+			if (currentAuction.getAuctionName().equals(auctionName)) {
+				myAuction = currentAuction;
+				break;
+			}
+		}
+		
 		updateItemsInTable();
 		
 		myHeaderText.setText("Item Inventory for Auction: " + myNPContact.getLatestAuction().getAuctionName());
@@ -148,7 +159,7 @@ public class NPContactItemInventoryGUI implements Initializable {
 					Parent root = (Parent)fxmlLoader.load();
 					NPContactAddItemGUI ctrlAddItemGUI = fxmlLoader.<NPContactAddItemGUI>getController();
 
-					ctrlAddItemGUI.initVariables(myStage, addItemStage, myCalendar, myNPContact, myItemTableView, myRemoveItemBtn, myItemChoice);
+					ctrlAddItemGUI.initVariables(myStage, addItemStage, myCalendar, myAuction, myNPContact, myItemTableView, myRemoveItemBtn, myItemChoice);
 
 					Scene scene = new Scene(root);
 					addItemStage.setScene(scene);
@@ -199,7 +210,7 @@ public class NPContactItemInventoryGUI implements Initializable {
 	}
 	
 	private void updateItemsInTable() {
-		List<Item> itemsInAuction = myNPContact.getLatestAuction().getItems();
+		List<Item> itemsInAuction = myAuction.getItems();
 		ItemCell[] itemInfo = new ItemCell[itemsInAuction.size()];
 		String[] itemIDs = new String[itemInfo.length];
 		
