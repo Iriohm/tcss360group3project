@@ -1,7 +1,6 @@
 package gui;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -17,14 +16,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Auction;
 import model.Calendar;
 import model.NPContact;
 
+/**
+* This class is used to control the main menu GUI for NPContact users 
+* right after they login.
+*
+* @author Vlad Kaganyuk
+* @version 5 Dec 2016
+*
+*/
 public class NPContactGUI implements Initializable {
 	
 	/** The "Submit auction request" button. */
@@ -43,19 +46,28 @@ public class NPContactGUI implements Initializable {
 	@FXML
 	private Button myLogoutBtn;
 	
+	/** The GUI label that will show "Logged in as: " and the user's username. */
 	@FXML
 	private Label myUsernameLabel;
 	
+	/** The GUI image box that will hold the logo. */
 	@FXML
 	private ImageView myLogoImageView;
 	
+	/** The Calendar where the auctions are stored. */
 	private Calendar myCalendar;
 	
+	/** The current GUI window. */
 	private Stage myStage;
 	
+	/** The current user. */
 	private NPContact myNPContact;
 	
-
+	/**
+	 * The constructor that is used by JavaFX.
+	 * 
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		assert mySubmitAuctionRequestBtn != null : "fx:id=\"mySubmitAuctionRequestBtn\" was not injected: check your FXML file 'NPContactAuctionRequestForm.fxml'.";
@@ -69,7 +81,13 @@ public class NPContactGUI implements Initializable {
 		myLogoImageView.setImage(logo);
 	}
 	
-	//My constructor...
+	/**
+	 * Initializes all of the fields, works like a constructor.
+	 * 
+	 * @param theStage The current GUI window.
+	 * @param theCalendar The Calendar where the auctions are stored.
+	 * @param theNPContact The current user.
+	 */
 	public void sendData(Stage theStage, NPContact theNPContact, Calendar theCalendar) {
 		myStage = theStage;
 		myNPContact = theNPContact;
@@ -85,7 +103,27 @@ public class NPContactGUI implements Initializable {
 		initalizeBtns();
 	}
 	
+	/**
+	 * Initializes all of the GUI buttons.
+	 */
 	private void initalizeBtns() {
+		setupSubmitAuctionRequestBtn();
+		
+		setupViewAuctionsBtn();
+		
+		setupItemInvBtn();
+		
+		myLogoutBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				Authenticate.setupAuthenticate(myStage);
+			}
+		});
+
+	}
+	
+	private void setupSubmitAuctionRequestBtn() {
 		mySubmitAuctionRequestBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -108,16 +146,22 @@ public class NPContactGUI implements Initializable {
 						anException.printStackTrace();
 					}
 				} else {
-					Alert errorAlert = new Alert(AlertType.ERROR);
-					errorAlert.setTitle("Auction Central");
-					errorAlert.setHeaderText("Maximum Auctions Reached");
-					errorAlert.setContentText("Sorry, but we have reached our limit of " + myCalendar.getMaxAuctionsLimit() + " upcoming auctions in a month-long period. Please try again at a later date.");
-					
-					errorAlert.showAndWait();
+					displayErrorPopup();
 				}
 			}
 		});
+	}
+	
+	private void displayErrorPopup() {
+		Alert errorAlert = new Alert(AlertType.ERROR);
+		errorAlert.setTitle("Auction Central");
+		errorAlert.setHeaderText("Maximum Auctions Reached");
+		errorAlert.setContentText("Sorry, but we have reached our limit of " + myCalendar.getMaxAuctionsLimit() + " upcoming auctions in a month-long period. Please try again at a later date.");
 		
+		errorAlert.showAndWait();
+	}
+	
+	private void setupViewAuctionsBtn() {
 		myViewAuctionsBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -140,7 +184,9 @@ public class NPContactGUI implements Initializable {
 				}
 			}
 		});
-		
+	}
+	
+	private void setupItemInvBtn() {
 		myItemInvBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -163,14 +209,5 @@ public class NPContactGUI implements Initializable {
 				}
 			}
 		});
-		
-		myLogoutBtn.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				Authenticate.setupAuthenticate(myStage);
-			}
-		});
-
 	}
 }

@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -32,6 +31,13 @@ import model.Auction;
 import model.Calendar;
 import model.NPContact;
 
+/**
+* This class is used to control the Auction Request Submission GUI for NPContact users.
+*
+* @author Vlad Kaganyuk
+* @version 5 Dec 2016
+*
+*/
 public class NPContactAuctionRequestFormGUI implements Initializable {
 	
 	/** A list of items 1-12. Used for the user's time. */
@@ -65,15 +71,15 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 	@FXML
 	private Button mySubmitBtn;
 	
-	
+	/** The GUI text field that will hold the auction's name. */
 	@FXML
 	private TextField myAuctionName;
 	
-	/**  */
+	/** The GUI text field that will hold the auction's hour. */
 	@FXML
 	private ChoiceBox<Integer> myNumChoice;
 	
-	/**  */
+	/** The GUI option box that will hold the auctions AM/PM value. */
 	@FXML
 	private ChoiceBox<String> myAMPMChoice;
 	
@@ -81,37 +87,41 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 	@FXML
 	private Button myBackBtn;
 	
-	/**  */
+	/** The GUI DatePicker that will be used to determine the auction date. */
 	@FXML
 	private DatePicker myDatePicker;
 	
-	/**  */
+	/** The GUI label that will show "Logged in as: " and the user's username. */
 	@FXML
 	private Label myUsernameLabel;
 	
-	/**  */
+	/** The GUI image box that will hold the logo. */
 	@FXML
 	private ImageView myLogoImageView;
 	
-	/**  */
+	/** The Calendar where the auctions are stored. */
 	private Calendar myCalendar;
 	
-	/**  */
+	/** The item inventory button on the NPContact GUI. */
 	private Button myItemInvBtn;
 	
-	/**  */
+	/** The submit auction request button on the NPContact GUI. */
 	private Button myAuctionRequestBtn;
 	
-	/**  */
+	/** The current user */
 	private NPContact myNPContact;
 	
-	/**  */
+	/** The previous GUI window. */
 	private Stage myParentStage;
-
-	/**  */
+	
+	/** The current GUI window. */
 	private Stage myStage;
 
-	/**  */
+	/**
+	 * The constructor that is used by JavaFX.
+	 * 
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		myNumChoice.setValue(DEFAULT_NUM_VALUE);

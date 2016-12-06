@@ -34,6 +34,13 @@ import model.Calendar;
 import model.Item;
 import model.NPContact;
 
+/**
+* This class is used to control the View Auctions GUI for NPContact users.
+*
+* @author Vlad Kaganyuk
+* @version 5 Dec 2016
+*
+*/
 public class NPContactViewAuctionsGUI implements Initializable {
 	
 	private static final int NEED_PRECEDING_ZERO = 10;

@@ -29,6 +29,13 @@ import model.Calendar;
 import model.Item;
 import model.NPContact;
 
+/**
+* This class is used to control the Add Item GUI for NPContact users.
+*
+* @author Vlad Kaganyuk
+* @version 5 Dec 2016
+*
+*/
 public class NPContactAddItemGUI implements Initializable {
 	
 	/** Different size options allowed for an item. */

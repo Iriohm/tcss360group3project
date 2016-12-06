@@ -33,63 +33,94 @@ import model.Calendar;
 import model.Item;
 import model.NPContact;
 
+/**
+* This class is used to control the Item Inventory GUI for NPContact users.
+*
+* @author Vlad Kaganyuk
+* @version 5 Dec 2016
+*
+*/
 public class NPContactItemInventoryGUI implements Initializable {
 
+	/** The back button on this GUI. */
 	@FXML
 	private Button myBackBtn;
 	
+	/** The add item button on this GUI. */
 	@FXML
 	private Button myAddItemBtn;
 	
+	/** The remove item button on this GUI. */
 	@FXML
 	private Button myRemoveItemBtn;
 	
+	/** The GUI option box that will hold the ID of the item to delete. */
 	@FXML
 	private ChoiceBox<String> myItemChoice;
 	
+	/** The GUI label that will show "Logged in as: " and the user's username. */
 	@FXML
 	private Label myUsernameLabel;
 	
+	/** The GUI table that will hold all of the item info. */
 	@FXML
 	private TableView<ItemCell> myItemTableView;
 	
+	/** The GUI table column that will hold all of the item IDs. */
 	@FXML
 	private TableColumn<ItemCell, String> myIDColumn;
 	
+	/** The GUI table column that will hold all of the item names. */
 	@FXML
 	private TableColumn<ItemCell, String> myNameColumn;
 	
+	/** The GUI table column that will hold all of the item minimum bids. */
 	@FXML
 	private TableColumn<ItemCell, String> myMinBidColumn;
 	
+	/** The GUI table column that will hold all of the item quantities. */
 	@FXML
 	private TableColumn<ItemCell, String> myQuantityColumn;
 	
+	/** The GUI table column that will hold all of the item conditions. */
 	@FXML
 	private TableColumn<ItemCell, String> myConditionColumn;
 	
+	/** The GUI table column that will hold all of the item sizes. */
 	@FXML
 	private TableColumn<ItemCell, String> mySizeColumn;
 	
+	/** The GUI table column that will hold all of the item descriptions. */
 	@FXML
 	private TableColumn<ItemCell, String> myDescriptionColumn;
 	
 	@FXML
 	private Text myHeaderText;
 	
+	/** The GUI image box that will hold the logo. */
 	@FXML
 	private ImageView myLogoImageView;
 	
+	/** The Calendar where the auctions are stored. */
 	private Calendar myCalendar;
 	
+	/** The current user, a NPContact. */
 	private NPContact myNPContact;
 	
+	/** The previous GUI window. */
 	private Stage myParentStage;
 	
+	/** The current GUI window. */
 	private Stage myStage;
 	
+	/** The Auction whose items are currently being displayed. */
 	private Auction myAuction;
 	
+	/**
+	 * The constructor that is used by JavaFX.
+	 * 
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		assert myBackBtn != null : "fx:id=\"myBackBtn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
@@ -112,27 +143,21 @@ public class NPContactItemInventoryGUI implements Initializable {
 		myLogoImageView.setImage(logo);
 	}
 	
+	/**
+	 * Initializes all of the fields, works like a constructor.
+	 * 
+	 * @param theParentStage The previous GUI window.
+	 * @param theStage The current GUI window.
+	 * @param theCalendar The Calendar where the auctions are stored.
+	 * @param theNPContact The current user.
+	 */
 	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact) {
 		myParentStage = theParentStage;
 		myStage = theStage;
 		myCalendar = theCalendar;
 		myNPContact = theNPContact;
 		
-		myIDColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myID"));
-		myNameColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myName"));
-		myMinBidColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myMinBid"));
-		myQuantityColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myQuantity"));
-		myConditionColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myCondition"));
-		mySizeColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("mySize"));
-		myDescriptionColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myDescription"));
-		myIDColumn.setStyle( "-fx-alignment: CENTER;");
-		myNameColumn.setStyle( "-fx-alignment: CENTER;");
-		myMinBidColumn.setStyle( "-fx-alignment: CENTER;");
-		myQuantityColumn.setStyle( "-fx-alignment: CENTER;");
-		myConditionColumn.setStyle( "-fx-alignment: CENTER;");
-		mySizeColumn.setStyle( "-fx-alignment: CENTER;");
-		myDescriptionColumn.setStyle( "-fx-alignment: CENTER;");
-		
+		tableSetup();	
 		String auctionName = myNPContact.getLatestAuction().getAuctionName();
 		List<Auction> allAuctions = myCalendar.getAllAuctions();
 		for (Auction currentAuction : allAuctions) {
@@ -140,13 +165,21 @@ public class NPContactItemInventoryGUI implements Initializable {
 				myAuction = currentAuction;
 				break;
 			}
-		}
-		
+		}	
 		updateItemsInTable();
 		
 		myHeaderText.setText("Item Inventory for Auction: " + myAuction.getAuctionName());
 		myUsernameLabel.setText("Logged in as: " + myNPContact.getUsername());
 		
+		setupAddItemBtn();	
+		setupRemoveItemBtn();	
+		setupBackBtn();
+	}
+	
+	/**
+	 * Defines what the add item button should do when it's clicked.
+	 */
+	private void setupAddItemBtn() {
 		myAddItemBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -169,7 +202,12 @@ public class NPContactItemInventoryGUI implements Initializable {
 				}
 			}
 		});
-		
+	}
+	
+	/**
+	 * Defines what the remove item button should do when it's clicked.
+	 */
+	private void setupRemoveItemBtn() {
 		myRemoveItemBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -196,7 +234,12 @@ public class NPContactItemInventoryGUI implements Initializable {
 				}
 			}
 		});
-		
+	}
+	
+	/**
+	 * Defines what the back button should do when it's clicked.
+	 */
+	private void setupBackBtn() {
 		myBackBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -206,6 +249,29 @@ public class NPContactItemInventoryGUI implements Initializable {
 		});
 	}
 	
+	/**
+	 * Sets various values to assure that the table is properly setup.
+	 */
+	private void tableSetup() {
+		myIDColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myID"));
+		myNameColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myName"));
+		myMinBidColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myMinBid"));
+		myQuantityColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myQuantity"));
+		myConditionColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myCondition"));
+		mySizeColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("mySize"));
+		myDescriptionColumn.setCellValueFactory(new PropertyValueFactory<ItemCell, String>("myDescription"));
+		myIDColumn.setStyle( "-fx-alignment: CENTER;");
+		myNameColumn.setStyle( "-fx-alignment: CENTER;");
+		myMinBidColumn.setStyle( "-fx-alignment: CENTER;");
+		myQuantityColumn.setStyle( "-fx-alignment: CENTER;");
+		myConditionColumn.setStyle( "-fx-alignment: CENTER;");
+		mySizeColumn.setStyle( "-fx-alignment: CENTER;");
+		myDescriptionColumn.setStyle( "-fx-alignment: CENTER;");
+	}
+	
+	/**
+	 * This method updates the item table on this GUI.
+	 */
 	private void updateItemsInTable() {
 		List<Item> itemsInAuction = myAuction.getItems();
 		ItemCell[] itemInfo = new ItemCell[itemsInAuction.size()];
@@ -230,6 +296,12 @@ public class NPContactItemInventoryGUI implements Initializable {
 		}
 	}
 	
+	/**
+	 * Object that is used by the JavaFX TableView to define what each cell should contain.
+	 * 
+	 * @author Vlad Kaganyuk
+	 * @version Dec 5, 2016
+	 */
 	public static class ItemCell {
 		private final SimpleStringProperty myID;
 		private final SimpleStringProperty myName;
@@ -239,6 +311,17 @@ public class NPContactItemInventoryGUI implements Initializable {
 		private final SimpleStringProperty mySize;
 		private final SimpleStringProperty myDescription;
 		
+		/**
+		 * Initializes all the necessary fields.
+		 * 
+		 * @param theID The item's ID.
+		 * @param theName The item's name.
+		 * @param theMinBid The item's minimum bid.
+		 * @param theQuantity The item's quantity.
+		 * @param theCondition The item's condition.
+		 * @param theSize The item's size.
+		 * @param theDescription The item's description.
+		 */
 		public ItemCell(String theID, String theName, double theMinBid, int theQuantity, String theCondition, String theSize, String theDescription) {
 			myID = new SimpleStringProperty(theID);
 			myName = new SimpleStringProperty(theName);
@@ -249,30 +332,58 @@ public class NPContactItemInventoryGUI implements Initializable {
 			myDescription = new SimpleStringProperty(theDescription);
 		}
 		
+		/**
+		 * Simple getter for myID.
+		 * @return Returns myID.
+		 */
 		public String getMyID() {
             return myID.get();
         }
  
+		/**
+		 * Simple getter for myName.
+		 * @return Returns myName.
+		 */
         public String getMyName() {
             return myName.get();
         }
- 
+        
+        /**
+		 * Simple getter for myMinBid.
+		 * @return Returns myMinBid.
+		 */
         public String getMyMinBid() {
             return myMinBid.get();
         }
         
+        /**
+		 * Simple getter for myQuantity.
+		 * @return Returns myQuantity.
+		 */
         public String getMyQuantity() {
             return myQuantity.get();
         }
         
+        /**
+		 * Simple getter for myCondition.
+		 * @return Returns myCondition.
+		 */
         public String getMyCondition() {
             return myCondition.get();
         }
         
+        /**
+		 * Simple getter for mySize.
+		 * @return Returns mySize.
+		 */
         public String getMySize() {
             return mySize.get();
         }
         
+        /**
+		 * Simple getter for myDescription.
+		 * @return Returns myDescription.
+		 */
         public String getMyDescription() {
             return myDescription.get();
         }

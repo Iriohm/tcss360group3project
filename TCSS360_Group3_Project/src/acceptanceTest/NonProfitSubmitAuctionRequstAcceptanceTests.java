@@ -342,6 +342,7 @@ public class NonProfitSubmitAuctionRequstAcceptanceTests {
 	public void testAuctionDateLeastOneWeekOutSubmittingAcutionEcavtlyOneWeek() {
 		GregorianCalendar fuctureAuction = (GregorianCalendar)GregorianCalendar.getInstance();
 		fuctureAuction.add(GregorianCalendar.WEEK_OF_YEAR, 1);
+		fuctureAuction.add(GregorianCalendar.MINUTE, 1);
 		Auction tesAuction = new Auction(fuctureAuction, "testAuctions");
 		Item testItem = new Item("1", "testname", "avnsdovn", "smaill", 5.00, 1, "good");
 		tesAuction.addItem(testItem);

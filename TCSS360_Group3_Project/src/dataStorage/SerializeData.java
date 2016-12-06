@@ -8,10 +8,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Scanner;
 
+import model.Auction;
 import model.Calendar;
+import model.NPContact;
 import model.User;
 
 public class SerializeData {
@@ -64,7 +67,14 @@ public class SerializeData {
 			myUserList = new ArrayList<User>();
 			System.err.println("No current list of Users");
 		}
-				
+		//add a auction tomorrow
+		/*	NPContact testNP = new NPContact("testnp", myCalendar);
+		myUserList.add(testNP);
+		GregorianCalendar cal = (GregorianCalendar)GregorianCalendar.getInstance();
+		cal.add(GregorianCalendar.DAY_OF_YEAR, 1);
+		Auction auc = new Auction(cal, "test1");
+		myCalendar.devOnlyAddAuctionByPassValidation(auc);
+		testNP.addAuction(auc);*/
 	}
 	
 	/**
