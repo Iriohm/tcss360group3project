@@ -12,13 +12,6 @@ import model.Calendar;
 import model.Item;
 import model.NPContact;
 
-
-/**
- * JUnit Tests for the user stories NonProfitSubmitAuctionRequst
- *
- * @author David Nowlin
- * @version December 2016
- */
 public class NonProfitSubmitAuctionRequstAcceptanceTests {
 	private Calendar aCalender;
 	private NPContact myTestContact;

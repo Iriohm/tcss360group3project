@@ -12,12 +12,6 @@ import model.Bidder;
 import model.Calendar;
 import model.Item;
 
-/**
- * JUnit Tests for the user stories BidderBidItem
- *
- * @author David Nowlin
- * @version December 2016
- */
 public class BidderBidItemAccptanceTests {
 	/** An Item object that will be used to test the Bidder class. */
     private Item myTestItem;
@@ -57,22 +51,26 @@ public class BidderBidItemAccptanceTests {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testValidPriceBidZero() {
+    	//Placing a valid bid on myTestItem...ALLOWED
     	assertFalse(myTestBidder.placeBid(myTestItem, 0));
     }
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testValidPriceBidNegative() {
+    	//Placing a valid bid on myTestItem...ALLOWED
     	assertFalse(myTestBidder.placeBid(myTestItem, -1));
     }
 	
 	@Test
 	public void testValidPriceBidGreaterMinAcceptable() {
+    	//Placing a valid bid on myTestItem...ALLOWED
 		myTestBidder.placeBid(myTestItem, 5.01);
     	assertEquals("",5.01, myTestItem.getBidOf(myTestBidder.getUsername()).getBidAmount(),.001);
     }
 	
 	@Test
 	public void testValidPriceBidEqualMinAcceptable() {
+    	//Placing a valid bid on myTestItem...ALLOWED
     	myTestBidder.placeBid(myTestItem, 5.00);
     	assertEquals("",5.00, myTestItem.getBidOf(myTestBidder.getUsername()).getBidAmount(),.001);
 
@@ -80,6 +78,7 @@ public class BidderBidItemAccptanceTests {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testValidPriceBidLessMinAcceptable() {
+    	//Placing a valid bid on myTestItem...ALLOWED
     	assertFalse(myTestBidder.placeBid(myTestItem, 4.99));
     }
 }

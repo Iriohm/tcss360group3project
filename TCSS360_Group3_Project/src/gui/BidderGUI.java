@@ -210,10 +210,6 @@ public class BidderGUI implements Initializable {
 	 */
 	private void initPlaceBidButton() {
 		myPlaceBidButton.setDisable(true);
-		//http://code.makery.ch/blog/javafx-dialogs-official/
-		Alert alertConfirmBid = new Alert(AlertType.CONFIRMATION);
-		alertConfirmBid.setTitle("Confirm Bid");
-
 		DecimalFormat dfMoney = new DecimalFormat("0.00");
 
 		myPlaceBidButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -231,21 +227,11 @@ public class BidderGUI implements Initializable {
 
 					// Maxi-business-rule Testing Time!!! ^_^
 					if	(biddingTests(dInput)) {
-						alertConfirmBid.setHeaderText("You are about to bid $" + dfMoney.format(dInput)
-								+ " on item \"" + myCurrentItem.getName() + "\" from the auction \"" + myCurrentAuction.getAuctionName()
-								+ "\", closing " + myDateFormatter.format(myCurrentAuction.getDate().getTime())
-								+ ". \nThis bid may be canceled at any point at least two days before the auction takes place. "
-								+ "\nBids made or existing after this point are final. \n\n Continue with the bid?");
-
-						Optional<ButtonType> osResult = alertConfirmBid.showAndWait();
+						Optional<ButtonType> osResult = alertConfirmBid(dInput, dfMoney);
 
 						if	(osResult.get() == ButtonType.OK) {
 							myBidder.placeBid(myCurrentItem, dInput);
-
-							Alert alertSuccess = new Alert(AlertType.INFORMATION);
-							alertSuccess.setTitle("Success!");
-							alertSuccess.setHeaderText("Bid made successfully!");
-
+							alertBidSuccessful();
 							updateItemsInList();
 							updateItemDescription();
 
@@ -259,6 +245,39 @@ public class BidderGUI implements Initializable {
 
 
 		});
+
+	}
+
+
+	/**
+	 * A small method for displaying the "Confirm Bid" alert to the user.
+	 *
+	 * @param theMoney The amount of money the user is about to bid with.
+	 * @param theFormatter The DecimalFormat object to properly display the money with.
+	 * @return Returns whichever button the user ends up pressing (OK or Cancel).
+	 */
+	private Optional<ButtonType> alertConfirmBid(double theMoney, DecimalFormat theFormatter) {
+		//http://code.makery.ch/blog/javafx-dialogs-official/
+		Alert alertConfirmBid = new Alert(AlertType.CONFIRMATION);
+		alertConfirmBid.setTitle("Confirm Bid");
+		alertConfirmBid.setHeaderText("You are about to bid $" + theFormatter.format(theMoney)
+			+ " on item \"" + myCurrentItem.getName() + "\" from the auction \"" + myCurrentAuction.getAuctionName()
+			+ "\", closing " + myDateFormatter.format(myCurrentAuction.getDate().getTime())
+			+ ". \nThis bid may be canceled at any point at least two days before the auction takes place. "
+			+ "\nBids made or existing after this point are final. \n\n Continue with the bid?");
+
+		return alertConfirmBid.showAndWait();
+
+	}
+
+
+	/**
+	 * A small method for displaying a "Bid Successfully Made" alert to the user.
+	 */
+	private void alertBidSuccessful() {
+		Alert alertSuccess = new Alert(AlertType.INFORMATION);
+		alertSuccess.setTitle("Success!");
+		alertSuccess.setHeaderText("Bid made successfully!");
 
 	}
 
