@@ -43,17 +43,17 @@ public class NonProfitCancelAuctionRequestAcceptanceTests {
     
     @Test
     public void testNoAuctionCanceledLess2DayAuctionCancelledExactly2Day() {
-    	Calendar aCalender = new Calendar();
-    	Item aTestItem = new Item("theID", "Beanie Baby", "Brand-new Beanie Baby", "Small", 5.00, 1, "New in box");
-    	Item aTestItem2 = new Item("ID2", "Seahawks shirt", "Seahawks shirt", "Small", 5.00, 1, "New");
-    	GregorianCalendar date = (GregorianCalendar) GregorianCalendar.getInstance();
-    	date.add(GregorianCalendar.DAY_OF_YEAR, 2);
-    	Auction testAuction = new Auction(date, "im a auctions");
-    	testAuction.addItem(aTestItem2);
-    	testAuction.addItem(aTestItem);
-    	myTestContact.addAuction(testAuction);
-    	aCalender.addAuctionForTesting(testAuction);
-    	assertEquals(0, myTestContact.removeMyAuction(aCalender, testAuction));
+    Calendar aCalender = new Calendar();
+    Item aTestItem = new Item("theID", "Beanie Baby", "Brand-new Beanie Baby", "Small", 5.00, 1, "New in box");
+    Item aTestItem2 = new Item("ID2", "Seahawks shirt", "Seahawks shirt", "Small", 5.00, 1, "New");
+    GregorianCalendar date = (GregorianCalendar) GregorianCalendar.getInstance();
+    date.add(GregorianCalendar.DAY_OF_YEAR, 2);
+    Auction testAuction = new Auction(date, "im a auctions");
+    testAuction.addItem(aTestItem2);
+    testAuction.addItem(aTestItem);
+    myTestContact.addAuction(testAuction);
+    aCalender.addAuctionForTesting(testAuction);
+    assertEquals(0, myTestContact.removeMyAuction(aCalender, testAuction));
     }
     
     @Test
