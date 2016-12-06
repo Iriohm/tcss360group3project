@@ -31,49 +31,100 @@ import model.NPContact;
 
 public class NPContactAddItemGUI implements Initializable {
 	
+	/**
+	 * Different size options allowed for an item.
+	 */
 	private static final String[] SIZE_OPTIONS = {"Small", "Medium", "Large"};
 
+	/**
+	 * The submit button on this GUI.
+	 */
 	@FXML
 	private Button mySubmitBtn;
 	
+	/**
+	 * The back button on this GUI.
+	 */
 	@FXML
 	private Button myBackBtn;
 	
+	/**
+	 * The GUI text field that will hold the item's name.
+	 */
 	@FXML
 	private TextField myNameBox;
 	
+	/**
+	 * The GUI text field that will hold the item's condition.
+	 */
 	@FXML
 	private TextField myConditionBox;
 	
+	/**
+	 * The GUI text field that will hold the item's minimum bid.
+	 */
 	@FXML
 	private TextField myMinBidBox;
 	
+	/**
+	 * The GUI text field that will hold the item's quantity.
+	 */
 	@FXML
 	private TextField myQuantityBox;
 	
+	/**
+	 * The GUI option box that will hold the item's size.
+	 */
 	@FXML
 	private ChoiceBox<String> mySizeChoiceBox;
 	
+	/**
+	 * The GUI text field that will hold the item's description.
+	 */
 	@FXML
 	private TextField myDescriptionBox;
 	
+	/**
+	 * The GUI label that will show "Logged in as: " and the user's username.
+	 */
 	@FXML
 	private Label myUsernameLabel;
 	
+	/**
+	 * The GUI image box that will hold the logo.
+	 */
 	@FXML
 	private ImageView myLogoImageView;
 	
+	/**
+	 * The GUI label that will state which auction the user is adding an item to.
+	 */
 	@FXML
 	private Text myHeaderText;
 	
+	/**
+	 * The current user, a NPContact.
+	 */
 	private NPContact myNPContact;
 	
+	/**
+	 * The previous GUI page.
+	 */
 	private Stage myParentStage;
 	
+	/**
+	 * The current GUI page.
+	 */
 	private Stage myStage;
 	
+	/**
+	 * The auction that items will be added to.
+	 */
 	private Auction myAuction;
 	
+	/**
+	 * The Calendar .
+	 */
 	private Calendar myCalendar;
 	
 	private TableView<NPContactItemInventoryGUI.ItemCell> myItemTableView;
@@ -100,13 +151,13 @@ public class NPContactAddItemGUI implements Initializable {
 		myLogoImageView.setImage(logo);
 	}
 	
-	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact, 
+	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, Auction theAuction, NPContact theNPContact, 
 			TableView<NPContactItemInventoryGUI.ItemCell> theTableView, Button theRemoveBtn, ChoiceBox<String> theItemChoice) {
 		myParentStage = theParentStage;
 		myStage = theStage;
 		myCalendar = theCalendar;
 		myNPContact = theNPContact;
-		myAuction = myNPContact.getLatestAuction();
+		myAuction = theAuction;
 		myItemTableView = theTableView;
 		myRemoveItemBtn = theRemoveBtn;
 		myItemChoice = theItemChoice;
