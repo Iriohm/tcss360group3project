@@ -34,65 +34,86 @@ import model.NPContact;
 
 public class NPContactAuctionRequestFormGUI implements Initializable {
 	
+	/** A list of items 1-12. Used for the user's time. */
 	private static final List<Integer> NUMBERS_1_THROUGH_12 = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
 	
+	/** The default hour value. */
 	private static final int DEFAULT_NUM_VALUE = 1;
 	
-	private static final String DEFAULT_AM_PM_VALUE = "AM";
+	/** The default AM/PM value. */
+	private static final String DEFAULT_AM_PM_VALUE = "PM";
 	
+	/** The index where the year is stored. */
 	private static final int YEAR_INDEX = 0;
 	
+	/** The index where the month is stored. */
 	private static final int MONTH_INDEX = 1;
 	
+	/** The index where the day is stored. */
 	private static final int DAY_INDEX = 2;
 	
+	/** Error code to signify there are already two auctions on that day. */
+	private static final int TWO_AUCTIONS_ON_SAME_DAY_ERROR = -1;
+	
+	/** Error code to signify that the chosen date is more than one month into the future. */
+	private static final int MORE_THAN_MONTH_INTO_FUTURE_ERROR = -3;
+	
+	/** Error code to signify that the chosen date is less than a week away. */
+	private static final int LESS_THAN_WEEK_IN_FUTURE_ERROR = -4;
+	
+	/** The submit button on this GUI. */
 	@FXML
 	private Button mySubmitBtn;
+	
 	
 	@FXML
 	private TextField myAuctionName;
 	
+	/**  */
 	@FXML
 	private ChoiceBox<Integer> myNumChoice;
 	
+	/**  */
 	@FXML
 	private ChoiceBox<String> myAMPMChoice;
 	
+	/** The back button on this GUI. */
 	@FXML
 	private Button myBackBtn;
 	
+	/**  */
 	@FXML
 	private DatePicker myDatePicker;
 	
+	/**  */
 	@FXML
 	private Label myUsernameLabel;
 	
+	/**  */
 	@FXML
 	private ImageView myLogoImageView;
 	
+	/**  */
 	private Calendar myCalendar;
 	
+	/**  */
 	private Button myItemInvBtn;
 	
+	/**  */
 	private Button myAuctionRequestBtn;
 	
+	/**  */
 	private NPContact myNPContact;
 	
+	/**  */
 	private Stage myParentStage;
-	
+
+	/**  */
 	private Stage myStage;
 
+	/**  */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		assert mySubmitBtn != null : "fx:id=\"mySubmitBtn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myAuctionName != null : "fx:id=\"myAuctionName\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myNumChoice != null : "fx:id=\"myNumChoice\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myAMPMChoice != null : "fx:id=\"myAMPMChoice\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myDatePicker != null : "fx:id=\"myDatePicker\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myBackBtn != null : "fx:id=\"myBackBtn\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myUsernameLabel != null : "fx:id=\"myUsernameLabel\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-		assert myLogoImageView != null : "fx:id=\"myLogoImageView\" was not injected: check your FXML file 'NPContactAuctionRequestFormGUI.fxml'.";
-
 		myNumChoice.setValue(DEFAULT_NUM_VALUE);
 		myNumChoice.setItems(FXCollections.observableList(NUMBERS_1_THROUGH_12));
 		
@@ -108,29 +129,21 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 		
 		myDatePicker.setValue(weekAway);
 		
-		 final Callback<DatePicker, DateCell> dayCellFactory = 
-		            new Callback<DatePicker, DateCell>() {
-		                @Override
-		                public DateCell call(final DatePicker datePicker) {
-		                    return new DateCell() {
-		                        @Override
-		                        public void updateItem(LocalDate item, boolean empty) {
-		                		    super.updateItem(item, empty);
-		                		    
-		                		    LocalDate x = myDatePicker.getValue();
-
-		                		    if (item.isBefore(weekAway) || item.isAfter(monthAway)) {
-		                		            setDisable(true);
-		                		            setStyle("-fx-background-color: #ffc0cb;");
-		                		    }
-		                		}
-		                };
-		            }
-		        };
-		        myDatePicker.setDayCellFactory(dayCellFactory);
+		final Callback<DatePicker, DateCell> dayCellFactory = createDayCell(weekAway, monthAway);
+		myDatePicker.setDayCellFactory(dayCellFactory);
 		
 	}
 	
+	/**
+	 * Initializes all of the fields, works like a constructor.
+	 * 
+	 * @param theParentStage The previous GUI window.
+	 * @param theStage The current GUI window.
+	 * @param theCalendar The Calendar where the auctions are stored.
+	 * @param theNPContact The current user.
+	 * @param theRequestBtn The submit auction request button.
+	 * @param theItemInvBtn The item inventory button.
+	 */
 	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, NPContact theNPContact, Button theRequestBtn, Button theItemInvBtn) {
 		myParentStage = theParentStage;
 		myStage = theStage;
@@ -141,74 +154,127 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 		
 		myUsernameLabel.setText("Logged in as: " + myNPContact.getUsername());
 		
+		setupSubmitBtn();
+		
+		setupBackBtn();
+	}
+	
+	/**
+	 * Defines what the submit button should do when it's clicked.
+	 */
+	private void setupSubmitBtn() {
 		mySubmitBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				GregorianCalendar auctionDateGregCalendar = new GregorianCalendar();
-				
 				String auctionName = myAuctionName.getText();
-				String auctionDate = "MM-DD-YYYY";
-				
 				if (auctionName.length() == 0) {
 					showErrorMessage("Please enter an auction name.");
 					return;
 				}
 				
-				try {
-					auctionDate = myDatePicker.getValue().toString();
-				} catch (NullPointerException e) {
-					showErrorMessage("There was an error with your proposed auction date. Please select a valid date and try again.");
+				String auctionDate = testAuctionDate();
+				if (auctionDate == null) 
 					return;
-				}
-				int auctionHour = myNumChoice.getValue();
-				String auctionAMPM = myAMPMChoice.getValue();
 				
-				String[] date = auctionDate.split("-");
-				
-				if (auctionAMPM.equals("PM")) {
-					auctionHour += 12;
-				}
-				
-				int year = Integer.parseInt(date[YEAR_INDEX]);
-				int month = Integer.parseInt(date[MONTH_INDEX]);
-				int day = Integer.parseInt(date[DAY_INDEX]);
-				auctionDateGregCalendar.set(year, month, day, auctionHour, 0, 0);
-				auctionDateGregCalendar.add(GregorianCalendar.MONTH, -1);
-				
+				setupGregCalendar(auctionDate, auctionDateGregCalendar);
 				int responseCode = myCalendar.validateAuctionRequest(auctionDateGregCalendar);
-				
-				switch(responseCode) {
-				case -1:
-					showErrorMessage("There are already two auctions scheduled on this day, please choose another.\n");
+				if (validateResult(responseCode) == null)
 					return;
-				case -3:
-					showErrorMessage("Please select an earlier time (or date) for your auction, such that it's no more than exactly one month into the future.");
-					return;
-				case -4:
-					showErrorMessage("Please select a time for your auction such that your date is at least exactly one week into the future.");
-					return;
-				}
 				
-				Auction auctionRequest = new Auction(auctionDateGregCalendar, auctionName);
-				myCalendar.addAuction(auctionRequest);
-				myNPContact.addAuction(auctionRequest);
-				
-				myItemInvBtn.setDisable(false);
-				myAuctionRequestBtn.setDisable(true);
-				
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Auction Central");
-				alert.setHeaderText("Successful submission");
-				
-				myStage.hide();
-				alert.setContentText("Successfully submitted your auction request. You can see your auctions by pressing the \"View my auctions\" button on the main menu.");
-
-				alert.showAndWait();
-				
+				addAuction(auctionName, auctionDateGregCalendar);
 				myParentStage.show();
 			}
 		});
+	}
+	
+	/**
+	 * Calls the addAuction methods and opens a success pop-up box.
+	 * @param auctionName The auction's name.
+	 * @param auctionDateGregCalendar The auction's GregorianCalendar.
+	 */
+	private void addAuction(String auctionName, GregorianCalendar auctionDateGregCalendar) {
+		Auction auctionRequest = new Auction(auctionDateGregCalendar, auctionName);
+		myCalendar.addAuction(auctionRequest);
+		myNPContact.addAuction(auctionRequest);
 		
+		myItemInvBtn.setDisable(false);
+		myAuctionRequestBtn.setDisable(true);
+		
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Auction Central");
+		alert.setHeaderText("Successful submission");
+		
+		myStage.hide();
+		alert.setContentText("Successfully submitted your auction request. You can see your auctions by pressing the \"View my auctions\" button on the main menu.");
+
+		alert.showAndWait();
+	}
+	
+	/**
+	 * Sets up the GregorianCalendar associated with the auction request.
+	 * 
+	 * @param auctionDate The user's date, in String format.
+	 * @param auctionDateGregCalendar The auction's GregorianCalendar.
+	 */
+	private void setupGregCalendar(String auctionDate, GregorianCalendar auctionDateGregCalendar) {
+		int auctionHour = myNumChoice.getValue();
+		String auctionAMPM = myAMPMChoice.getValue();
+		
+		String[] date = auctionDate.split("-");
+		
+		if (auctionAMPM.equals("PM")) {
+			auctionHour += 12;
+		}
+		
+		int year = Integer.parseInt(date[YEAR_INDEX]);
+		int month = Integer.parseInt(date[MONTH_INDEX]);
+		int day = Integer.parseInt(date[DAY_INDEX]);
+		auctionDateGregCalendar.set(year, month, day, auctionHour, 0, 0);
+		auctionDateGregCalendar.add(GregorianCalendar.MONTH, -1);
+	}
+	
+	/**
+	 * Decides whether an error occurred, and opens a pop-up for the corresponding error.
+	 * 
+	 * @param responseCode The response code from validateAuctionRequest();
+	 * @return Returns a value to notify the caller if an error occurred or not.
+	 */
+	private String validateResult(int responseCode) {
+		switch(responseCode) {
+		case TWO_AUCTIONS_ON_SAME_DAY_ERROR:
+			showErrorMessage("There are already two auctions scheduled on this day, please choose another.\n");
+			return null;
+		case MORE_THAN_MONTH_INTO_FUTURE_ERROR:
+			showErrorMessage("Please select an earlier time (or date) for your auction, such that it's no more than exactly one month into the future.");
+			return null;
+		case LESS_THAN_WEEK_IN_FUTURE_ERROR:
+			showErrorMessage("Please select a time for your auction such that your date is at least exactly one week into the future.");
+			return null;
+		}
+		return "Successful";
+	}
+	
+	/**
+	 * Checks if the user has submitted a valid date.
+	 * 
+	 * @return The user's valid date, or null.
+	 */
+	private String testAuctionDate() {
+		String auctionDate;
+		try {
+			auctionDate = myDatePicker.getValue().toString();
+		} catch (NullPointerException e) {
+			showErrorMessage("There was an error with your proposed auction date. Please select a valid date and try again.");
+			return null;
+		}
+		return auctionDate;
+	}
+	
+	/**
+	 * Defines what the submit button should do when it's clicked.
+	 */
+	private void setupBackBtn() {
 		myBackBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -231,6 +297,38 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 		});
 	}
 	
+	/**
+	 * Sets up the functionality that disables days outside the valid range.
+	 * 
+	 * @param weekAway The date one week away from now.
+	 * @param monthAway The date one month away from now.
+	 * @return Returns a valid Callback<DatePicker, DateCell> object.
+	 */
+	private Callback<DatePicker, DateCell> createDayCell(LocalDate weekAway, LocalDate monthAway) {
+		Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(final DatePicker datePicker) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+            		    super.updateItem(item, empty);
+
+            		    if (item.isBefore(weekAway) || item.isAfter(monthAway)) {
+            		            setDisable(true);
+            		            setStyle("-fx-background-color: #ffc0cb;");
+            		    }
+            		}
+                };
+            }
+		};
+		return dayCellFactory;
+	}
+	
+	/**
+	 * Opens an error pop-up box.
+	 * 
+	 * @param errorMessage The message that the error pop-up will contain.
+	 */
 	private void showErrorMessage(String errorMessage) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Auction Central");
@@ -238,20 +336,5 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 		alert.setContentText(errorMessage);
 		
 		alert.showAndWait();
-	}
-
-	public class DisabledRange {
-
-	    private final LocalDate initialDate;
-	    private final LocalDate endDate;
-
-	    public DisabledRange(LocalDate initialDate, LocalDate endDate){
-	        this.initialDate=initialDate;
-	        this.endDate = endDate;
-	    }
-
-	    public LocalDate getInitialDate() { return initialDate; }
-	    public LocalDate getEndDate() { return endDate; }
-
 	}
 }

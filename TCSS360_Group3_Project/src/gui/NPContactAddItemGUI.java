@@ -31,108 +31,90 @@ import model.NPContact;
 
 public class NPContactAddItemGUI implements Initializable {
 	
-	/**
-	 * Different size options allowed for an item.
-	 */
+	/** Different size options allowed for an item. */
 	private static final String[] SIZE_OPTIONS = {"Small", "Medium", "Large"};
 
-	/**
-	 * The submit button on this GUI.
-	 */
+	/** Error code to signify there was an error with the item quantity. */
+	private static final int QUANTITY_ERROR = -1;
+	
+	/** Error code to signify there was an error with the item's minimum bid. */
+	private static final double MIN_BID_ERROR = -1.0;
+	
+	/** The submit button on this GUI. */
 	@FXML
 	private Button mySubmitBtn;
 	
-	/**
-	 * The back button on this GUI.
-	 */
+	/** The back button on this GUI. */
 	@FXML
 	private Button myBackBtn;
 	
-	/**
-	 * The GUI text field that will hold the item's name.
-	 */
+	/** The GUI text field that will hold the item's name. */
 	@FXML
 	private TextField myNameBox;
 	
-	/**
-	 * The GUI text field that will hold the item's condition.
-	 */
+	/** The GUI text field that will hold the item's condition. */
 	@FXML
 	private TextField myConditionBox;
 	
-	/**
-	 * The GUI text field that will hold the item's minimum bid.
-	 */
+	/** The GUI text field that will hold the item's minimum bid.*/
 	@FXML
 	private TextField myMinBidBox;
 	
-	/**
-	 * The GUI text field that will hold the item's quantity.
-	 */
+	/** The GUI text field that will hold the item's quantity. */
 	@FXML
 	private TextField myQuantityBox;
 	
-	/**
-	 * The GUI option box that will hold the item's size.
-	 */
+	/** The GUI option box that will hold the item's size. */
 	@FXML
 	private ChoiceBox<String> mySizeChoiceBox;
 	
-	/**
-	 * The GUI text field that will hold the item's description.
-	 */
+	/** The GUI text field that will hold the item's description. */
 	@FXML
 	private TextField myDescriptionBox;
 	
-	/**
-	 * The GUI label that will show "Logged in as: " and the user's username.
-	 */
+	/** The GUI label that will show "Logged in as: " and the user's username. */
 	@FXML
 	private Label myUsernameLabel;
 	
-	/**
-	 * The GUI image box that will hold the logo.
-	 */
+	/** The GUI image box that will hold the logo. */
 	@FXML
 	private ImageView myLogoImageView;
 	
-	/**
-	 * The GUI label that will state which auction the user is adding an item to.
-	 */
+	/** The GUI label that will state which auction the user is adding an item to. */
 	@FXML
 	private Text myHeaderText;
 	
-	/**
-	 * The current user, a NPContact.
-	 */
+	/** The current user, a NPContact. */
 	private NPContact myNPContact;
 	
-	/**
-	 * The previous GUI page.
-	 */
+	/** The previous GUI window. */
 	private Stage myParentStage;
 	
-	/**
-	 * The current GUI page.
-	 */
+	/** The current GUI window. */
 	private Stage myStage;
 	
-	/**
-	 * The auction that items will be added to.
-	 */
+	/** The auction that items will be added to. */
 	private Auction myAuction;
 	
-	/**
-	 * The Calendar .
-	 */
+	/** The Calendar where the auctions are stored. */
 	private Calendar myCalendar;
 	
+	/** The GUI table that will hold all of the item info. */
+	@FXML
 	private TableView<NPContactItemInventoryGUI.ItemCell> myItemTableView;
 	
+	/** The remove item button on this GUI. */
 	private Button myRemoveItemBtn;
 	
+	/** The option box on the GUI, to select the item to delete. This box gets updated after an event. */
+	@FXML
 	private ChoiceBox<String> myItemChoice;
 	
+	/**
+	 * The constructor that is used by JavaFX.
+	 * 
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		assert mySubmitBtn != null : "fx:id=\"mySubmitBtn\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
@@ -151,6 +133,18 @@ public class NPContactAddItemGUI implements Initializable {
 		myLogoImageView.setImage(logo);
 	}
 	
+	/**
+	 * Initializes all of the fields, works like a constructor.
+	 * 
+	 * @param theParentStage The previous GUI window.
+	 * @param theStage The current GUI window.
+	 * @param theCalendar The Calendar where the auctions are stored.
+	 * @param theAuction The auction where items will be added.
+	 * @param theNPContact The current user.
+	 * @param theTableView The GUI table that will hold all of the item info.
+	 * @param theRemoveBtn The remove item button on this GUI.
+	 * @param theItemChoice The option box on the GUI, to select the item to delete.
+	 */
 	public void initVariables(Stage theParentStage, Stage theStage, Calendar theCalendar, Auction theAuction, NPContact theNPContact, 
 			TableView<NPContactItemInventoryGUI.ItemCell> theTableView, Button theRemoveBtn, ChoiceBox<String> theItemChoice) {
 		myParentStage = theParentStage;
@@ -168,64 +162,44 @@ public class NPContactAddItemGUI implements Initializable {
 		myUsernameLabel.setText("Logged in as: " + myNPContact.getUsername());
 		myHeaderText.setText("Adding Item to Auction: " + myAuction.getAuctionName());
 		
+		setupSubmitBtn();
+		
+		setupBackBtn();
+	}
+	
+	/**
+	 * Defines what the submit button should do when it's clicked.
+	 */
+	private void setupSubmitBtn() {
 		mySubmitBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				String itemName = myNameBox.getText();	
 				String condition = myConditionBox.getText();
 				String size = mySizeChoiceBox.getValue();
-				String description = myDescriptionBox.getText();
-				
+				String description = myDescriptionBox.getText();	
 				if (itemName.equals("") || condition.equals("") || size.equals("") || description.equals("") || myMinBidBox.getText().equals("") || myQuantityBox.getText().equals("")) {
 					showErrorMessage("Please be sure to fill out all of the fields.");
 					return;
 				}
 				
-				double minBid = 0;
-				try {
-					minBid = Double.parseDouble(myMinBidBox.getText());
-				} catch (NumberFormatException e) {
-					showErrorMessage("Please make sure that your minimum bid amount is a valid number. NOTE: Do not include the $ sign with your amount.");
+				double minBid = testMinBidValue();
+				if (minBid == MIN_BID_ERROR)
 					return;
-				}
 				
-				if (minBid <= 0.0) {
-					showErrorMessage("Please make sure that your minimum bid amount is greater than $0.00");
+				int quantity = testQuantityValue();
+				if (quantity == QUANTITY_ERROR)
 					return;
-				}
 				
-				int quantity =  0;
-				try {
-					quantity = Integer.parseInt(myQuantityBox.getText());
-				} catch (NumberFormatException e) {
-					showErrorMessage("Please make sure that the item quantity is a valid number.");
-					return;
-				}
-				
-				if (quantity <= 0) {
-					showErrorMessage("Please make sure that the item quantity is greater than 0.");
-					return;
-				}
-				
-				Item itemToAdd = new Item(myCalendar.getNextItemID() + "", itemName, description, size, minBid, quantity, condition);
-				
-				myNPContact.addItem(myAuction, itemToAdd);
-				myAuction.addItem(itemToAdd);
-
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Auction Central");
-				alert.setHeaderText("Successful addition");
-				
-				myStage.hide();
-				alert.setContentText("Successfully added your item. Your item should now appear in the Item Inventory.");
-
-				alert.showAndWait();
-				
-				updateItemsAfterAdding();
-				myParentStage.show();
+				addItem(itemName, condition, size, description, minBid, quantity);
 			}
 		});
-		
+	}
+	
+	/**
+	 * Defines what the back button should do when it's clicked.
+	 */
+	private void setupBackBtn() {
 		myBackBtn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -248,6 +222,80 @@ public class NPContactAddItemGUI implements Initializable {
 		});
 	}
 	
+	/**
+	 * Adds the item to the correct auction, and opens a successful message pop-up box.
+	 * 
+	 * @param itemName The name of the item.
+	 * @param condition The item's condition.
+	 * @param size The item's size.
+	 * @param description The item's description.
+	 * @param minBid The item's minimum bid.
+	 * @param quantity The item's quantity.
+	 */
+	private void addItem(String itemName, String condition, String size, String description, double minBid, int quantity) {
+		Item itemToAdd = new Item(myCalendar.getNextItemID() + "", itemName, description, size, minBid, quantity, condition);
+		
+		myNPContact.addItem(myAuction, itemToAdd);
+		myAuction.addItem(itemToAdd);
+
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Auction Central");
+		alert.setHeaderText("Successful addition");
+		
+		myStage.hide();
+		alert.setContentText("Successfully added your item. Your item should now appear in the Item Inventory.");
+
+		alert.showAndWait();
+		
+		updateItemsAfterAdding();
+		myParentStage.show();
+	}
+	
+	/**
+	 * Tests the quantity value that the user provided.
+	 * 
+	 * @return Returns the valid quantity, or an error code.
+	 */
+	private int testQuantityValue() {
+		int quantity =  0;
+		try {
+			quantity = Integer.parseInt(myQuantityBox.getText());
+		} catch (NumberFormatException e) {
+			showErrorMessage("Please make sure that the item quantity is a valid number.");
+			return QUANTITY_ERROR;
+		}
+		
+		if (quantity <= 0) {
+			showErrorMessage("Please make sure that the item quantity is greater than 0.");
+			return QUANTITY_ERROR;
+		}
+		return quantity;
+	}
+	
+	/**
+	 * Tests the minimum bid value that the user provided.
+	 * 
+	 * @return Returns the valid minBid, or an error code.
+	 */
+	private double testMinBidValue() {
+		double minBid = 0;
+		try {
+			minBid = Double.parseDouble(myMinBidBox.getText());
+		} catch (NumberFormatException e) {
+			showErrorMessage("Please make sure that your minimum bid amount is a valid number. NOTE: Do not include the $ sign with your amount.");
+			return MIN_BID_ERROR;
+		}
+		
+		if (minBid <= 0.0) {
+			showErrorMessage("Please make sure that your minimum bid amount is greater than $0.00");
+			return MIN_BID_ERROR;
+		}
+		return minBid;
+	}
+	
+	/**
+	 * This method updates the item table on the ItemInventoryGUI.
+	 */
 	private void updateItemsAfterAdding() {
 		List<Item> itemsInAuction = myAuction.getItems();
 		ItemCell[] itemInfo = new ItemCell[itemsInAuction.size()];
@@ -273,6 +321,11 @@ public class NPContactAddItemGUI implements Initializable {
 
 	}
 	
+	/**
+	 * Opens an error pop-up box.
+	 * 
+	 * @param errorMessage The message that the error pop-up will contain.
+	 */
 	private void showErrorMessage(String errorMessage) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Auction Central");
