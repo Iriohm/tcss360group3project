@@ -2,6 +2,7 @@ package gui;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
@@ -27,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 import model.Auction;
 import model.Calendar;
 import model.NPContact;
@@ -165,8 +167,8 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 		myUsernameLabel.setText("Logged in as: " + myNPContact.getUsername());
 		
 		setupSubmitBtn();
-		
 		setupBackBtn();
+		setupFormatter();
 	}
 	
 	/**
@@ -332,6 +334,31 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
             }
 		};
 		return dayCellFactory;
+	}
+	
+	private void setupFormatter() {
+		final String pattern = "dd/MM/yyyy";
+		StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter = 
+                DateTimeFormatter.ofPattern(pattern);
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        };             
+        myDatePicker.setConverter(converter);
 	}
 	
 	/**

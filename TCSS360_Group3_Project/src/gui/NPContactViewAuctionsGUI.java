@@ -269,7 +269,7 @@ public class NPContactViewAuctionsGUI implements Initializable {
 				if (hour < NEED_PRECEDING_ZERO)
 					hourFiller = "0";
 				
-				auctionInfo[theAuctions.size() - 1 - i] = new AuctionCell(auctionName, month + "/" + filler + day + "/" + year, hourFiller + hour + " " + AMPM);
+				auctionInfo[theAuctions.size() - 1 - i] = new AuctionCell(auctionName, filler + day + "/" + month + "/" + year, hourFiller + hour + " " + AMPM);
 			}
 		}
 		myAuctionTable.setItems(FXCollections.observableList(Arrays.asList(auctionInfo)));
