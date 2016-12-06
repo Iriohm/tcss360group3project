@@ -142,7 +142,7 @@ public class NPContactTest extends TestCase {
     	testAuction.addItem(aTestItem);
     	aCalender.addAuction(testAuction2);
     	myTestContact.addAuction(testAuction);
-    	assertEquals(-2, myTestContact.removeMyAuction(aCalender, testAuction));
+    	assertEquals(Calendar.AUCTION_LESS_THAN_TWO_DAYS_AWAY, myTestContact.removeMyAuction(aCalender, testAuction));
     }
     
     @Test

@@ -412,11 +412,12 @@ public class CalendarTest extends TestCase {
      * Test method for decreasing maximum auction limit below the number of active auctions.
      * 
      * @author "Robert Hinds"
+     * @revised Justin Washburn
      */
     @Test
   //Maximum future auctions set to below current active auctions... NOT ALLOWED
     public void testSetMaxAuctionsLimitToBelowCurrentActiveAuctionCount() {
-    	int myNumberToChangeMaxAuctionLimitTo =  testCalendar2.getUpcomingAuctionsNumber() ;
+    	int myNumberToChangeMaxAuctionLimitTo =  testCalendar2.getUpcomingAuctionsNumber() - 1;
 
     	assertEquals(testCalendar2.setMaxAuctionsLimit(myNumberToChangeMaxAuctionLimitTo), -2);
     }
