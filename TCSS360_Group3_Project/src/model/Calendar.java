@@ -10,6 +10,7 @@ import java.util.List;
  *
  * @author Justin Washburn
  * @version 11/10/2016
+ * @modified 12/6/2016 by Robert Hinds
  *
  */
 public class Calendar implements Serializable {
@@ -77,7 +78,6 @@ public class Calendar implements Serializable {
 	/**
 	 * Code to signify that an auction was successfully removed.
 	 */
-	public static final int SUCCESSFUL_REMOVAL = 0;
 	private static final int AUCTION_SUCCESSFULLY_REMOVED = 0;
 	
 	/**
@@ -85,7 +85,10 @@ public class Calendar implements Serializable {
 	 */
 	private static final int ITEM_SUCCESSFULLY_REMOVED = 0;
 	
-
+	/**
+	 * Error code to signify that the specified auction was not located, and hence was not removed.
+	 */
+	private static final int AUCTION_NOT_LOCATED = -2;
 	
 	/**
 	 * Error code to signify that value inputed attempted to set the maximum auction limit to zero or less.
@@ -433,7 +436,8 @@ public class Calendar implements Serializable {
 	 * Searches for a Non-profit's auction and removes the auction.
 	 *
 	 * @param theAuction
-	 * @return Returns 0 if auction was safely removed. Returns -1 if auction is being held within the next two days or in the past.
+	 * @return Returns 0 if auction was safely removed. Returns -1 if auction is being held within the next two days.
+	 * Returns -2 if the Non-profit contact's auction can't be found.
 	 */
 	public int removeNPAuction(Auction theAuction) {
 		List<Auction> nextTwoDayAuction = getAuctionsTwoDayAhead();
