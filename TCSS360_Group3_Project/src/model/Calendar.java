@@ -21,7 +21,7 @@ public class Calendar implements Serializable {
 	/**
 	 * Error code to signifing that the auction attempting to be removed is being held within the next two days.
 	 */
-	private static final int AUCTION_LESS_THAN_TWO_DAYS_AWAY = -1;
+	public static final int AUCTION_LESS_THAN_TWO_DAYS_AWAY = -1;
 	
 	/**
 	 * Code to signify that an auction was successfully removed.

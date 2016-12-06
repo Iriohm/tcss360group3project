@@ -162,7 +162,7 @@ public class NPContactViewAuctionsGUI implements Initializable {
 						myCalendar.getAllAuctions().remove(auctionToRemove);
 						updateAuctionTable();
 						myItemInvBtn.setDisable(true);
-					} else if (responseCode == ERROR_LOCATING_AUCTION) {
+					}  else if (responseCode == Calendar.AUCTION_LESS_THAN_TWO_DAYS_AWAY) {
 						Alert errorAlert = new Alert(AlertType.ERROR);
 						errorAlert.setTitle("Auction Central");
 						errorAlert.setHeaderText("Removal Error");
