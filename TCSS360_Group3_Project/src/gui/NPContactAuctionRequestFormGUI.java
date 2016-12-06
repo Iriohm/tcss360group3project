@@ -200,11 +200,11 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 	
 	/**
 	 * Calls the addAuction methods and opens a success pop-up box.
-	 * @param auctionName The auction's name.
-	 * @param auctionDateGregCalendar The auction's GregorianCalendar.
+	 * @param theAuctionName The auction's name.
+	 * @param theAuctionDateGregCalendar The auction's GregorianCalendar.
 	 */
-	private void addAuction(String auctionName, GregorianCalendar auctionDateGregCalendar) {
-		Auction auctionRequest = new Auction(auctionDateGregCalendar, auctionName);
+	private void addAuction(String theAuctionName, GregorianCalendar theAuctionDateGregCalendar) {
+		Auction auctionRequest = new Auction(theAuctionDateGregCalendar, theAuctionName);
 		myCalendar.addAuction(auctionRequest);
 		myNPContact.addAuction(auctionRequest);
 		
@@ -224,14 +224,14 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 	/**
 	 * Sets up the GregorianCalendar associated with the auction request.
 	 * 
-	 * @param auctionDate The user's date, in String format.
-	 * @param auctionDateGregCalendar The auction's GregorianCalendar.
+	 * @param theAuctionDate The user's date, in String format.
+	 * @param theAuctionDateGregCalendar The auction's GregorianCalendar.
 	 */
-	private void setupGregCalendar(String auctionDate, GregorianCalendar auctionDateGregCalendar) {
+	private void setupGregCalendar(String theAuctionDate, GregorianCalendar theAuctionDateGregCalendar) {
 		int auctionHour = myNumChoice.getValue();
 		String auctionAMPM = myAMPMChoice.getValue();
 		
-		String[] date = auctionDate.split("-");
+		String[] date = theAuctionDate.split("-");
 		
 		if (auctionAMPM.equals("PM")) {
 			auctionHour += 12;
@@ -240,18 +240,18 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 		int year = Integer.parseInt(date[YEAR_INDEX]);
 		int month = Integer.parseInt(date[MONTH_INDEX]);
 		int day = Integer.parseInt(date[DAY_INDEX]);
-		auctionDateGregCalendar.set(year, month, day, auctionHour, 0, 0);
-		auctionDateGregCalendar.add(GregorianCalendar.MONTH, -1);
+		theAuctionDateGregCalendar.set(year, month, day, auctionHour, 0, 0);
+		theAuctionDateGregCalendar.add(GregorianCalendar.MONTH, -1);
 	}
 	
 	/**
 	 * Decides whether an error occurred, and opens a pop-up for the corresponding error.
 	 * 
-	 * @param responseCode The response code from validateAuctionRequest();
+	 * @param theResponseCode The response code from validateAuctionRequest();
 	 * @return Returns a value to notify the caller if an error occurred or not.
 	 */
-	private String validateResult(int responseCode) {
-		switch(responseCode) {
+	private String validateResult(int theResponseCode) {
+		switch(theResponseCode) {
 		case TWO_AUCTIONS_ON_SAME_DAY_ERROR:
 			showErrorMessage("There are already two auctions scheduled on this day, please choose another.\n");
 			return null;
@@ -310,11 +310,11 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
 	/**
 	 * Sets up the functionality that disables days outside the valid range.
 	 * 
-	 * @param weekAway The date one week away from now.
-	 * @param monthAway The date one month away from now.
+	 * @param theWeekAway The date one week away from now.
+	 * @param theMonthAway The date one month away from now.
 	 * @return Returns a valid Callback<DatePicker, DateCell> object.
 	 */
-	private Callback<DatePicker, DateCell> createDayCell(LocalDate weekAway, LocalDate monthAway) {
+	private Callback<DatePicker, DateCell> createDayCell(LocalDate theWeekAway, LocalDate theMonthAway) {
 		Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
             @Override
             public DateCell call(final DatePicker datePicker) {
@@ -323,7 +323,7 @@ public class NPContactAuctionRequestFormGUI implements Initializable {
                     public void updateItem(LocalDate item, boolean empty) {
             		    super.updateItem(item, empty);
 
-            		    if (item.isBefore(weekAway) || item.isAfter(monthAway)) {
+            		    if (item.isBefore(theWeekAway) || item.isAfter(theMonthAway)) {
             		            setDisable(true);
             		            setStyle("-fx-background-color: #ffc0cb;");
             		    }

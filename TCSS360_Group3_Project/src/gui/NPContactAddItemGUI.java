@@ -239,8 +239,8 @@ public class NPContactAddItemGUI implements Initializable {
 	 * @param minBid The item's minimum bid.
 	 * @param quantity The item's quantity.
 	 */
-	private void addItem(String itemName, String condition, String size, String description, double minBid, int quantity) {
-		Item itemToAdd = new Item(myCalendar.getNextItemID() + "", itemName, description, size, minBid, quantity, condition);
+	private void addItem(String theItemName, String theCondition, String theSize, String theDescription, double theMinBid, int theQuantity) {
+		Item itemToAdd = new Item(myCalendar.getNextItemID() + "", theItemName, theDescription, theSize, theMinBid, theQuantity, theCondition);
 		
 		myNPContact.addItem(myAuction, itemToAdd);
 		myAuction.addItem(itemToAdd);
@@ -331,13 +331,13 @@ public class NPContactAddItemGUI implements Initializable {
 	/**
 	 * Opens an error pop-up box.
 	 * 
-	 * @param errorMessage The message that the error pop-up will contain.
+	 * @param theErrorMessage The message that the error pop-up will contain.
 	 */
-	private void showErrorMessage(String errorMessage) {
+	private void showErrorMessage(String theErrorMessage) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Auction Central");
 		alert.setHeaderText("Input Error");
-		alert.setContentText(errorMessage);
+		alert.setContentText(theErrorMessage);
 		
 		alert.showAndWait();
 	}
