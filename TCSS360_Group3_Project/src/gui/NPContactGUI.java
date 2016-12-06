@@ -100,6 +100,7 @@ public class NPContactGUI implements Initializable {
 
 					Scene scene = new Scene(root);
 					auctionRequestStage.setScene(scene);
+					auctionRequestStage.setResizable(false);
 					myStage.hide();
 					auctionRequestStage.show();
 				} catch(Exception anException) {
@@ -122,6 +123,7 @@ public class NPContactGUI implements Initializable {
 
 					Scene scene = new Scene(root);
 					viewAuctionsStage.setScene(scene);
+					viewAuctionsStage.setResizable(false);
 					myStage.hide();
 					viewAuctionsStage.show();
 				} catch(Exception anException) {
@@ -144,6 +146,7 @@ public class NPContactGUI implements Initializable {
 
 					Scene scene = new Scene(root);
 					itemInventoryStage.setScene(scene);
+					itemInventoryStage.setResizable(false);
 					myStage.hide();
 					itemInventoryStage.show();
 				} catch(Exception anException) {

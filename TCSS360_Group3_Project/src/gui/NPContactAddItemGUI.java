@@ -30,6 +30,8 @@ import model.Item;
 import model.NPContact;
 
 public class NPContactAddItemGUI implements Initializable {
+	
+	private static final String[] SIZE_OPTIONS = {"Small", "Medium", "Large"};
 
 	@FXML
 	private Button mySubmitBtn;
@@ -50,7 +52,7 @@ public class NPContactAddItemGUI implements Initializable {
 	private TextField myQuantityBox;
 	
 	@FXML
-	private TextField mySizeBox;
+	private ChoiceBox<String> mySizeChoiceBox;
 	
 	@FXML
 	private TextField myDescriptionBox;
@@ -88,7 +90,7 @@ public class NPContactAddItemGUI implements Initializable {
 		assert myConditionBox != null : "fx:id=\"myConditionBox\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
 		assert myMinBidBox != null : "fx:id=\"myMinBidBox\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
 		assert myQuantityBox != null : "fx:id=\"myQuantityBox\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
-		assert mySizeBox != null : "fx:id=\"mySizeBox\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
+		assert mySizeChoiceBox != null : "fx:id=\"mySizeChoiceBox\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
 		assert myDescriptionBox != null : "fx:id=\"myDescriptionBox\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
 		assert myUsernameLabel != null : "fx:id=\"myUsernameLabel\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
 		assert myLogoImageView != null : "fx:id=\"myLogoImageView\" was not injected: check your FXML file 'NPContactAddItemGUI.fxml'.";
@@ -109,6 +111,9 @@ public class NPContactAddItemGUI implements Initializable {
 		myRemoveItemBtn = theRemoveBtn;
 		myItemChoice = theItemChoice;
 		
+		mySizeChoiceBox.setItems(FXCollections.observableArrayList(Arrays.asList(SIZE_OPTIONS)));
+		mySizeChoiceBox.setValue(SIZE_OPTIONS[0]);
+		
 		myUsernameLabel.setText("Logged in as: " + myNPContact.getUsername());
 		myHeaderText.setText("Adding Item to Auction: " + myAuction.getAuctionName());
 		
@@ -117,7 +122,7 @@ public class NPContactAddItemGUI implements Initializable {
 			public void handle(ActionEvent event) {
 				String itemName = myNameBox.getText();	
 				String condition = myConditionBox.getText();
-				String size = mySizeBox.getText();
+				String size = mySizeChoiceBox.getValue();
 				String description = myDescriptionBox.getText();
 				
 				if (itemName.equals("") || condition.equals("") || size.equals("") || description.equals("") || myMinBidBox.getText().equals("") || myQuantityBox.getText().equals("")) {

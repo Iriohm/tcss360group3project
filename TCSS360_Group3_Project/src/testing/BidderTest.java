@@ -91,6 +91,7 @@ public class BidderTest extends TestCase {
     	myAuctionOnDateTenDaysInFuture.addItem(myTestItem8);
      	myTestBidder.placeBid(myTestItem8, 8.00);
 
+     	myAuctionOnDateTenDaysInFuture.addItem(myTestItem9);
      	myAuctionOnDateTenDaysInFuture.addItem(myTestItem10);
      	myTestBidder.placeBid(myTestItem10, 35.00);
      	myAuctionOnDateTenDaysInFuture.addItem(myTestItem11);
@@ -187,8 +188,10 @@ public class BidderTest extends TestCase {
     	//Cancelling the correct bid... ALLOWED
     	assertTrue(myTestBidder.cancelBid(myTestItem10));
 
+    	myTestBidder.cancelBid(myTestItem11);
+
     	//Cancel bid. Bid not canceled...NOT ALLOWED
-    	assertFalse(myTestBidder.cancelBid(myTestItem11));
+    	assertFalse(myTestItem11.isBeingBidOnBy(myTestBidder.getUsername()));
 
     }
 
