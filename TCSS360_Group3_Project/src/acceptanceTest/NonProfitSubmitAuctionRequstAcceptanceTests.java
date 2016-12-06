@@ -42,7 +42,7 @@ public class NonProfitSubmitAuctionRequstAcceptanceTests {
 	}
 	
 	//Business rule: only the contact person for this non-profit organization can submit an auction request.
-	// is handed by UI
+	// is handled by UI
 	
 	@Test
 	public void testMaximumOneFutureAuctionOneFutureAuction() {
@@ -58,7 +58,7 @@ public class NonProfitSubmitAuctionRequstAcceptanceTests {
 		assertEquals(1, aCalender.getUpcomingAuctionsNumber());
 	}
 //	
-//	// con't add auction past two
+//	// can't add auction past two
 //	
 	@Test
 	public void testNoAuctionWithinPastYearOneAutionYearMinusDaySubmittingNewAuction() {
@@ -213,7 +213,7 @@ public class NonProfitSubmitAuctionRequstAcceptanceTests {
 	}
 	
 	@Test
-	public void testMaximum25UpcomingAuctionsLess24Aucions() {
+	public void testMaximum25UpcomingAuctionsLess24Auctions() {
 		int changeDays = 0;
 		GregorianCalendar fuctureAuction = (GregorianCalendar)GregorianCalendar.getInstance();
 		fuctureAuction.add(GregorianCalendar.DAY_OF_YEAR, 8);
@@ -235,7 +235,7 @@ public class NonProfitSubmitAuctionRequstAcceptanceTests {
 	}
 	
 	@Test
-	public void testMaximum25UpcomingAuctions24Aucions() {
+	public void testMaximum25UpcomingAuctions24Auctions() {
 		int changeDays = 0;
 		GregorianCalendar fuctureAuction = (GregorianCalendar)GregorianCalendar.getInstance();
 		fuctureAuction.add(GregorianCalendar.DAY_OF_YEAR, 8);
@@ -257,7 +257,7 @@ public class NonProfitSubmitAuctionRequstAcceptanceTests {
 	}
 	
 	@Test
-	public void testMaximum25UpcomingAuctions25Aucions() {
+	public void testMaximum25UpcomingAuctions25Auctions() {
 		int changeDays = 0;
 		GregorianCalendar fuctureAuction = (GregorianCalendar)GregorianCalendar.getInstance();
 		fuctureAuction.add(GregorianCalendar.DAY_OF_YEAR, 8);
@@ -279,7 +279,7 @@ public class NonProfitSubmitAuctionRequstAcceptanceTests {
 	}
 	
 	@Test
-	public void testMaximum25UpcomingAuctionsGreater25Aucions() {
+	public void testMaximum25UpcomingAuctionsGreater25Auctions() {
 		int changeDays = 0;
 		GregorianCalendar fuctureAuction = (GregorianCalendar)GregorianCalendar.getInstance();
 		fuctureAuction.add(GregorianCalendar.DAY_OF_YEAR, 8);

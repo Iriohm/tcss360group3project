@@ -149,7 +149,7 @@ public class Calendar implements Serializable {
 		if (!validateAuctionRequestTwoPerDay((GregorianCalendar)theDate.clone())) {
 			return -1;
 		}
-		if (!validateAuctionRequestMax25Auctions()) {
+		if (!validateAuctionRequestMaxAuctions()) {
 			return -2;
 		}
 		if (!validateAuctionRequestAtMostOneMonthInFuture((GregorianCalendar)theDate.clone())) {
@@ -192,8 +192,8 @@ public class Calendar implements Serializable {
 	 *
 	 * @return True if there are less than 25 Auctions
 	 */
-	public boolean validateAuctionRequestMax25Auctions() {
-		if (getUpcomingAuctionsNumber() >= 25) {
+	public boolean validateAuctionRequestMaxAuctions() {
+		if (getUpcomingAuctionsNumber() >= myMaxAuctionsLimit) {
 			return false;
 		}
 		return true;

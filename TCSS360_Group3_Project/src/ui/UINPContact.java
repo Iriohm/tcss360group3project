@@ -77,7 +77,7 @@ public class UINPContact extends UI {
 					System.out.println("Sorry, but it appears that your non-profit either has an upcoming auction, or had an auction less than a year ago.");
 					System.out.println("You may not submit an auction request at this time. If you have any questions, please call customer support at 1-800-101-6969.");
 					System.out.println("==============================================================================================================================\n");
-				} else if (!myCalender.validateAuctionRequestMax25Auctions()) {
+				} else if (!myCalender.validateAuctionRequestMaxAuctions()) {
 					System.out.println("Sorry, but it appears that we have reached our 25 upcoming auctions limit. Please try again at a later date.\n");
 				} else {
 					Auction auctionRequest = getAuctionDetailsFromUser(inputScanner);
