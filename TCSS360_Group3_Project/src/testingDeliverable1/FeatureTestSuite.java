@@ -1,4 +1,4 @@
-package testing;
+package testingDeliverable1;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
