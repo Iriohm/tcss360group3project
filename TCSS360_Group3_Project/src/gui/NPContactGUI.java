@@ -1,6 +1,7 @@
 package gui;
 
 import java.net.URL;
+import java.util.GregorianCalendar;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -93,7 +94,7 @@ public class NPContactGUI implements Initializable {
 		myNPContact = theNPContact;
 		myCalendar = theCalendar;
 		
-		if (myNPContact.hasAuctionUpcomingOrLastYear()) {
+		if (!myCalendar.getAuctions((GregorianCalendar) GregorianCalendar.getInstance()).isEmpty()) {
 			mySubmitAuctionRequestBtn.setDisable(true);
 		} else {
 			myItemInvBtn.setDisable(true);
