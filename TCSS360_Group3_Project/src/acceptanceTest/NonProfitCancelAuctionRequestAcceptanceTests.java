@@ -36,7 +36,10 @@ public class NonProfitCancelAuctionRequestAcceptanceTests {
     }
 
 	
-
+	/*
+	 * 0 if it dose remove the Auction
+	 * -1 is if the auction is two days are less
+	 */
     
     @Test
     public void testNoAuctionCanceledLess2DayAuctionCancelledExactly2Day() {
@@ -64,7 +67,7 @@ public class NonProfitCancelAuctionRequestAcceptanceTests {
     	testAuction.addItem(aTestItem2);
     	testAuction.addItem(aTestItem);
     	myTestContact.addAuction(testAuction);
-    	aCalender.addAuction(testAuction);
+    	aCalender.addAuctionForTesting(testAuction);
     	assertEquals(-1, myTestContact.removeMyAuction(aCalender, testAuction));
     }
     
