@@ -42,13 +42,13 @@ public class Authenticate extends Application {
 	private static List<User> myListUser;
 	private static Stage myStage;
 	private static SerializeData myData;
-	
+
 	private static final int STAFF_USER_TYPE_ID = 1;
 	private static final int NPCONTACT_USER_TYPE_ID = 2;
 	private static final int BIDDER_USER_TYPE_ID = 3;
 
 	/**
-	 * Launches the GUI for the first time, stores fields, 
+	 * Launches the GUI for the first time, stores fields,
 	 * and begins the Authenticate GUI
 	 * @param args String of command line arguments
 	 * @param theData The data for the calendar and list of users
@@ -72,7 +72,7 @@ public class Authenticate extends Application {
 
 	/**
 	 * Starts the GUI and calls the method to build the Authenticate scene
-	 * 
+	 *
 	 * @param primaryStage the current window
 	 */
     @Override
@@ -177,7 +177,7 @@ public class Authenticate extends Application {
             	for (int i = 0; i < myListUser.size(); i++) {
             		if (userInput.equals(myListUser.get(i).getUsername())) {
             			int userType = myListUser.get(i).getType();
-            			
+
             			//Sends the User to the appropriate GUI based on USer type
             			if (userType == STAFF_USER_TYPE_ID) {
             				StaffGUI.startStaffGUI(myStage, myListUser.get(i), myData);
@@ -190,7 +190,7 @@ public class Authenticate extends Application {
             					FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NPContact.fxml"));
             					Parent root = (Parent)fxmlLoader.load();
             					NPContactGUI ctrlNPContactGUI = fxmlLoader.<NPContactGUI>getController();
-            					
+
             					ctrlNPContactGUI.sendData(myStage, (NPContact)myListUser.get(i), myData.getCalendar());
 
             					Scene scene = new Scene(root);
@@ -236,6 +236,10 @@ public class Authenticate extends Application {
           }
 
         });
+
+        // Added to recenter the authentication screen after someone else's GUI logs out.
+        // - Iriohm
+    	myStage.centerOnScreen();
 
     }
 
