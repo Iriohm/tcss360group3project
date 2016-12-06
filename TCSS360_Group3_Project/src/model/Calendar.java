@@ -26,12 +26,12 @@ public class Calendar implements Serializable {
 	/**
 	 * Code to signify that an auction was successfully removed.
 	 */
-	private static final int SUCCESSFUL_REMOVAL = 0;
+	public static final int SUCCESSFUL_REMOVAL = 0;
 	
 	/**
 	 * Error code to signify that the specified auction was not located, and hence was not removed.
 	 */
-	private static final int AUCTION_NOT_LOCATED = -2;
+	public static final int AUCTION_NOT_LOCATED = -2;
 	
 	/**
 	 * Default global needed by Serializable
@@ -349,9 +349,9 @@ public class Calendar implements Serializable {
 	 */
 	public List<Auction> getAuctionsTwoDayAhead() {
 		final int DAY_TO_CANCEL_AUCTION = 2;
-		GregorianCalendar twoDayForrowed = (GregorianCalendar) GregorianCalendar.getInstance();
-		twoDayForrowed.add(GregorianCalendar.DAY_OF_YEAR, DAY_TO_CANCEL_AUCTION);
-		return getAuctions(twoDayForrowed);
+		GregorianCalendar twoDayForward = (GregorianCalendar) GregorianCalendar.getInstance();
+		twoDayForward.add(GregorianCalendar.DAY_OF_YEAR, DAY_TO_CANCEL_AUCTION);
+		return getAuctions(twoDayForward);
 	}
 
 	/**
@@ -360,14 +360,13 @@ public class Calendar implements Serializable {
 	 * Searches for a Non-profit contact's auction and removes the auction.
 	 *
 	 * @param theAuction
-	 * @return Returns 0 if auction was safely removed. Returns -1 if auction is being held within the next two days.
-	 * Returns -2 if the Non-profit contact's auction can't be found.
+	 * @return Returns 0 if auction was safely removed. Returns -1 if auction is being held within the next two days or in the past.
 	 */
 	public int removeNPAuction(Auction theAuction) {
 		List<Auction> nextTwoDayAuction = getAuctionsTwoDayAhead();
-		if(nextTwoDayAuction.isEmpty()){
+		/*if(nextTwoDayAuction.isEmpty()){
 			return AUCTION_LESS_THAN_TWO_DAYS_AWAY; // Auction trying to be removed is being held in two days or less.
-		} else {
+		}*/
 			String auctionToRemove = theAuction.getAuctionName();
 			for (int i = 0; i < nextTwoDayAuction.size(); i++) {
 				if (nextTwoDayAuction.get(i).getAuctionName().equals(auctionToRemove)) {
@@ -375,8 +374,7 @@ public class Calendar implements Serializable {
 					return SUCCESSFUL_REMOVAL; // found and remove the actions
 				}
 			}
-		}
-		return AUCTION_NOT_LOCATED; // could not find there auctions in the system
+		return AUCTION_LESS_THAN_TWO_DAYS_AWAY; // could not find their auction in the next 2 days
 	}
 
 	/**
