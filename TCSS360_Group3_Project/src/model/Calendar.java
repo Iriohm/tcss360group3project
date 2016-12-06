@@ -19,9 +19,9 @@ public class Calendar implements Serializable {
 	public static final int MAX_POSSIBLE_AUCTIONS = 62;
 	
 	/**
-	 * Error code to signify that there are no upcoming auctions, and so no auctions could be removed.
+	 * Error code to signifing that the auction attempting to be removed is being held within the next two days.
 	 */
-	private static final int NO_UPCOMING_AUCTIONS = -1;
+	private static final int AUCTION_LESS_THAN_TWO_DAYS_AWAY = -1;
 	
 	/**
 	 * Code to signify that an auction was successfully removed.
@@ -356,19 +356,17 @@ public class Calendar implements Serializable {
 
 	/**
 	 * @author David Nowlin, Vlad Kaganyuk
-	 * check in 3
 	 *
-	 * this look for a NP actions and remove it. return 0 if safely remove from the list. return -1 if no auction in the past two day.
-	 * return -2 if the NP auction can't be found.
+	 * Searches for a Non-profit contact's auction and removes the auction.
 	 *
 	 * @param theAuction
-	 * @return return 0 if safely remove from the list. return -1 if no auction in the past two day.
-	 * return -2 if the NP auction can't be found.
+	 * @return Returns 0 if auction was safely removed. Returns -1 if auction is being held within the next two days.
+	 * Returns -2 if the Non-profit contact's auction can't be found.
 	 */
 	public int removeNPAuction(Auction theAuction) {
 		List<Auction> nextTwoDayAuction = getAuctionsTwoDayAhead();
 		if(nextTwoDayAuction.isEmpty()){
-			return NO_UPCOMING_AUCTIONS; // no auction past two days.
+			return AUCTION_LESS_THAN_TWO_DAYS_AWAY; // Auction trying to be removed is being held in two days or less.
 		} else {
 			String auctionToRemove = theAuction.getAuctionName();
 			for (int i = 0; i < nextTwoDayAuction.size(); i++) {
