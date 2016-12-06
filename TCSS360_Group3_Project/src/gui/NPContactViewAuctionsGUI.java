@@ -235,7 +235,7 @@ public class NPContactViewAuctionsGUI implements Initializable {
 		
 		AuctionCell[] auctionInfo = new AuctionCell[theAuctions.size()];
 		
-		if (theAuctions.size() == 0 || !myNPContact.hasAuctionUpcomingOrLastYear()) {
+		if (theAuctions.size() == 0) {
 			myCancelAuctionBtn.setDisable(true);
 			mySubmitRequestBtn.setDisable(false);
 		} else {
