@@ -267,20 +267,21 @@ public class ViewCalendarGUI {
                   for (int i = 0; i < theAuctionsOnDay.size(); i++) {
 
                 	  Auction temp = theAuctionsOnDay.get(i);
-                	  String ampm;
+/*                	  String ampm;
                 	  if (temp.getDate().get(GregorianCalendar.AM_PM) == GregorianCalendar.AM) {
                 		  ampm = "AM";
                 	  } else {
                 		  ampm = "PM";
-                	  }
+                	  }*/
                       ScrollPane auctionInfo = new ScrollPane();
                       Text text = new Text(temp.getAuctionName() +
-                    		  "\n" + temp.getDate().get(GregorianCalendar.DAY_OF_MONTH) + "/" 
+                    		  "\n" + temp.getDate().getTime() /*temp.getDate().get(GregorianCalendar.DAY_OF_MONTH) + "/" 
                     		  + (temp.getDate().get(GregorianCalendar.MONTH) + 1) + "/" 
                     		  + temp.getDate().get(GregorianCalendar.YEAR) + "  "
-                    		  +  (temp.getDate().get(GregorianCalendar.HOUR) + 1) + " "
-                    		  + ampm
-                    		  + "\nEstimated Items: " + temp.getEstimatedItems()
+                    		  +  (temp.getDate().get(GregorianCalendar.HOUR)) + " "
+                    		  + ampm*/
+                    		  
+                    		  + "\nEstimated Items: " +  temp.getItems().size()            //temp.getEstimatedItems()
                     		  + "\n" + temp.getComments());
                       text.wrappingWidthProperty().bind(scene.widthProperty());
                       auctionInfo.setFitToWidth(true);
