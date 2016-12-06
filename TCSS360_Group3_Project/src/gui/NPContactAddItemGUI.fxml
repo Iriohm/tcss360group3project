@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -34,13 +35,13 @@
             <TextField fx:id="myConditionBox" layoutX="75.0" layoutY="126.0" prefHeight="25.0" prefWidth="173.0" promptText="Ex. Used" />
             <TextField fx:id="myMinBidBox" layoutX="99.0" layoutY="155.0" promptText="Ex. 1" />
             <TextField fx:id="myQuantityBox" layoutX="66.0" layoutY="184.0" prefHeight="25.0" prefWidth="181.0" promptText="1" />
-            <TextField fx:id="mySizeBox" layoutX="42.0" layoutY="213.0" prefHeight="25.0" prefWidth="205.0" promptText="Small" />
             <TextField fx:id="myDescriptionBox" layoutX="80.0" layoutY="242.0" prefHeight="25.0" prefWidth="167.0" promptText="Broken, missing eyelash, no tags" />
             <Button fx:id="myBackBtn" layoutX="81.0" layoutY="283.0" mnemonicParsing="false" text="Back" />
             <Button fx:id="mySubmitBtn" layoutX="135.0" layoutY="283.0" mnemonicParsing="false" text="Submit" />
             <Line endX="186.0" layoutX="92.0" layoutY="326.0" startX="-100.0" />
             <Label fx:id="myUsernameLabel" layoutX="-5.0" layoutY="326.0" text="Logged in as: " />
             <Text layoutX="14.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Size: " />
+            <ChoiceBox fx:id="mySizeChoiceBox" layoutX="41.0" layoutY="213.0" prefHeight="25.0" prefWidth="205.0" />
          </children>
       </Pane>
    </children>
