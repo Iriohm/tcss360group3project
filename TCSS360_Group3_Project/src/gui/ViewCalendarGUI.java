@@ -275,12 +275,8 @@ public class ViewCalendarGUI {
                 	  }
                       ScrollPane auctionInfo = new ScrollPane();
                       Text text = new Text(temp.getAuctionName() +
-                    		  "\n" + temp.getDate().get(GregorianCalendar.DAY_OF_MONTH) + "/" 
-                    		  + (temp.getDate().get(GregorianCalendar.MONTH) + 1) + "/" 
-                    		  + temp.getDate().get(GregorianCalendar.YEAR) + "  "
-                    		  +  (temp.getDate().get(GregorianCalendar.HOUR) + 1) + " "
-                    		  + ampm
-                    		  + "\nEstimated Items: " + temp.getEstimatedItems()
+                    		  "\n" + temp.getDate().getTime()
+                    		  + "\nItems: " + temp.getItems().size()
                     		  + "\n" + temp.getComments());
                       text.wrappingWidthProperty().bind(scene.widthProperty());
                       auctionInfo.setFitToWidth(true);

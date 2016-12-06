@@ -67,6 +67,7 @@ public class SerializeData {
 			myUserList = new ArrayList<User>();
 			System.err.println("No current list of Users");
 		}
+		//To reset and modify the .ser file
 		/*myUserList = new ArrayList<User>();
 		myCalendar = new Calendar();
 		//add a auction tomorrow

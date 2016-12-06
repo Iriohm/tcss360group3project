@@ -28,10 +28,7 @@ public class Calendar implements Serializable {
 	 */
 	public static final int SUCCESSFUL_REMOVAL = 0;
 	
-	/**
-	 * Error code to signify that the specified auction was not located, and hence was not removed.
-	 */
-	public static final int AUCTION_NOT_LOCATED = -2;
+
 	
 	/**
 	 * Default global needed by Serializable
